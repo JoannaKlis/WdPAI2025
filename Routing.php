@@ -5,6 +5,8 @@ require_once 'src/controllers/UserController.php';
 
 class Routing {
 
+    private static $controllerInstances = [];
+
     public static $routes = [
         "login" => [
             "controller" => "SecurityController",
@@ -16,6 +18,16 @@ class Routing {
         ]
     ];
 
+    private static function getControllerInstance(string $controllerClass) {
+        if (isset(self::$controllerInstances[$controllerClass])) {
+            return self::$controllerInstances[$controllerClass];
+        }
+        
+        $instance = new $controllerClass();
+        self::$controllerInstances[$controllerClass] = $instance;
+
+        return $instance;
+    }
 
     public static function run(string $path) {
         $user_details_regex = '/^user\/(\d+)$/';
@@ -24,7 +36,7 @@ class Routing {
             // $matches[1] będzie zawierać przechwycone ID użytkownika (np. 4578)
             $userId = $matches[1];
         
-            $controllerObj = new UserController();
+            $controllerObj = self::getControllerInstance("UserController");
             $controllerObj->details($userId);
             return;
         }
@@ -41,7 +53,7 @@ class Routing {
                 $controller = Routing::$routes[$path]["controller"];
                 $action = Routing::$routes[$path]["action"];
 
-                $controllerObj = new $controller;
+                $controllerObj = self::getControllerInstance($controller);
                 $controllerObj->$action(); 
                 break;
             default:
@@ -50,6 +62,3 @@ class Routing {
         }
     }
 }
-
-// zagrożeniem jest że wejście do danej scieżki za każdym razem tworzy nowy obiekt kontrolera -->
-// lepszym rozwiązaniem byłoby stworzenie singletona
