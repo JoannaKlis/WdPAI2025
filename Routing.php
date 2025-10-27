@@ -1,6 +1,7 @@
 <?php
 
 require_once 'src/controllers/SecurityController.php';
+require_once 'src/controllers/UserController.php';
 
 class Routing {
 
@@ -17,6 +18,17 @@ class Routing {
 
 
     public static function run(string $path) {
+        $user_details_regex = '/^user\/(\d+)$/';
+        
+        if (preg_match($user_details_regex, $path, $matches)) {
+            // $matches[1] będzie zawierać przechwycone ID użytkownika (np. 4578)
+            $userId = $matches[1];
+        
+            $controllerObj = new UserController();
+            $controllerObj->details($userId);
+            return;
+        }
+
         switch($path){
             case 'dashboard':
                 // TODO: connect with database
@@ -38,9 +50,6 @@ class Routing {
         }
     }
 }
-
-// TODO jak sprawdzić detale (za pomocą regexa):
-// klucz "user/4578" => userController->details(4578);
 
 // zagrożeniem jest że wejście do danej scieżki za każdym razem tworzy nowy obiekt kontrolera -->
 // lepszym rozwiązaniem byłoby stworzenie singletona
