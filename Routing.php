@@ -1,13 +1,36 @@
 <?php
 
+require_once 'src/controllers/SecurityController.php';
+
 class Routing {
+
+    public static $routes = [
+        "login" => [
+            "controller" => "SecurityController",
+            "action" => "login"
+        ],
+        "register" => [
+            "controller" => "SecurityController",
+            "action" => "register"
+        ]
+    ];
+
+
     public static function run(string $path) {
         switch($path){
             case 'dashboard':
+                // TODO: connect with database
+                // get elements to present on dashboard
+
                 include 'public/views/dashboard.html';
                 break;
             case 'login':
-                include 'public/views/login.html';
+            case 'register':
+                $controller = Routing::$routes[$path]["controller"];
+                $action = Routing::$routes[$path]["action"];
+
+                $controllerObj = new $controller;
+                $controllerObj->$action(); 
                 break;
             default:
                 include 'public/views/404.html';
@@ -15,3 +38,9 @@ class Routing {
         }
     }
 }
+
+// TODO jak sprawdzić detale (za pomocą regexa):
+// klucz "user/4578" => userController->details(4578);
+
+// zagrożeniem jest że wejście do danej scieżki za każdym razem tworzy nowy obiekt kontrolera -->
+// lepszym rozwiązaniem byłoby stworzenie singletona
