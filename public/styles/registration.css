@@ -1,15 +1,15 @@
 body {
     margin: 0;
     padding: 0;
-    background: #E6E6E6;
+    background: #E6E6E6; 
     font-family: "Jua", sans-serif;
 }
 
-.login-wrapper {
+.registration-wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 10px;
+    margin-top: 10px; 
 }
 
 /* logo i tytuł */
@@ -19,12 +19,13 @@ body {
     justify-content: center;
 }
 
-.main-logo {
+.main-logo-reg {
     width: 160px;
     height: 160px;
 }
 
-.app-title {
+/* tytuł */
+.app-title-reg {
     font-size: 60px;
     margin-left: 15px;
     color: #934CBE;
@@ -32,28 +33,29 @@ body {
 
 /* tekst informacyjny */
 .tagline {
-    font-size: 24px;
-    color: #8F769E;
+    font-size: 40px;
+    color: #934CBE;
     margin-top: 5px;
+    margin-bottom: 5px;
 }
 
-/* boxy na dane wejściowe (email i password) */
+/* boxy na dane wejściowe (Name, Email, Password, Confirmed Password) */
 .input-container {
     width: 300px; 
-    height: 65px;
+    height: 60px;
     background: #F6F6F6;
     border-radius: 20px;
     display: flex;
     align-items: center;
     padding: 0 15px;
-    margin-top: 18px;
+    margin-top: 12px;
     position: relative;
 }
 
 /* wpisywany tekst */
 .input-container input {
     flex: 1;
-    font-size: 28px;
+    font-size: 20px;
     color: #8F769E;
     border: none;
     outline: none;
@@ -68,58 +70,56 @@ body {
 }
 
 /* ikony */
-.icon-email {
-    width: 30px; height: 32px;
-}
-
-.icon-padlock {
-    width: 32px; height: 32px;
+.icon-name, .icon-email, .icon-padlock {
+    width: 25px; height: 25px;
+    margin-right: 5px;
 }
 
 .icon-invisible {
-    width: 26px; height: 32px;
+    width: 24px; height: 24px;
     cursor: pointer;
     position: absolute;
     right: 15px;
 }
 
-/* przycisk logowania Log in */
-.login-btn {
+/* przycisk rejestracji Register */
+.register-btn {
     width: 300px;
-    height: 65px;
+    height: 60px;
     background: #934CBE;
     border: none;
     border-radius: 20px;
     color: white;
-    font-size: 30px;
-    margin-top: 25px;
+    font-size: 26px;
+    margin-top: 20px;
     cursor: pointer;
 }
 
-/* tekst do rejestracji */
+/* tekst do logowania */
 .bottom-text {
-    margin-top: 20px;
+    margin-top: 15px;
     text-align: center;
     display: flex;
     flex-direction: column;
 }
 
 .small-text {
-    font-size: 24px;
+    font-size: 20px;
     color: #8F769E;
 }
 
-.create-link {
-    font-size: 24px;
+.login-link {
+    font-size: 20px;
     color: #934CBE;
     text-decoration: none;
     margin-top: 4px;
 }
 
-.error-message {
+/* komunikat o błędzie / sukcesie */
+.message-text {
     color: #934CBE;
-    font-size: 22px;
-    margin-top: 15px;
+    font-size: 20px;
+    margin-top: 10px;
     text-align: center;
     max-width: 300px;
 }
