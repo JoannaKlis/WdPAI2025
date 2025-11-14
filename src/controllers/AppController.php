@@ -1,30 +1,35 @@
 <?php
 
-
 class AppController {
+
+    // metoda sprawdzająca, czy żądanie to POST (pod bazę danych i sprawdzanie błędów)
+    protected function isPost(): bool {
+        return ($_SERVER['REQUEST_METHOD'] ?? '') === 'POST';
+    }
 
     protected function render(string $template = null, array $variables = [])
     {
-        $templatePath = 'public/views/'. $template.'.html';
-        $templatePath404 = 'public/views/404.html';
-        $output = "";
-                 
-        if(file_exists($templatePath)){
-            // ["message" => "Błędne hasło"]
-            extract($variables);
-            // $message = "Błędne hasło"
-            // echo #message 
-            // to co wyżej to działanie metody extract()
-            
-            ob_start();
-            include $templatePath;
-            $output = ob_get_clean();
-        } else {
-            ob_start();
-            include $templatePath404;
-            $output = ob_get_clean();
+        if ($template === null) {
+            return;
         }
+
+        $templatePath = 'public/views/' . $template . '.html';
+        $templatePath404 = 'public/views/404.html';
+
+        if (!empty($variables)) {
+            extract($variables); 
+        }
+
+        ob_start();
+
+        if (file_exists($templatePath)) {
+            include $templatePath;
+        } else {
+            include $templatePath404;
+        }
+
+        $output = ob_get_clean();
+
         echo $output;
     }
-
 }

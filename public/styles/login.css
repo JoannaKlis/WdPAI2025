@@ -1,62 +1,118 @@
 body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    margin: 0;
+    padding: 0;
+    background: #E6E6E6;
+    font-family: "Jua", sans-serif;
 }
 
-form {
-    background-color: bisque;
-    border-radius: 1rem;
-    padding: 1.5rem;
-
-    width: 45vw;
-
+.login-wrapper {
     display: flex;
-    justify-content: center;
-    align-items: center;
     flex-direction: column;
-    gap: 1.5rem;
-
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+    align-items: center;
+    margin-top: 10px;
 }
 
-/* Styl dla pól input */
-input {
-  padding: 1rem;              /* margines wewnętrzny */
-  border-radius: 0.5rem;      /* zaokrąglone rogi */
-  border: 1px solid #ccc;     /* delikatna ramka */
-  font-size: 1rem;
-  outline: none;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+/* logo i tytuł */
+.logo-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-input:focus {
-  border-color: #ff9800;      /* pomarańczowa ramka po kliknięciu */
-  box-shadow: 0 0 5px rgba(255, 152, 0, 0.5);
+.main-logo {
+    width: 160px;
+    height: 160px;
 }
 
-/* Styl dla przycisku */
-button {
-  padding: 1rem;                                    /* margines wewnętrzny */
-  border-radius: 0.5rem;                            /* zaokrąglone rogi */
-  border: none;
-  background: linear-gradient(45deg, #ff9800, #ffb74d); /* pomarańczowy gradient */
-  color: white;
-  font-size: 1rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+.app-title {
+    font-size: 60px;
+    margin-left: 15px;
+    color: #934CBE;
 }
 
-button:hover {
-  transform: scale(1.05);                           /* powiększenie po najechaniu */
-  box-shadow: 0 4px 12px rgba(255, 152, 0, 0.5);    /* delikatny cień */
+/* dane wejściowe */
+.tagline {
+    font-size: 24px;
+    color: #8F769E;
+    margin-top: 5px;
 }
 
+/* boxy na dane wejściowe (email i password) */
+.input-container {
+    width: 300px; 
+    height: 65px;
+    background: #F6F6F6;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    margin-top: 18px;
+    position: relative;
+}
 
+/* wpisywany tekst */
+.input-container input {
+    flex: 1;
+    font-size: 28px;
+    color: #8F769E;
+    border: none;
+    outline: none;
+    background: transparent;
+    padding-left: 10px;
 
-@media screen and (max-width: 480px) {
-    form {
-        width: 100vw;
-    }
+    /* zabezpieczenie przed wyjściem poza box */
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* ikony */
+.icon-email {
+    width: 30px; height: 32px;
+}
+
+.icon-padlock {
+    width: 32px; height: 32px;
+}
+
+.icon-invisible {
+    width: 26px; height: 32px;
+    cursor: pointer;
+    position: absolute;
+    right: 15px;
+}
+
+/* przycisk logowania Log in */
+.login-btn {
+    width: 300px;
+    height: 65px;
+    background: #934CBE;
+    border: none;
+    border-radius: 20px;
+    color: white;
+    font-size: 30px;
+    margin-top: 25px;
+    cursor: pointer;
+}
+
+/* tekst do rejestracji */
+.bottom-text {
+    margin-top: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.small-text {
+    font-size: 24px;
+    color: #8F769E;
+}
+
+.error-message {
+    color: #934CBE;
+    font-size: 22px;
+    margin-top: 15px;
+    text-align: center;
+    max-width: 300px;
 }

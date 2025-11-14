@@ -2,17 +2,25 @@
 
 require_once 'AppController.php';
 
-class SecurityController extends AppController{
-
+class SecurityController extends AppController {
 
     public function login() {
 
-        // TODO: zwróć HTML logowania, przetwórz dane
-        return $this->render("login", ["message" => "Błędne hasło"]);
-    }
+        // jeśli GET to wyświetl stronę logowania
+        if (!$this->isPost()) {
+            return $this->render("login");
+        }
 
-    public function register() {
+        // pobranie danych z formularza
+        $email = $_POST['email'] ?? null;
+        $password = $_POST['password'] ?? null;
 
-        return $this->render("login", ["message" => "Błędne hasło"]);
+        // walidacja pustych pól
+        if (empty($email) || empty($password)) {
+            return $this->render("login", ["message" => "Incorrect email or password!"]);
+        }
+
+        // tymczasowy komunikat dopóki nie ma bazy:
+        return $this->render("login", ["message" => "Incorrect email or password!"]);
     }
 }
