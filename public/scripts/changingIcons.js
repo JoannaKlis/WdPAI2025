@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const type = field.getAttribute('type') === 'password' ? 'text' : 'password';
                 field.setAttribute('type', type);
                 
+                // zmiana ikony w zależności od stanu widoczności
                 if (type === 'text') {
                     toggle.setAttribute('src', 'public/img/visible.png'); 
                 } else {

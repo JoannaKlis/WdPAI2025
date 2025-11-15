@@ -4,36 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- czcionka Jua -->
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="public/styles/registration.css">
+    <link rel="stylesheet" href="public/styles/common.css">
     <title>Registration</title>
 </head>
 
 <body>
-    <form class="registration-wrapper" method="POST" action="/register">
+    <form class="wrapper" method="POST" action="/register">
 
-        <!-- logo + tytuł -->
         <div class="logo-row">
-            <img src="public/img/petnotes_logo.png" class="main-logo-reg">
-            <span class="app-title-reg">PetNotes</span>
+            <img src="public/img/petnotes_logo.png" class="main-logo">
+            <span class="app-title">PetNotes</span>
         </div>
 
-        <p class="tagline">Create a free account</p>
+        <div class="tagline">Create a free account</div>
 
-        <!-- wiadomość błędu -->
         <?php if (isset($message)) : ?>
             <p class="message-text"><?= $message ?></p>
         <?php endif; ?>
 
-        <!-- nazwa -->
         <div class="input-container">
             <img src="public/img/profile.png" class="icon-name">
             <input type="text" name="name" placeholder="Name">
         </div>
 
-        <!-- email -->
         <div class="input-container">
             <img src="public/img/email.png" class="icon-email">
             <input type="email" name="email" placeholder="Email">
@@ -45,17 +40,14 @@
             <img src="public/img/invisible.png" id="toggle-password" class="icon-invisible">
         </div>
 
-        <!-- hasło -->
         <div class="input-container">
             <img src="public/img/padlock.png" class="icon-padlock">
             <input type="password" name="confirmedPassword" id="confirm-password-field" placeholder="Confirm password">
             <img src="public/img/invisible.png" id="toggle-confirm-password" class="icon-invisible">
         </div>
 
-        <!-- przycisk Register -->
         <button type="submit" class="register-btn">Register</button>
 
-        <!-- przeniesienie do logowania -->
         <div class="bottom-text">
             <span class="small-text">Already have an account?</span>
             <a href="/login" class="login-link">Log in</a>
@@ -63,6 +55,6 @@
 
     </form>
 
-    <script src="public/scripts/registration.js"></script>
+    <script src="public/scripts/changingIcons.js"></script>
 </body>
 </html>

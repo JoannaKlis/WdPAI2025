@@ -4,46 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- czcionka Jua -->
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="public/styles/login.css">
+    <link rel="stylesheet" href="public/styles/common.css">
     <title>Login</title>
 </head>
 
 <body>
-    <form class="login-wrapper" method="POST" action="/login">
+    <form class="wrapper" method="POST" action="/login">
 
-        <!-- logo + tytuł -->
         <div class="logo-row">
             <img src="public/img/petnotes_logo.png" class="main-logo">
             <span class="app-title">PetNotes</span>
         </div>
 
-        <p class="tagline">Welcome back to your pet’s world</p>
+        <div class="tagline">Welcome back to your pet’s world</div>
 
-        <!-- wiadomość błędu -->
         <?php if (isset($message)) : ?>
-            <p class="error-message"><?= $message ?></p>
+            <p class="message-text"><?= $message ?></p>
         <?php endif; ?>
 
-        <!-- email -->
         <div class="input-container">
-            <img src="public/img/profile.png" class="icon-email">
+            <img src="public/img/email.png" class="icon-email">
             <input type="email" name="email" placeholder="Email">
         </div>
 
-        <!-- hasło -->
         <div class="input-container">
             <img src="public/img/padlock.png" class="icon-padlock">
             <input type="password" name="password" id="password-field" placeholder="Password">
             <img src="public/img/invisible.png" id="toggle-password" class="icon-invisible">
         </div>
 
-        <!-- przycisk Log in -->
         <button type="submit" class="login-btn">Log in</button>
 
-        <!-- przeniesienie do rejestracji -->
         <div class="bottom-text">
             <span class="small-text">Don't have an account?</span>
             <a href="/register" class="create-link">Create one</a>
@@ -51,6 +44,6 @@
 
     </form>
 
-    <script src="public/scripts/login.js"></script>
+    <script src="public/scripts/changingIcons.js"></script>
 </body>
 </html>
