@@ -4,24 +4,66 @@ require_once 'AppController.php';
 
 class SecurityController extends AppController {
 
-    public function login() {
+    // ======= LOKALNA "BAZA" UŻYTKOWNIKÓW ======= do testów logowania bez bazy danych
+    private static array $users = [
+        [
+            'email' => 'anna@example.com',
+            'password' => '$2y$10$VljUCkQwxrsULVbZovCaF.UfkeqVNcdz8SRFQptFS/Hr8QnUgsf5G', // test123
+            'first_name' => 'Anna'
+        ],
+        [
+            'email' => 'bartek@example.com',
+            'password' => '$2y$10$fK9rLobZK2C6rJq6B/9I6u6Udaez9CaRu7eC/0zT3pGq5piVDsElW', // haslo456
+            'first_name' => 'Bartek'
+        ],
+        [
+            'email' => 'celina@example.com',
+            'password' => '$2y$10$Cq1J6YMGzRKR6XzTb3fDF.6sC6CShm8kFgEv7jJdtyWkhC1GuazJa', // qwerty
+            'first_name' => 'Celina'
+        ],
+    ];
 
+
+    public function login() {
         // jeśli GET to wyświetl stronę logowania
         if (!$this->isPost()) {
             return $this->render("login");
         }
 
         // pobranie danych z formularza
-        $email = $_POST['email'] ?? null;
-        $password = $_POST['password'] ?? null;
+        $email = $_POST['email'] ?? '';
+        $password = $_POST['password'] ?? '';
 
         // walidacja pustych pól
         if (empty($email) || empty($password)) {
             return $this->render("login", ["message" => "Incorrect email or password!"]);
         }
 
-        // tymczasowy komunikat dopóki nie ma bazy:
-        return $this->render("login", ["message" => "Incorrect email or password!"]);
+        //TODO replace with search from database
+        $userRow = null;
+        foreach (self::$users as $u) {
+            if (strcasecmp($u['email'], $email) === 0) {
+                $userRow = $u;
+                break;
+            }
+        }
+
+        if (!$userRow) {
+            return $this->render('login', ['messages' => 'User not found']);
+        }
+
+        if (!password_verify($password, $userRow['password'])) {
+            return $this->render('login', ['messages' => 'Wrong password']);
+        }
+
+        // TODO możemy przechowywać sesje użytkowika lub token
+        // setcookie("username", $userRow['email'], time() + 3600, '/');
+
+
+        // // tymczasowy komunikat dopóki nie ma bazy:
+        // return $this->render("dashboard", ["cards" => []]); lepsze rozwiazanie poniżej
+        $url = "http://$_SERVER[HTTP_HOST]";
+        header("Location: {$url}/dashboard");
     }
 
 
@@ -46,7 +88,23 @@ class SecurityController extends AppController {
             return $this->render("registration", ["message" => "The passwords are not identical!"]);
         }
 
-        // tymczasowy komunikat dopóki nie ma bazy:
-        return $this->render("registration", ["message" => "Your account has been created!"]);
+        // TODO this will be checked in database
+        foreach (self::$users as $u) {
+            if (strcasecmp($u['email'], $email) === 0) {
+                return $this->render('register', ['messages' => 'Email is taken']);
+            }
+        }
+
+        $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+
+        self::$users[] = [
+            'email' => $email,
+            'password' => $hashedPassword,
+            'name' => $name
+        ];
+
+
+        $url = "http://$_SERVER[HTTP_HOST]";
+        header("Location: {$url}/login");
     }
 }

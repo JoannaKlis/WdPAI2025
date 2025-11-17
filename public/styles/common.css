@@ -77,7 +77,7 @@ body {
     border-radius: 20px;
     color: white;
     font-size: 30px;
-    margin-top: 25px;pu
+    margin-top: 25px;
     cursor: pointer;
 }
 
@@ -98,8 +98,8 @@ body {
 }
 
 /* wiadomości błędów */
-.error-message, .message-text {
-    color: #934CBE;
+.error-message {
+    color: #B00020;
     font-size: 22px;
     margin-top: 15px;
     text-align: center;

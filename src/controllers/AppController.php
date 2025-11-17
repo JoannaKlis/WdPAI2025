@@ -2,6 +2,12 @@
 
 class AppController {
 
+    // metoda sprawdzająca, czy żądanie to GET
+        protected function isGet(): bool
+    {
+        return $_SERVER["REQUEST_METHOD"] === 'GET';
+    }
+
     // metoda sprawdzająca, czy żądanie to POST (pod bazę danych i sprawdzanie błędów)
     protected function isPost(): bool {
         return ($_SERVER['REQUEST_METHOD'] ?? '') === 'POST';
