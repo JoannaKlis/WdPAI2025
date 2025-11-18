@@ -13,9 +13,9 @@ class Routing {
             "controller" => "SecurityController",
             "action" => "login"
         ],
-        "register" => [
+        "registration" => [
             "controller" => "SecurityController",
-            "action" => "register"
+            "action" => "registration"
         ],
         "dashboard" => [
             "controller" => "DashboardController",

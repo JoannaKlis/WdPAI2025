@@ -1,66 +1,55 @@
-/* tło aplikacji */
 body {
     margin: 0;
     padding: 0;
-    background: #E6E6E6;
-    font-family: "Jua", sans-serif;
+    background-color: #E6E6E6;
+    font-family: "Jua";
 }
 
+h1 {
+    font-size: 6vw;
+    margin-left: 1.5vw;
+    color: #934CBE;
+}
+
+/* wyświetlenie elementów na środku kolumnowo*/
 .wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 10px; 
+    margin-top: 1vw; 
 }
 
-/* logo i tytuł */
-.logo-row {
+/* logo - wielkość i pozycja */
+.logo {
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 16vw;;
+    height: 16vw;
 }
 
-.main-logo {
-    width: 160px;
-    height: 160px;
-}
-
-.app-title {
-    font-size: 60px;
-    margin-left: 15px;
-    color: #934CBE;
-}
-
-/* tekst informacyjny */
-.tagline {
-    font-size: 32px;
-    color: #8F769E;
-    margin-top: 5px;
-}
-
-/* boxy na dane wejściowe (email i password) */
-.input-container {
-    width: 300px; 
-    height: 65px;
-    background: #F6F6F6;
-    border-radius: 20px;
+/* box na maila i hasło */
+.container {
+    width: 23vw;
+    height: 5vw;
+    background-color: #F6F6F6;
+    border-radius: 1.5vw;
     display: flex;
     align-items: center;
-    padding: 0 15px;
-    margin-top: 18px;
+    padding: 0 1vw;
+    margin-top: 1.5vw;
     position: relative;
 }
 
-/* wpisywany tekst i placeholder */
-.input-container input {
+/* wpisywanie danych w boxy */
+.container input {
     flex: 1;
-    font-size: 20px;
+    font-size: 1.5vw;
     color: #8F769E;
     border: none;
     outline: none;
     background: transparent;
-    padding-left: 10px;
-
+    padding-left: 1vw;
     /* zabezpieczenie przed wyjściem poza box */
     min-width: 0;
     overflow: hidden;
@@ -68,17 +57,41 @@ body {
     white-space: nowrap;
 }
 
-/* właściwości przycisków "Log in" "Register" */
-.login-btn, .register-btn {
-    width: 300px;
-    height: 65px;
-    background: #934CBE;
+/* przyciski logowania się i rejestracji */
+.button {
+    width: 23.5vw;
+    height: 5vw;
+    background-color: #934CBE;
     border: none;
-    border-radius: 20px;
+    border-radius: 1.5vw;
     color: white;
-    font-size: 30px;
-    margin-top: 25px;
+    font-size: 2.5vw;
+    margin-top: 2vw;
     cursor: pointer;
+}
+
+/* tekst informacyjny */
+.tagline {
+    font-size: 2.5vw;
+    color: #8F769E;
+    margin-top: 0.5vw;
+}
+
+/* wiadomości błędów */
+.error-messages {
+    color: #B00020;
+    font-size: 2vw;
+    margin-top: 1.5vw;
+    text-align: center;
+    max-width: 23.5vw;
+}
+
+/* linki "Log in" i "Create one" */
+.link {
+    font-size: 2vw;
+    color: #934CBE;
+    text-decoration: none;
+    margin-top: 0.5vw;
 }
 
 /* tekst na dole */
@@ -89,37 +102,22 @@ body {
     flex-direction: column;
 }
 
-/* linki "Log in" i "Create one" */
-.login-link, .create-link {
-    font-size: 24px;
-    color: #934CBE;
-    text-decoration: none;
-    margin-top: 4px;
-}
-
-/* wiadomości błędów */
-.error-message {
-    color: #B00020;
-    font-size: 22px;
-    margin-top: 15px;
-    text-align: center;
-    max-width: 300px;
-}
-
 .small-text {
     font-size: 24px;
     color: #8F769E;
 }
 
-/* ikony */
-.icon-name, .icon-email, .icon-padlock {
-    width: 25px; height: 25px;
-    margin-right: 5px;
+/* rozmiar ikon */
+.icon {
+    width: 2vw;
+    height: 2vw;
+    margin-right: 0.5vw;
 }
 
-.icon-invisible {
-    width: 26px; height: 32px;
+.icon-switch {
+    width: 2vw;
+    height: 2vw;
     cursor: pointer;
     position: absolute;
-    right: 15px;
+    right: 1vw;
 }

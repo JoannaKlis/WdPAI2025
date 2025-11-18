@@ -9,17 +9,17 @@ class SecurityController extends AppController {
         [
             'email' => 'anna@example.com',
             'password' => '$2y$10$VljUCkQwxrsULVbZovCaF.UfkeqVNcdz8SRFQptFS/Hr8QnUgsf5G', // test123
-            'first_name' => 'Anna'
+            'name' => 'Anna'
         ],
         [
             'email' => 'bartek@example.com',
             'password' => '$2y$10$fK9rLobZK2C6rJq6B/9I6u6Udaez9CaRu7eC/0zT3pGq5piVDsElW', // haslo456
-            'first_name' => 'Bartek'
+            'name' => 'Bartek'
         ],
         [
             'email' => 'celina@example.com',
             'password' => '$2y$10$Cq1J6YMGzRKR6XzTb3fDF.6sC6CShm8kFgEv7jJdtyWkhC1GuazJa', // qwerty
-            'first_name' => 'Celina'
+            'name' => 'Celina'
         ],
     ];
 
@@ -36,7 +36,7 @@ class SecurityController extends AppController {
 
         // walidacja pustych pól
         if (empty($email) || empty($password)) {
-            return $this->render("login", ["message" => "Incorrect email or password!"]);
+            return $this->render("login", ["messages" => "Incorrect email or password!"]);
         }
 
         //TODO replace with search from database
@@ -63,11 +63,11 @@ class SecurityController extends AppController {
         // // tymczasowy komunikat dopóki nie ma bazy:
         // return $this->render("dashboard", ["cards" => []]); lepsze rozwiazanie poniżej
         $url = "http://$_SERVER[HTTP_HOST]";
-        header("Location: {$url}/dashboard");
+        header("Location: {$url}\dashboard");
     }
 
 
-    public function register() {
+    public function registration() {
         if (!$this->isPost()) {
             return $this->render("registration");
         }
@@ -80,18 +80,18 @@ class SecurityController extends AppController {
 
         // walidacja pustych pól (wszystkie muszą być wypełnione)
         if (empty($name) || empty($email) || empty($password) || empty($confirmedPassword)) {
-            return $this->render("registration", ["message" => "Enter data designation in all fields!"]);
+            return $this->render("registration", ["messages" => "Enter data designation in all fields!"]);
         }
         
         // walidacja zgodności haseł
         if ($password !== $confirmedPassword) {
-            return $this->render("registration", ["message" => "The passwords are not identical!"]);
+            return $this->render("registration", ["messages" => "The passwords are not identical!"]);
         }
 
         // TODO this will be checked in database
         foreach (self::$users as $u) {
             if (strcasecmp($u['email'], $email) === 0) {
-                return $this->render('register', ['messages' => 'Email is taken']);
+                return $this->render('registration', ['messages' => 'Email is taken']);
             }
         }
 
@@ -105,6 +105,6 @@ class SecurityController extends AppController {
 
 
         $url = "http://$_SERVER[HTTP_HOST]";
-        header("Location: {$url}/login");
+        header("Location: {$url}\login");
     }
 }

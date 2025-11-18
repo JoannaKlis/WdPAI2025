@@ -3,58 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" href="public/styles/common.css">
+    <link rel="stylesheet" type= "text/css" href="https://fonts.googleapis.com/css2?family=Jua&display=swap">
+    <link rel="stylesheet" type= "text/css" href="public/styles/common.css">
     <title>Registration</title>
+    <script src="public/scripts/changingIcons.js" defer></script>
 </head>
 
 <body>
-    <form class="wrapper" method="POST" action="/register">
+    <form class="wrapper" method="POST" action="/registration">
 
-        <div class="logo-row">
-            <img src="public/img/petnotes_logo.png" class="main-logo">
-            <span class="app-title">PetNotes</span>
+        <div class="logo">
+            <img src="public/img/petnotes_logo.png" class="logo">
+            <h1>PetNotes</h1>
         </div>
 
         <div class="tagline">Create a free account</div>
 
-        <?php if (isset($message)) : ?>
-            <p class="error-message"><?= $message ?></p>
+        <?php if (isset($messages)) : ?>
+            <p class="error-messages"><?= $messages ?></p>
         <?php endif; ?>
 
-        <div class="input-container">
-            <img src="public/img/profile.png" class="icon-name">
+        <div class="container">
+            <img src="public/img/profile.png" class="icon">
             <input type="text" name="name" placeholder="Name">
         </div>
 
-        <div class="input-container">
-            <img src="public/img/email.png" class="icon-email">
+        <div class="container">
+            <img src="public/img/email.png" class="icon">
             <input type="email" name="email" placeholder="Email">
         </div>
 
-        <div class="input-container">
-            <img src="public/img/padlock.png" class="icon-padlock">
+        <div class="container">
+            <img src="public/img/padlock.png" class="icon">
             <input type="password" name="password" id="password-field" placeholder="Password">
-            <img src="public/img/invisible.png" id="toggle-password" class="icon-invisible">
+            <img src="public/img/invisible.png" id="toggle-password" class="icon-switch">
         </div>
 
-        <div class="input-container">
-            <img src="public/img/padlock.png" class="icon-padlock">
+        <div class="container">
+            <img src="public/img/padlock.png" class="icon">
             <input type="password" name="confirmedPassword" id="confirm-password-field" placeholder="Confirm password">
-            <img src="public/img/invisible.png" id="toggle-confirm-password" class="icon-invisible">
+            <img src="public/img/invisible.png" id="toggle-confirm-password" class="icon-switch">
         </div>
 
-        <button type="submit" class="register-btn">Register</button>
+        <button type="submit" class="button">Register</button>
 
         <div class="bottom-text">
             <span class="small-text">Already have an account?</span>
-            <a href="/login" class="login-link">Log in</a>
+            <a href="/login" class="link">Log in</a>
         </div>
 
     </form>
 
-    <script src="public/scripts/changingIcons.js"></script>
 </body>
 </html>
