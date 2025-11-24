@@ -4,6 +4,14 @@ require_once 'AppController.php';
 
 class SecurityController extends AppController {
 
+    private $userRepository;
+
+    public function __construct()
+    {
+        $this->userRepository = new UserRepository();
+    }
+    // reszte odu przrobić aby korzystała z UserRepository zamiast z lokalnej tablicy
+
     // ======= LOKALNA "BAZA" UŻYTKOWNIKÓW ======= do testów logowania bez bazy danych
     private static array $users = [
         [
