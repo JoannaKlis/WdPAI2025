@@ -13,7 +13,7 @@ class AppController {
         return ($_SERVER['REQUEST_METHOD'] ?? '') === 'POST';
     }
 
-    protected function render(string $template = null, array $variables = [])
+    protected function render(?string $template = null, array $variables = [])
     {
         if ($template === null) {
             return;

@@ -17,7 +17,40 @@ class UserRepository extends Repository {
         return $users;
     }
 
-    // skopiować z pliku UserRepository na teamsach funkcje getUser(string $email) i przerobić
+    public function getUserByEmail(string $email)
+    {
+        $query = $this->database->connect()->prepare(
+            "
+            SELECT * FROM users WHERE email = :email;
+            "
+        );
+        $query->bindParam(':email', $email);
+        $query->execute();
 
-    // a tu metode addUser (first)
+        $user = $query->fetch(PDO::FETCH_ASSOC);
+
+        return $user;
+    }
+
+    public function createUser(
+        string $firstname,
+        string $lastname,
+        string $email,
+        string $hashedPassword,
+        string $bio = ''
+    ) {
+        $query = $this->database->connect()->prepare(
+        "
+                INSERT INTO users (firstname, lastname, email, password, bio)
+                VALUES (?, ?, ?, ?, ?);
+                "
+        );
+        $query->execute([
+            $firstname,
+            $lastname,
+            $email,
+            $hashedPassword,
+            $bio
+        ]);
+    }
 }
