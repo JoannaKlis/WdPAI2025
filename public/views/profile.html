@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type= "text/css" href="https://fonts.googleapis.com/css2?family=Jua&display=swap">
+    <link rel="stylesheet" type= "text/css" href="public/styles/common.css">
+    <link rel="stylesheet" type= "text/css" href="public/styles/profile.css">
+    <title>Profile</title>
+    <script src="public/scripts/changingIcons.js" defer></script>
+    <script src="public/scripts/blockedButton.js" defer></script>
+</head>
+
+<body>
+    <form class="wrapper" method="POST" action="/profile"></form>
+        
+        <div class="top-bar">
+            <a href="#" class="back-arrow">&lt;</a> 
+            <h1>Edit your profile</h1>
+        </div>
+
+        <div class="wrapper">
+            
+            <div class="profile-pic-container">
+                <input type="file" id="profile-image-upload" accept="image/*">
+                <label for="profile-image-upload" class="profile-pic" title="Zmień zdjęcie">
+                    <div style="transform: translateY(-5px);">👤</div>
+                </label>
+                <label for="profile-image-upload" class="edit-icon" title="Edytuj">
+                    ✏️
+                </label>
+            </div>
+
+            <div class="container">
+                <span class="icon">👤</span> <input type="text" placeholder="Alex" value="Alex">
+            </div>
+
+            <div class="container">
+                <span class="icon">👤</span> <input type="text" placeholder="Smith" value="Smith">
+            </div>
+            
+            <div class="container">
+                <span class="email-icon">📧</span> <input type="email" placeholder="alex125@gmail.com" value="alex125@gmail.com">
+            </div>
+
+            <div class="container">
+                <span class="icon">🔒</span> <input type="password" placeholder="********" value="********">
+                <span class="icon-switch">👁️</span> 
+            </div>
+
+            <button class="button">Save changes</button>
+
+        </div>
+    </div>
+
+    <script>
+        const uploadInput = document.getElementById('profile-image-upload');
+        const profilePic = document.querySelector('.profile-pic');
+        
+        // Zastępuje domyślny tekst/ikonę obrazem po wybraniu pliku
+        uploadInput.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    // Tworzymy nowy element <img> lub zmieniamy tło 
+                    // Na potrzeby tej demonstracji, stworzymy nowy element <img>
+                    profilePic.innerHTML = ''; // Usuwamy starą ikonę (👤)
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.style.width = '100%';
+                    img.style.height = '100%';
+                    img.style.borderRadius = '50%';
+                    img.style.objectFit = 'cover';
+                    profilePic.appendChild(img);
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+
+</body>
+</html>

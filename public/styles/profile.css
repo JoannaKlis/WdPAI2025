@@ -1,0 +1,149 @@
+.top-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 10vh;
+    background-color: #F6F6F6;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: center;;
+    align-items: center; /* wyśrodkowanie pionowe */
+    padding: 0 20px; /* odstępy wewnętrzne */
+}
+
+/* Styl dla głównego kontenera sekcji desktopowej - tło i wyśrodkowanie */
+        .profile-container-desktop {
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #F0F0F0; /* Bardziej szary niż body#E6E6E6, by pasował do obrazka */
+            border-radius: 1vw;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Styl dla nagłówka i strzałki "wstecz" */
+        .profile-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 10px 0;
+            color: #934CBE;
+        }
+
+        .back-arrow {
+            position: absolute;
+            left: min(1.4vw, 2%);
+            font-size: clamp(2em, 2rem + 1vw, 3em);
+            color: #934CBE;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .profile-header h1 {
+            margin: 0;
+            font-size: clamp(1.5em, 1.5rem + 1vw, 2.5em);
+            color: #934CBE;
+        }
+
+        /* Styl dla obrazka profilowego i ikony edycji */
+        .profile-pic-container {
+            position: relative;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+
+        .profile-pic {
+            width: clamp(8em, 8rem + 2vw, 10em);
+            height: clamp(8em, 8rem + 2vw, 10em);
+            border-radius: 50%;
+            background-color: #934CBE; /* Kolor ikony z obrazka */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 5em;
+        }
+
+        .edit-icon {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            background-color: white;
+            border-radius: 50%;
+            padding: 5px;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #934CBE;
+        }
+
+        .edit-icon img {
+            width: 15px;
+            height: 15px;
+        }
+
+        /* Ukrycie domyślnego pola wyboru pliku */
+        #profile-image-upload {
+            display: none;
+        }
+        
+        /* Zmiana rozmiaru ikon w boxach wejściowych dla lepszego dopasowania do stylu obrazka */
+        .container .icon, .container .email-icon {
+            width: clamp(1em, 1rem + 0.3vw, 1.5em);
+            height: auto;
+            margin-right: 0.6em;
+            color: #8F769E;
+        }
+
+        /* Style dla mobilnej wersji - by pasowały do prawego obrazka */
+        @media (max-width: 480px) {
+            .profile-container-desktop {
+                background-color: #B0B0B0; /* Bardziej szary tło dla mobile, jak na obrazku */
+                margin: 0;
+                padding: 0;
+                min-height: 100vh;
+                border-radius: 0;
+                box-shadow: none;
+            }
+            
+            .profile-header {
+                background-color: white;
+                padding: 15px 0;
+                justify-content: center;
+            }
+
+            .back-arrow {
+                left: 15px;
+            }
+
+            .wrapper {
+                margin-top: 20px;
+                gap: 15px;
+                padding-bottom: 20px;
+            }
+
+            .container {
+                width: 90%; 
+                max-width: 300px;
+                height: auto;
+                padding: 10px;
+                border-radius: 10px;
+            }
+
+            .container input {
+                font-size: 1em;
+                padding-left: 10px;
+            }
+            
+            .button {
+                 width: 80%;
+                 max-width: 200px;
+                 height: 40px;
+                 font-size: 1.2em;
+                 margin-top: 20px;
+            }
+        }

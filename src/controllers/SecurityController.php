@@ -30,7 +30,7 @@ class SecurityController extends AppController {
 
         //TODO: create user session, cookie etc.
         $url = "http://$_SERVER[HTTP_HOST]";
-        header("Location: {$url}\dashboard");
+        header("Location: {$url}\profile");
     }
 
 
@@ -84,5 +84,9 @@ class SecurityController extends AppController {
     );
         $url = "http://$_SERVER[HTTP_HOST]";
         header("Location: {$url}/login?registered=true");
+    }
+
+    public function profile() {
+        return $this->render("profile");
     }
 }
