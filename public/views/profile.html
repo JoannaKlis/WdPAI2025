@@ -12,72 +12,49 @@
 </head>
 
 <body>
-    <form class="wrapper" method="POST" action="/profile"></form>
+    <form class="wrapper" method="POST" action="/profile">
         
         <div class="top-bar">
-            <a href="#" class="back-arrow">&lt;</a> 
+            <a href="welcome.html" class="back-arrow">&lt;</a> 
             <h1>Edit your profile</h1>
         </div>
 
-        <div class="wrapper">
-            
-            <div class="profile-pic-container">
-                <input type="file" id="profile-image-upload" accept="image/*">
-                <label for="profile-image-upload" class="profile-pic" title="Zmień zdjęcie">
-                    <div style="transform: translateY(-5px);">👤</div>
-                </label>
-                <label for="profile-image-upload" class="edit-icon" title="Edytuj">
-                    ✏️
-                </label>
-            </div>
+        <?php include '/app/public/views/partials/status-messages.php'; ?>
 
-            <div class="container">
-                <span class="icon">👤</span> <input type="text" placeholder="Alex" value="Alex">
+        <div class="profile-pic-container">
+            <div class="profile-pic"> 
+                <img src="public/img/profile.png" alt="Profile Picture" class="profile-icon-main">
             </div>
-
-            <div class="container">
-                <span class="icon">👤</span> <input type="text" placeholder="Smith" value="Smith">
+    
+            <div class="edit-icon"> 
+                <img src="public/img/edit.png" alt="Edit Icon" class="edit-icon-img">
             </div>
-            
-            <div class="container">
-                <span class="email-icon">📧</span> <input type="email" placeholder="alex125@gmail.com" value="alex125@gmail.com">
-            </div>
-
-            <div class="container">
-                <span class="icon">🔒</span> <input type="password" placeholder="********" value="********">
-                <span class="icon-switch">👁️</span> 
-            </div>
-
-            <button class="button">Save changes</button>
-
         </div>
-    </div>
 
-    <script>
-        const uploadInput = document.getElementById('profile-image-upload');
-        const profilePic = document.querySelector('.profile-pic');
-        
-        // Zastępuje domyślny tekst/ikonę obrazem po wybraniu pliku
-        uploadInput.addEventListener('change', function(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    // Tworzymy nowy element <img> lub zmieniamy tło 
-                    // Na potrzeby tej demonstracji, stworzymy nowy element <img>
-                    profilePic.innerHTML = ''; // Usuwamy starą ikonę (👤)
-                    const img = document.createElement('img');
-                    img.src = e.target.result;
-                    img.style.width = '100%';
-                    img.style.height = '100%';
-                    img.style.borderRadius = '50%';
-                    img.style.objectFit = 'cover';
-                    profilePic.appendChild(img);
-                }
-                reader.readAsDataURL(file);
-            }
-        });
-    </script>
+        <div class="container">
+            <img src="public/img/profile.png" class="email-icon">
+            <input type="text" name="firstName" placeholder="First name">
+        </div>
+
+        <div class="container">
+            <img src="public/img/profile.png" class="email-icon">
+            <input type="text" name="lastName" placeholder="Last name">
+        </div>
+
+        <div class="container">
+            <img src="public/img/email.png" class="email-icon">
+            <input type="email" name="email" placeholder="Email">
+        </div>
+
+        <div class="container">
+            <img src="public/img/padlock.png" class="icon">
+            <input type="password" name="password" id="password-field" placeholder="Password">
+            <img src="public/img/invisible.png" id="toggle-password" class="icon-switch">
+        </div>
+
+        <button class="button button-save">Save changes</button>
+
+    </form>
 
 </body>
 </html>

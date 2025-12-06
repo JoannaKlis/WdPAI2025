@@ -20,13 +20,7 @@
 
         <div class="tagline">Welcome back to your pet’s world</div>
 
-        <?php if (isset($_GET['registered']) && $_GET['registered'] === 'true') : ?>
-            <p class="success-messages">Account has been successfully created!</p>
-        <?php endif; ?>
-
-        <?php if (isset($messages)) : ?>
-            <p class="error-messages"><?= $messages ?></p>
-        <?php endif; ?>
+        <?php include '/app/public/views/partials/status-messages.php'; ?>
 
         <div class="container">
             <img src="public/img/email.png" class="email-icon">

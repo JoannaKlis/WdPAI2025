@@ -20,13 +20,11 @@
 
         <div class="tagline">Create a free account</div>
 
-        <?php if (isset($messages)) : ?>
-            <p class="error-messages"><?= $messages ?></p>
-        <?php endif; ?>
+        <?php include '/app/public/views/partials/status-messages.php'; ?>
 
         <div class="container">
             <img src="public/img/profile.png" class="email-icon">
-            <input type="text" name="fisrtName" placeholder="First name">
+            <input type="text" name="firstName" placeholder="First name">
         </div>
 
         <div class="container">
