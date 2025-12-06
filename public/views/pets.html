@@ -1,0 +1,41 @@
+<?php include '/app/public/views/partials/header.php'; ?>
+<link rel="stylesheet" type= "text/css" href="public/styles/profile.css">
+<link rel="stylesheet" type= "text/css" href="public/styles/pets.css">
+    <title>MyPets</title>
+</head>
+
+<body>
+    <form class="wrapper" method="POST" action="/pets">
+        
+        <div class="top-bar top-bar-clear">
+            <a href="welcome.html" class="back-arrow">&lt;</a> 
+            <h1>My pets</h1>
+
+            <div class="profile-pic-container profile">
+            <div class="profile-pic"> 
+                <img src="public/img/profile.png" alt="Profile Picture" class="profile-icon-main">
+            </div>
+        </div>
+        </div>
+
+        <div class="card">
+            <div class="card-image-container">
+                <img src="public/img/simba.png" alt="Simba the Cat" class="card-image">
+            </div>
+  
+            <div class="card-text">
+                <div class="card-name">Simba</div>
+                <div class="card-details">Cat, 3 years</div>
+            </div>
+  
+            <div class="card-arrow">
+                &gt;
+            </div>
+        </div>
+
+        <button class="add-button">+</button>
+        
+    </form>
+
+</body>
+</html>

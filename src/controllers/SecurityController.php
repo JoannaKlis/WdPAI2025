@@ -89,4 +89,8 @@ class SecurityController extends AppController {
     public function profile() {
         return $this->render("profile");
     }
+
+    public function pets() {
+        return $this->render("pets");
+    }
 }

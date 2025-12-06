@@ -24,6 +24,10 @@ class Routing {
         "profile" => [
             "controller" => "SecurityController",
             "action" => "profile"
+        ],
+        "pets" => [
+            "controller" => "SecurityController",
+            "action" => "pets"
         ]
     ];
 

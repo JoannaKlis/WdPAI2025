@@ -1,0 +1,129 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.top-bar-clear {
+    justify-content: space-between; 
+    position: fixed;
+    background-color: transparent;
+    box-shadow: none;
+}
+
+.top-bar h1 {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
+    text-align: center;
+}
+
+.profile {
+    position: fixed;
+    right: 1.75vw;
+    width: clamp(2.5em, 2.5rem + 0.75vw, 5em);
+    margin-top: 0; 
+    margin-bottom: 0;
+}
+
+.add-button {
+    position: fixed;
+    right: 1.5vw;
+    bottom: 1.5vw;
+    width: 4.5vw;
+    height: 4.5vw;
+    border-radius: 50%;
+    background-color: #934CBE;
+    border: none;
+    color: white;
+    font-family: Jua;
+    font-size: clamp(2.5em, 2.5rem + 0.75vw, 4em);
+    margin-top: clamp(0.5em, 0.5rem + 0.1vw, 1em);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+.card {
+    background-color: #F6F6F6;
+    border-radius: 0.5vw;
+    width: clamp(35em, 35rem + 5vw, 60em);
+    padding: 1.6vw 2vw;
+    display: flex;
+    align-items: center;
+    gap: 1.6vw;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.card-image-container {
+    width: clamp(9em, 9rem + 3vw, 15em);
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+}
+
+.card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+}
+
+.card-text {
+    flex-grow: 1; 
+}
+
+.card-name {
+    color: #934CBE;
+    font-size: clamp(3em, 3rem + 1.5vw, 6em);
+    font-weight: bold;
+}
+
+.card-details {
+    color: #8A6DAA;
+    font-size: clamp(1.5em, 1.5rem + 0.75vw, 4em);
+}
+
+.card-arrow {
+    color: #934CBE;
+    font-size: clamp(3em, 3rem + 1vw, 5em);
+    line-height: 1; 
+}
+
+@media (max-width: 480px) {
+    .profile {
+        right: 4vw;
+    }
+
+    .add-button {
+        right: 3vw;
+        bottom: 3vw;
+        width: 12vw;
+        height: 12vw;
+        font-size: clamp(2.5em, 2.5rem + 0.75vw, 4em);
+        margin-top: clamp(0.5em, 0.5rem + 0.1vw, 1em);
+    }
+
+    .card {
+        border-radius: 2vw;
+        width: clamp(19em, 19rem + 1vw, 23em);
+        padding: 1.6vw 2vw;
+        gap: 1.6vw;
+    }
+
+    .card-image-container {
+        width: clamp(4.5em, 4.5rem + 0.75vw, 6em);
+    }
+
+    .card-name {
+        font-size: clamp(1.5em, 1.5rem + 0.75vw, 3em);
+    }
+
+    .card-details {
+        font-size: clamp(0.75em, 0.75rem + 0.25vw, 2em);
+    }
+
+    .card-arrow {
+        font-size: clamp(1.5em, 1.5rem + 0.75vw, 3em);
+    }
+
+}
