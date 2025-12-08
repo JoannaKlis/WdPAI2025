@@ -5,6 +5,7 @@ require_once 'src/controllers/UserController.php';
 require_once 'src/controllers/DashboardController.php';
 
 class Routing {
+    # TODO: singleton, regex, sesja użytkownika
 
     private static $controllerInstances = [];
 
@@ -20,6 +21,10 @@ class Routing {
         "dashboard" => [
             "controller" => "DashboardController",
             "action" => "index"
+        ],
+        "search-cards" => [
+            "controller" => "DashboardController",
+            "action" => "search"
         ],
         "profile" => [
             "controller" => "SecurityController",
