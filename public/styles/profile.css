@@ -9,19 +9,23 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 1000;
+}
+
+.top-bar h1 {
+    font-size: clamp(1.2em, 10vh, 3em);
+    margin: 0.1em 0 0.2em 0;
 }
 
 .back-arrow {
     position: absolute;
-    left: 1vw;
-    top: 50%;
-    transform: translateY(-50%);
-
+    left: 1.75vw;
     font-size: clamp(1.5em, 1.5rem + 0.5vw, 2em);
     color: #934CBE;
     cursor: pointer;
     text-decoration: none;
     line-height: 1; 
+    margin: 0.2em 0 0.2em 0;
 }
 
 .profile-pic-container {
@@ -80,5 +84,9 @@
     .profile-pic-container {
         margin-top: 8vh;
         margin-bottom: 8vh;
+    }
+
+    .top-bar h1 {
+        font-size: clamp(1.2em, 5vh, 3em);
     }
 }
