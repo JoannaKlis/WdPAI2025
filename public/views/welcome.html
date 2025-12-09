@@ -1,0 +1,69 @@
+<?php include '/app/public/views/partials/header.php'; ?>
+<link rel="stylesheet" type= "text/css" href="public/styles/profile.css">
+<link rel="stylesheet" type= "text/css" href="public/styles/pets.css">
+<link rel="stylesheet" type= "text/css" href="public/styles/welcome.css">
+    <title>Welcome</title>
+</head>
+
+<body>
+    <div class="top-bar top-bar-welcome">
+        <div class="logo-small">
+            <img src="public/img/petnotes_logo.png" class="logo-img">
+            <h2>PetNotes</h2>
+        </div>
+        <div class="profile-pic-container profile">
+            <a href="/profile">
+                <div class="profile-pic"> 
+                    <img src="public/img/profile.png" alt="Profile Picture" class="profile-icon-main">
+                </div>
+            </a>
+        </div>
+    </div>
+    
+
+    <div class="wrapper-welcome">
+        
+        <div class="welcome-heading">Welcome</div>
+        
+        <div class="card-container-welcome">
+
+            <a href="/pets" class="card-welcome card-pets">
+                <div class="grid-images">
+                    <img src="public/img/simba.png" alt="Cat" class="grid-image top-left">
+                    <img src="public/img/dog.png" alt="Dog" class="grid-image top-right">
+                    <img src="public/img/hamster.png" alt="Hamster" class="grid-image bottom-left">
+                    <div class="add-tile bottom-right">+</div>
+                </div>
+                <div class="card-label">My pets</div>
+            </a>
+
+            <a href="/calendar" class="card-welcome card-calendar">
+                <div class="calendar-preview">
+                    <div class="month-nav-preview">
+                        <span class="month-label-preview">July 2022</span>
+                        <span class="nav-arrow-preview">&lt;</span>
+                        <span class="nav-arrow-preview">&gt;</span>
+                    </div>
+                    
+                    <div class="weekdays-preview">
+                        <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
+                    </div>
+
+                    <div class="days-grid-preview">
+                        <span class="day-preview dimmed-preview">28</span><span class="day-preview dimmed-preview">29</span><span class="day-preview dimmed-preview">30</span><span class="day-preview dimmed-preview">31</span><span class="day-preview">01</span><span class="day-preview">02</span>
+                        <span class="day-preview">3</span><span class="day-preview">4</span><span class="day-preview">5</span><span class="day-preview">6</span><span class="day-preview">7</span><span class="day-preview">8</span><span class="day-preview">9</span>
+                        <span class="day-preview">10</span><span class="day-preview">11</span><span class="day-preview">12</span><span class="day-preview">13</span><span class="day-preview">14</span><span class="day-preview">15</span><span class="day-preview">16</span>
+                        <span class="day-preview">17</span><span class="day-preview">18</span><span class="day-preview">19</span><span class="day-preview">20</span><span class="day-preview">21</span><span class="day-preview">22</span><span class="day-preview">23</span>
+                        <span class="day-preview">24</span><span class="day-preview">25</span><span class="day-preview">26</span><span class="day-preview">27</span><span class="day-preview">28</span><span class="day-preview">29</span>
+                        <span class="day-preview">31</span><span class="day-preview dimmed-preview">1</span><span class="day-preview dimmed-preview">2</span><span class="day-preview dimmed-preview">3</span><span class="day-preview dimmed-preview">4</span><span class="day-preview dimmed-preview">5</span><span class="day-preview dimmed-preview">6</span>
+                    </div>
+                </div>
+                <div class="card-label">Calendar</div>
+            </a>
+            
+        </div>
+        
+    </div>
+
+</body>
+</html>

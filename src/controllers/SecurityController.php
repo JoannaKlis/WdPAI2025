@@ -93,4 +93,12 @@ class SecurityController extends AppController {
     public function pets() {
         return $this->render("pets");
     }
+
+    public function calendar() {
+        return $this->render("calendar");
+    }
+
+    public function welcome() {
+        return $this->render("welcome");
+    }
 }

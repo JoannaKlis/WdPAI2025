@@ -1,0 +1,196 @@
+.top-bar-welcome {
+    justify-content: space-between; 
+    position: fixed;
+}
+
+.logo-small {
+    display: flex;
+    align-items: center;
+}
+
+.logo-small img {
+    width: clamp(2em, 2rem + 0.5vw, 3em);
+    margin-right: 0.5vw;
+    margin-left: 1.75vw;
+}
+
+.logo-small h2 {
+    color: #934CBE;
+    font-size: clamp(1.2em, 1.2rem + 0.5vw, 2em);
+    margin: 0;
+}
+
+
+.wrapper-welcome {
+    display: flex;
+    flex-direction: column;
+    place-items: center;
+    margin-top: 10vh; /* Odsunięcie od stałego paska */
+    padding-top: 5vh;
+}
+
+.welcome-heading {
+    font-size: clamp(3em, 3rem + 2vw, 5em);
+    color: #934CBE;
+    font-weight: bold;
+    margin-bottom: 5vh;
+    text-align: center;
+}
+
+/* Kontener na dwie główne karty */
+.card-container-welcome {
+    display: flex;
+    gap: 5vw;
+    flex-wrap: wrap; /* Zapewnienie zawijania na mniejszych ekranach */
+    justify-content: center;
+}
+
+/* Styl bazowy dla kart (linki) */
+.card-welcome {
+    text-decoration: none;
+    background-color: #F6F6F6;
+    border-radius: 1vw;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    width: clamp(20em, 20rem + 5vw, 30em);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.5vw;
+    box-sizing: border-box;
+    transition: transform 0.2s;
+}
+
+.card-welcome:hover {
+    transform: scale(1.02);
+}
+
+.card-label {
+    color: #934CBE;
+    font-size: clamp(1.5em, 1.5rem + 1vw, 2.5em);
+    font-weight: bold;
+    margin-top: 1.5vw;
+}
+
+/* --- Karta "My Pets" --- */
+
+.grid-images {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 1.5vw;
+    width: 100%;
+}
+
+.grid-image {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 0.5vw;
+}
+
+.add-tile {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 0.5vw;
+    background-color: #934CBE;
+    color: white;
+    font-size: clamp(4em, 4rem + 1vw, 6em);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* --- Karta "Calendar" --- */
+
+.calendar-preview {
+    background-color: white;
+    padding: 1vw;
+    border-radius: 0.5vw;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.month-nav-preview {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #934CBE;
+    font-size: clamp(0.8em, 0.8rem + 0.2vw, 1.2em);
+    font-weight: bold;
+    margin-bottom: 0.5vw;
+    padding: 0 0.5vw;
+}
+
+.nav-arrow-preview {
+    font-weight: normal;
+    cursor: pointer;
+}
+
+.weekdays-preview {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    color: #8F769E;
+    font-size: clamp(0.7em, 0.7rem + 0.1vw, 1em);
+    margin-bottom: 0.5vw;
+}
+
+.days-grid-preview {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    gap: 0.1vw;
+}
+
+.day-preview {
+    font-size: clamp(0.8em, 0.8rem + 0.1vw, 1.1em);
+    color: #8F769E;
+    padding: 0.2vw 0;
+}
+
+.dimmed-preview {
+    color: #C0C0C0;
+}
+
+/* --- Wersja mobilna --- */
+@media (max-width: 480px) {
+    .top-bar-welcome {
+        height: 8vh;
+        padding: 0 4vw;
+    }
+
+    .wrapper-welcome {
+        margin-top: 8vh;
+        padding-top: 5vh;
+    }
+
+    .welcome-heading {
+        font-size: 3em;
+        margin-bottom: 5vh;
+    }
+
+    .card-container-welcome {
+        flex-direction: column;
+        gap: 5vh;
+    }
+
+    .card-welcome {
+        width: 80vw;
+        padding: 5vw;
+        border-radius: 3vw;
+    }
+
+    .grid-images {
+        gap: 3vw;
+    }
+
+    .grid-image,
+    .add-tile {
+        border-radius: 2vw;
+    }
+
+    .card-label {
+        font-size: 2em;
+        margin-top: 4vw;
+    }
+}

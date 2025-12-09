@@ -33,6 +33,14 @@ class Routing {
         "pets" => [
             "controller" => "SecurityController",
             "action" => "pets"
+        ],
+        "calendar" => [
+            "controller" => "SecurityController",
+            "action" => "calendar"
+        ],
+        "welcome" => [
+            "controller" => "SecurityController",
+            "action" => "welcome"
         ]
     ];
 
