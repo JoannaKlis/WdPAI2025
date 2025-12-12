@@ -6,38 +6,35 @@
 </head>
 
 <body>
-    <div class="top-bar top-bar-welcome">
-        <div class="logo-small">
-            <img src="public/img/petnotes_logo.png" class="logo-img">
-            <h2>PetNotes</h2>
-        </div>
-        <div class="profile-pic-container profile">
-            <a href="/profile">
-                <div class="profile-pic"> 
-                    <img src="public/img/profile.png" alt="Profile Picture" class="profile-icon-main">
-                </div>
-            </a>
-        </div>
-    </div>
-    
+    <form class="wrapper" method="POST" action="/welcome">
 
-    <div class="wrapper-welcome">
-        
+        <div class="top-bar top-bar-welcome">
+            <div class="logo">
+                <img src="public/img/petnotes_logo.png" class="logo-img">
+                <h2>PetNotes</h2>
+            </div>
+            <div class="profile-pic-container profile">
+                <a href="/profile">
+                    <div class="profile-pic"> 
+                        <img src="public/img/profile.png" alt="Profile Picture" class="profile-icon-main">
+                    </div>
+                </a>
+            </div>
+        </div>
+    
         <div class="welcome-heading">Welcome</div>
         
         <div class="card-container-welcome">
 
-            <a href="/pets" class="card-welcome card-pets">
+            <a href="/pets" class="card-welcome">
                 <div class="grid-images">
                     <img src="public/img/simba.png" alt="Cat" class="grid-image top-left">
-                    <img src="public/img/dog.png" alt="Dog" class="grid-image top-right">
-                    <img src="public/img/hamster.png" alt="Hamster" class="grid-image bottom-left">
-                    <div class="add-tile bottom-right">+</div>
+                    <div class="add-tile">+</div>
                 </div>
                 <div class="card-label">My pets</div>
             </a>
 
-            <a href="/calendar" class="card-welcome card-calendar">
+            <a href="/calendar" class="card-welcome">
                 <div class="calendar-preview">
                     <div class="month-nav-preview">
                         <span class="month-label-preview">July 2022</span>
@@ -63,7 +60,7 @@
             
         </div>
         
-    </div>
+    </form>
 
 </body>
 </html>

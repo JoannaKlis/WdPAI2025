@@ -1,63 +1,42 @@
 .top-bar-welcome {
     justify-content: space-between; 
-    position: fixed;
 }
 
-.logo-small {
-    display: flex;
-    align-items: center;
-}
-
-.logo-small img {
+.logo img {
     width: clamp(2em, 2rem + 0.5vw, 3em);
     margin-right: 0.5vw;
-    margin-left: 1.75vw;
+    margin-left: 6vw;
 }
 
-.logo-small h2 {
+.logo h2 {
     color: #934CBE;
     font-size: clamp(1.2em, 1.2rem + 0.5vw, 2em);
-    margin: 0;
-}
-
-
-.wrapper-welcome {
-    display: flex;
-    flex-direction: column;
-    place-items: center;
-    margin-top: 10vh; /* Odsunięcie od stałego paska */
-    padding-top: 5vh;
 }
 
 .welcome-heading {
     font-size: clamp(3em, 3rem + 2vw, 5em);
     color: #934CBE;
     font-weight: bold;
-    margin-bottom: 5vh;
+    margin: 5vw 0 2vw 0;
     text-align: center;
 }
 
-/* Kontener na dwie główne karty */
+/* kontener na dwie główne karty */
 .card-container-welcome {
     display: flex;
     gap: 5vw;
-    flex-wrap: wrap; /* Zapewnienie zawijania na mniejszych ekranach */
+    flex-wrap: wrap;
     justify-content: center;
 }
 
-/* Styl bazowy dla kart (linki) */
+/* styl bazowy dla kart (linki) */
 .card-welcome {
     text-decoration: none;
     background-color: #F6F6F6;
     border-radius: 1vw;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-    width: clamp(20em, 20rem + 5vw, 30em);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 1.5vw;
-    box-sizing: border-box;
-    transition: transform 0.2s;
+    width: clamp(25em, 25rem + 5vw, 30em);
+    padding: 1vw;
 }
 
 .card-welcome:hover {
@@ -68,16 +47,14 @@
     color: #934CBE;
     font-size: clamp(1.5em, 1.5rem + 1vw, 2.5em);
     font-weight: bold;
-    margin-top: 1.5vw;
+    text-align: center;
 }
 
-/* --- Karta "My Pets" --- */
-
+/* karta My Pets */
 .grid-images {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(2, 1fr);
-    gap: 1.5vw;
+    grid-template-columns: repeat(2, 1fr); /* do zmiany w przyszłości na dynamiczne*/
+    gap: 1vw;
     width: 100%;
 }
 
@@ -100,8 +77,7 @@
     align-items: center;
 }
 
-/* --- Karta "Calendar" --- */
-
+/* karta Calendar */
 .calendar-preview {
     background-color: white;
     padding: 1vw;
@@ -152,26 +128,14 @@
     color: #C0C0C0;
 }
 
-/* --- Wersja mobilna --- */
 @media (max-width: 480px) {
     .top-bar-welcome {
         height: 8vh;
         padding: 0 4vw;
     }
 
-    .wrapper-welcome {
-        margin-top: 8vh;
-        padding-top: 5vh;
-    }
-
     .welcome-heading {
         font-size: 3em;
-        margin-bottom: 5vh;
-    }
-
-    .card-container-welcome {
-        flex-direction: column;
-        gap: 5vh;
     }
 
     .card-welcome {
