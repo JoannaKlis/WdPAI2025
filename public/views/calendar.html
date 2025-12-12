@@ -1,0 +1,79 @@
+<?php include '/app/public/views/partials/header.php'; ?>
+<link rel="stylesheet" type= "text/css" href="public/styles/profile.css">
+<link rel="stylesheet" type= "text/css" href="public/styles/calendar.css">
+<link rel="stylesheet" type= "text/css" href="public/styles/pets.css">
+<link rel="stylesheet" type= "text/css" href="public/styles/welcome.css">
+    <title>Calendar</title>
+</head>
+
+<body>
+    <form class="wrapper" method="POST" action="/calendar">
+        
+        <div class="top-bar top-bar-clear">
+            <a href="/welcome" class="back-arrow">&lt;</a> 
+            <h1>Calendar</h1>
+
+            <div class="profile-pic-container profile">
+                <a href="/profile">
+                    <div class="profile-pic"> 
+                        <img src="public/img/profile.png" alt="Profile Picture" class="profile-icon-main">
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <div class="card-container-welcome">
+
+            <div class="card-welcome calendar-container">
+                
+                <div class="tab-switch">
+                    <button class="tab-button active" id="calendar-button">Calendar</button>
+                    <button class="tab-button" id="list-button">List</button>
+                </div>
+
+                <div class="calendar-widget" id="calendar-widget">
+                    
+                    <div class="month-navigation">
+                        <span class="nav-arrow">&lt;</span>
+                        <div class="month-label">October 2024</div>
+                        <span class="nav-arrow">&gt;</span>
+                    </div>
+
+                    <div class="weekdays">
+                        <span>MON</span><span>TUE</span><span>WED</span><span>THU</span><span>FRI</span><span>SAT</span><span>SUN</span>
+                    </div>
+
+                    <div class="days-grid">
+                        <span class="day dimmed">30</span><span class="day dimmed">1</span><span class="day dimmed">2</span><span class="day">3<span class="dot blue-dot"></span></span><span class="day">4</span><span class="day active-day">5</span>
+                        <span class="day">6</span><span class="day">7</span><span class="day">8</span><span class="day">9</span><span class="day">10<span class="dot pink-dot"></span></span><span class="day">11</span><span class="day">12</span><span class="day">13</span>
+                        <span class="day">14</span><span class="day">15</span><span class="day">16</span><span class="day">17</span><span class="day">18<span class="dot pink-dot"></span></span><span class="day">19<span class="dot orange-dot"></span></span><span class="day">20</span>
+                        <span class="day">21</span><span class="day">22</span><span class="day">23</span><span class="day">24</span><span class="day">25</span><span class="day">26</span><span class="day">27</span>
+                        <span class="day">28</span><span class="day">29</span><span class="day">30</span><span class="day">31</span>
+                    </div>
+                </div>
+
+                <div class="list-view-container" id="list-view-container">
+                    <p class="events">There are no upcoming events!</p>
+                </div>
+
+            </div>
+
+            <div class="card-welcome calendar-container">
+                <div class="today-events-header">Today's Events</div>
+                
+                <div class="event-card">
+                    <div class="event-image-container">
+                        <img src="public/img/simba.png" alt="Simba the Cat" class="event-image">
+                    </div>
+                    <div class="event-details">
+                        <div class="event-title">Trimming claws</div>
+                        <div class="event-pet-name">Simba</div>
+                    </div>
+                    <div class="event-time">14:00</div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <script src="public/scripts/calendar-view-switcher.js" defer></script>
+</body>
+</html>
