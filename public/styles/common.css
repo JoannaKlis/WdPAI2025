@@ -72,6 +72,11 @@ h1 {
     cursor: pointer;
 }
 
+.button:hover {
+    transform: scale(1.02);
+    cursor: pointer;
+}
+
 .button-disabled {
     opacity: 0.5;
     pointer-events: none;

@@ -1,0 +1,85 @@
+.top-bar {
+    background-color: #8F769E;
+}
+.top-bar h1 {
+    color: white;
+}
+
+.back-arrow {
+    color: white;
+}
+
+.profile-mini {
+    position: absolute;
+    right: 1.75vw;
+    width: clamp(2.5em, 2.5rem + 0.5vw, 3.5em);
+    margin: 0;
+}
+
+.pet-mini-fix {
+    filter: none;
+    width: 100%;
+}
+
+.vaccinations-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
+    width: clamp(30em, 30rem + 20vw, 60em);
+}
+
+.vaccination-item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 1vw 2vw;
+    box-sizing: border-box;
+}
+
+.health-box {
+    background-color: #8F769E;
+}
+
+.feature-text-container {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    padding-left: 2vw;
+}
+
+.feature-text {
+    color: #8F769E;
+    padding-left: 0;
+    font-size: clamp(1.1em, 1.1rem + 0.2vw, 1.5em);
+    font-weight: normal;
+}
+
+.feature-subtext {
+    color: #8F769E;
+    font-size: clamp(0.8em, 0.8rem + 0.1vw, 1em);
+    margin-top: 1px;
+}
+
+.feature-arrow {
+    color: #8F769E;
+    font-weight: bold;
+    font-size: 1.5em;
+}
+
+.add-button {
+   background-color: #8F769E;
+}
+
+@media (max-width: 480px) {
+    .vaccinations-list {
+        width: 90vw;
+    }
+
+    .vaccination-item {
+        padding: 3vw 4vw;
+    }
+
+    .feature-text-container {
+        padding-left: 4vw;
+    }
+}
