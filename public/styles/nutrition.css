@@ -1,0 +1,99 @@
+.nutrition-content {
+    display: flex;
+    gap: 2vw;
+    width: clamp(35em, 35rem + 15vw, 65em);
+    margin: 2vh auto;
+}
+
+.nutrition-left, .nutrition-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
+}
+
+.nutrition-card {
+    background-color: #F6F6F6;
+    border-radius: 1vw;
+    padding: 1.5vw;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5vh;
+    position: relative;
+}
+
+.status-icon {
+    width: 1.5em;
+    margin-right: 0.8vw;
+}
+
+.card-title {
+    font-family: 'Jua', sans-serif;
+    font-size: clamp(1.1em, 1.1rem + 0.2vw, 1.5em);
+    font-weight: bold;
+}
+
+/* Kolorystyka tekstów */
+.alert-text { color: #E57373; }
+.success-text { color: #81C784; }
+.blue-text { color: #64B5F6; }
+
+/* Tagi (Alergie i Jedzenie) */
+.tag-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8vw;
+}
+
+.tag, .tag-add {
+    font-family: 'Jua', sans-serif;
+    padding: 0.5vw 1.2vw;
+    border-radius: 0.5vw;
+    font-size: 0.9em;
+}
+
+.alert-tag { background-color: #FFEBEE; color: #E57373; border: none; }
+.success-tag { background-color: #E8F5E9; color: #81C784; border: none; }
+
+.tag-add {
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.edit-schedule-icon {
+    position: absolute;
+    right: 0;
+    width: 1.2em;
+    cursor: pointer;
+}
+
+.schedule-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1vh;
+}
+
+.schedule-item {
+    display: flex;
+    justify-content: space-between;
+    color: #64B5F6;
+    font-family: 'Jua', sans-serif;
+    font-size: 1.1em;
+}
+
+/* Dostosowanie mobilne */
+@media (max-width: 480px) {
+    .nutrition-content {
+        flex-direction: column;
+        width: 90vw;
+    }
+    
+    .nutrition-card {
+        border-radius: 3vw;
+        padding: 4vw;
+    }
+}

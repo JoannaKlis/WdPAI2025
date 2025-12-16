@@ -1,0 +1,85 @@
+<?php include '/app/public/views/partials/header.php'; ?>
+<link rel="stylesheet" type= "text/css" href="public/styles/profile.css">
+<link rel="stylesheet" type= "text/css" href="public/styles/welcome.css">
+<link rel="stylesheet" type= "text/css" href="public/styles/features.css">
+<link rel="stylesheet" type= "text/css" href="public/styles/pets.css">
+<link rel="stylesheet" type= "text/css" href="public/styles/nutrition.css">
+
+    <title>Nutrition</title>
+</head>
+
+<body>
+    <form class="wrapper" method="POST" action="/nutrition">
+        
+        <div class="top-bar top-bar-clear">
+            <a href="/features" class="back-arrow">&lt;</a> 
+            <h1>Nutrition</h1>
+        </div>
+
+        <div class="pet-header-container">
+            <div class="pet-photo-circle">
+                <img src="public/img/simba.png" alt="Simba">
+            </div>
+            <div class="pet-name-display">Simba</div>
+        </div>
+
+        <div class="nutrition-content">
+            
+            <div class="nutrition-left">
+                
+                <div class="nutrition-card sensitivity-card">
+                    <div class="card-header">
+                        <img src="public/img/alert.png" class="status-icon">
+                        <span class="card-title alert-text">Sensitivities and allergies</span>
+                    </div>
+                    <div class="tag-container">
+                        <span class="tag alert-tag">Chicken</span>
+                        <span class="tag alert-tag">Beef</span>
+                        <button type="button" class="tag-add alert-tag">+</button>
+                    </div>
+                </div>
+
+                <div class="nutrition-card favorite-card">
+                    <div class="card-header">
+                        <img src="public/img/check.png" class="status-icon">
+                        <span class="card-title success-text">Favorite food</span>
+                    </div>
+                    <div class="tag-container">
+                        <span class="tag success-tag">PURINA PRO PLAN</span>
+                        <button type="button" class="tag-add success-tag">+</button>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="nutrition-right">
+                <div class="nutrition-card schedule-card">
+                    <div class="card-header">
+                        <img src="public/img/clock.png" class="status-icon">
+                        <span class="card-title blue-text">Feeding schedule</span>
+                        <img src="public/img/edit_blue.png" class="edit-schedule-icon">
+                    </div>
+                    <div class="schedule-list">
+                        <div class="schedule-item">
+                            <span>Canned cat food</span>
+                            <span class="time">8:00</span>
+                        </div>
+                        <div class="schedule-item">
+                            <span>Cat kribble</span>
+                            <span class="time">13:00</span>
+                        </div>
+                        <div class="schedule-item">
+                            <span>Canned cat food</span>
+                            <span class="time">18:00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <button class="button add-button">+</button>
+
+    </form>
+</body>
+</html>
