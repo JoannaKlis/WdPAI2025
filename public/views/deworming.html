@@ -1,0 +1,44 @@
+<?php include '/app/public/views/partials/header.php'; ?>
+<link rel="stylesheet" type= "text/css" href="public/styles/profile.css">
+<link rel="stylesheet" type= "text/css" href="public/styles/welcome.css">
+<link rel="stylesheet" type= "text/css" href="public/styles/features.css">
+<link rel="stylesheet" type= "text/css" href="public/styles/pets.css">
+<link rel="stylesheet" type= "text/css" href="public/styles/vaccinations.css">
+
+    <title>Deworming</title>
+</head>
+
+<body>
+    <form class="wrapper" method="POST" action="/deworming">
+        
+        <div class="top-bar">
+            <a href="/healthBook" class="back-arrow">&lt;</a> 
+            <h1>Deworming</h1>
+            
+            <div class="profile-pic-container profile-mini">
+                <div class="profile-pic"> 
+                    <img src="public/img/simba.png" alt="Simba" class="profile-icon-main pet-mini-fix">
+                </div>
+            </div>
+        </div>
+
+        <div class="vaccinations-list">
+
+            <a href="/dewormingDetails" class="card-welcome vaccination-item">
+                <div class="feature-icon-box health-box">
+                    <img src="public/img/deworming.png" class="feature-icon">
+                </div>
+                <div class="feature-text-container">
+                    <span class="feature-text">Internal deworming</span>
+                    <span class="feature-subtext">15/05/2025</span>
+                    <span class="feature-subtext">Dose: 230 mg</span>
+                </div>
+                <span class="feature-arrow">&gt;</span>
+            </a>
+        </div>
+
+        <button class="button add-button">+</button>
+
+    </form>
+</body>
+</html>
