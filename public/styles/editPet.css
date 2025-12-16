@@ -1,0 +1,71 @@
+.pet-img {
+    filter: none;
+    width: 100%;
+}
+
+.input-group {
+    width: clamp(20em, 20rem + 2vw, 25em);
+    margin-top: 1vh;
+}
+
+.container input {
+    font-family: "Jua";
+}
+
+.input-label {
+    color: #934CBE;
+    font-weight: bold;
+    margin-left: 0.5vw;
+}
+
+.sex-selection {
+    display: flex;
+    gap: 1vw;
+    margin-top: 0.2vw;
+}
+
+.sex-button {
+    flex: 1;
+    height: clamp(2em, 2rem + 1vw, 3em);
+    border: none;
+    border-radius: 1vw;
+    background-color: white;
+    color: #8F769E;
+    font-family: 'Jua';
+    font-size: 1.1em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5vw;
+    cursor: pointer;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.sex-button.active {
+    background-color: #934CBE;
+    color: white;
+}
+
+.sex-icon {
+    width: 1.2em;
+    filter: brightness(0) invert(1);
+}
+
+.sex-button:not(.active) .sex-icon {
+    filter: none;
+}
+
+@media (max-width: 480px) {
+    .profile-pic-container {
+        margin-top: 22vw;
+        margin-bottom: 5vw;
+    }
+
+    .sex-selection {
+        gap: 4vw;
+    }
+
+    .sex-button {
+    border-radius: 2.5vw;
+   }
+}

@@ -78,6 +78,8 @@
     margin-top: min(2em, 3%);
     width: clamp(8em, 8rem + 2vw, 10em);
     font-size: clamp(2em, 2rem + 0.5vw, 3em);
+    margin-top: 4vh;
+    margin-bottom: 4vh;
 }
 
 @media (max-width: 480px) {

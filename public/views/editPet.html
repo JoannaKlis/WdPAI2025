@@ -1,0 +1,76 @@
+<?php include '/app/public/views/partials/header.php'; ?>
+<link rel="stylesheet" type= "text/css" href="public/styles/profile.css">
+<link rel="stylesheet" type= "text/css" href="public/styles/editPet.css">
+    <title>Edit Pet</title>
+</head>
+
+<body>
+    <form class="wrapper" method="POST" action="/editPet">
+        
+        <div class="top-bar">
+            <a href="/features" class="back-arrow">&lt;</a> 
+            <h1>Edit Pumpkin</h1>
+        </div>
+
+        <?php include '/app/public/views/partials/status-messages.php'; ?>
+
+        <div class="profile-pic-container">
+            <div class="profile-pic"> 
+                <img src="public/img/dog.png" alt="Pet Picture" class="profile-icon-main pet-img">
+            </div>
+            <div class="edit-icon"> 
+                <img src="public/img/edit.png" alt="Edit Icon" class="edit-icon-img">
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label class="input-label">Name</label>
+            <div class="container">
+                <input type="text" name="name" value="Pumpkin">
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label class="input-label">Date of birth</label>
+            <div class="container">
+                <input type="text" name="birthDate" value="05/12/2024">
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label class="input-label">Sex</label>
+            <div class="sex-selection">
+                <button type="button" class="sex-button active">
+                    <img src="public/img/male.png" class="sex-icon"> Male
+                </button>
+                <button type="button" class="sex-button">
+                    <img src="public/img/female.png" class="sex-icon"> Female
+                </button>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label class="input-label">Breed</label>
+            <div class="container">
+                <input type="text" name="breed" value="Welsh Corgi Pembroke">
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label class="input-label">Color</label>
+            <div class="container">
+                <input type="text" name="color" value="Red and White">
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label class="input-label">Microchip number</label>
+            <div class="container">
+                <input type="text" name="microchip" value="9002147294610283">
+            </div>
+        </div>
+
+        <button class="button button-save">Save changes</button>
+
+    <script src="public/scripts/sexSelection.js" defer></script>
+<?php include '/app/public/views/partials/footer.php'; ?>

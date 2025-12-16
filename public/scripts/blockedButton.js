@@ -1,7 +1,10 @@
 function validateForm() {
     const form = document.querySelector('form.wrapper');
-    
-    const button = form.querySelector('button.button');
+    if (!form) return;
+
+    const button = form.querySelector('button.button, button.button-save');
+    if (!button) return;
+
     const inputs = form.querySelectorAll('input[type="text"], input[type="email"], input[type="password"]');
 
     function checkInputs() {
@@ -14,33 +17,19 @@ function validateForm() {
         });
 
         if (allFilled) {
-            button.classList.remove('disabled');
+            button.classList.remove('button-disabled');
+            button.disabled = false;
         } else {
-            button.classList.add('disabled');
+            button.classList.add('button-disabled');
+            button.disabled = true;
         }
     }
 
-    // sprawdzenie stanu przy ładowaniu strony
     checkInputs();
 
-    // nasłuchiwanie na każdy input
     inputs.forEach(input => {
         input.addEventListener('input', checkInputs);
-        input.addEventListener('change', checkInputs);
-    });
-
-    // blokowanie wysłania formularza gdy przycisk jest disabled
-    form.addEventListener('submit', function(e) {
-        if (button.classList.contains('disabled')) {
-            e.preventDefault();
-            return false;
-        }
     });
 }
 
-// uruchomienie walidacji po załadowaniu przycisku
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', validateForm);
-} else {
-    validateForm();
-}
+document.addEventListener('DOMContentLoaded', validateForm);
