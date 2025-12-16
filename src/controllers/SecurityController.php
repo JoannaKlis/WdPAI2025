@@ -153,4 +153,8 @@ class SecurityController extends AppController {
     public function trimming() {
         return $this->render("care/trimming");
     }
+
+    public function addPet() {
+        return $this->render("pets/addPet");
+    }
 }

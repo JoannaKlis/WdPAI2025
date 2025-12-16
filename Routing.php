@@ -93,6 +93,10 @@ class Routing {
         "trimming" => [
             "controller" => "SecurityController",
             "action" => "trimming"
+        ],
+        "addPet" => [
+            "controller" => "SecurityController",
+            "action" => "addPet"
         ]
     ];
 

@@ -25,6 +25,10 @@ body {
     width: clamp(1.5em, 7vh, 3em);
     aspect-ratio: 1 / 1;
     border-radius: 50%;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center; 
 }
 
 .card {
