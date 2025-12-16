@@ -14,7 +14,7 @@ class SecurityController extends AppController {
     public function login() {
         // jeśli GET to wyświetl stronę logowania
         if (!$this->isPost()) {
-            return $this->render("login");
+            return $this->render("auth/login");
         }
 
         // pobranie danych z formularza
@@ -36,7 +36,7 @@ class SecurityController extends AppController {
 
     public function registration() {
         if($this->isGet()) {
-            return $this->render("registration");
+            return $this->render("auth/registration");
         }
 
         // pobranie danych z formularza
@@ -87,70 +87,70 @@ class SecurityController extends AppController {
     }
 
     public function profile() {
-        return $this->render("profile");
+        return $this->render("profile/profile");
     }
 
     public function pets() {
-        return $this->render("pets");
+        return $this->render(template: "pets/pets");
     }
 
     public function calendar() {
-        return $this->render("calendar");
+        return $this->render("main/calendar");
     }
 
     public function welcome() {
-        return $this->render("welcome");
+        return $this->render("main/welcome");
     }
 
     public function features() {
-        return $this->render("features");
+        return $this->render("pets/features");
     }
 
     public function editPet() {
-        return $this->render("editPet");
+        return $this->render("pets/editPet");
     }
 
     public function care() {
-        return $this->render("care");
+        return $this->render("care/care");
     }
 
     public function healthBook() {
-        return $this->render("healthBook");
+        return $this->render("healthbook/healthBook");
     }
 
     public function nutrition() {
-        return $this->render("nutrition");
+        return $this->render("nutrition/nutrition");
     }
 
     public function vaccinations() {
-        return $this->render("vaccinations");
+        return $this->render("healthbook/vaccinations");
     }
 
     public function treatments() {
-        return $this->render("treatments");
+        return $this->render("healthbook/treatments");
     }
 
     public function deworming() {
-        return $this->render("deworming");
+        return $this->render("healthbook/deworming");
     }
 
     public function visits() {
-        return $this->render("visits");
+        return $this->render("healthbook/visits");
     }
 
     public function weight() {
-        return $this->render("weight");
+        return $this->render("care/weight");
     }
 
     public function groom() {
-        return $this->render("groom");
+        return $this->render("care/groom");
     }
 
     public function shearing() {
-        return $this->render("shearing");
+        return $this->render("care/shearing");
     }
 
     public function trimming() {
-        return $this->render("trimming");
+        return $this->render("care/trimming");
     }
 }
