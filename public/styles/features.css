@@ -1,0 +1,85 @@
+.pet-header-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10vh; 
+    margin-bottom: 3vh;
+}
+
+.pet-photo-circle {
+    width: clamp(9em, 9rem + 0.5vw, 10em);
+    border-radius: 50%;
+    display: flex;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.pet-photo-circle img {
+    width: 100%;
+}
+
+.pet-name-display {
+    margin-top: 0.2vw;
+    color: #934CBE;
+    font-size: clamp(1.5em, 1.5rem + 0.1vw, 2em);
+    font-weight: bold;
+    font-family: 'Jua';
+}
+
+.features-grid {
+    gap: 2.5vw;
+}
+
+.feature-tile {
+    display: flex;
+    align-items: center;
+    padding: 1.2vw 2vw;
+}
+
+.feature-icon-box {
+    background-color: #934CBE;
+    width: clamp(3.5em, 3.5rem + 1vw, 4.5em);
+    aspect-ratio: 1 / 1;
+    border-radius: 0.8vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.feature-icon {
+    width: 55%;
+    filter: brightness(0) invert(100%); /* pod ikonę profile */
+}
+
+.feature-text {
+    flex-grow: 1;
+    padding-left: 1.5vw;
+    color: #934CBE;
+    font-size: clamp(1.4em, 1.4rem + 0.5vw, 2em);
+    font-weight: bold;
+}
+
+.feature-arrow {
+    color: #934CBE;
+    font-size: 2em;
+    font-weight: bold;
+}
+
+
+@media (max-width: 480px) {
+    .features-grid {
+        gap: 4vw;
+    }
+
+    .feature-tile {
+        padding: 4vw;
+    }
+
+    .feature-text {
+        padding-left: 3vw;
+    }
+
+    .feature-icon-box {
+        width: 15vw;
+        border-radius: 2.5vw;
+    }
+}
