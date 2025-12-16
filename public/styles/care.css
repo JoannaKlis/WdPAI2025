@@ -1,0 +1,120 @@
+.care-content {
+    display: flex;
+    gap: 3vw;
+    width: clamp(40em, 40rem + 20vw, 75em);
+    margin: 2vh auto;
+    align-items: flex-start;
+}
+
+/* Siatka 2x2 dla lewej strony */
+.care-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2vh;
+    flex: 1;
+}
+
+.care-small-card {
+    background-color: #F6F6F6;
+    border-radius: 1vw;
+    padding: 1.5vw;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.care-icon-box {
+    background-color: #934CBE;
+    width: clamp(2.5em, 2.5rem + 1vw, 4em);
+    aspect-ratio: 1 / 1;
+    border-radius: 0.5vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1vh;
+}
+
+.care-icon {
+    width: 60%;
+    filter: brightness(0) invert(100%);
+}
+
+.care-label-main {
+    color: #934CBE;
+    font-weight: bold;
+    font-size: clamp(1.1em, 1.1rem + 0.2vw, 1.4em);
+}
+
+.care-value, .care-label-sub {
+    color: #8F769E;
+    font-size: 0.9em;
+    margin-top: 2px;
+}
+
+.care-date {
+    color: #8F769E;
+    font-size: 0.8em;
+    margin-top: auto;
+    padding-top: 5px;
+}
+
+/* Różowa kropka statusu przy Groom */
+.status-dot {
+    position: absolute;
+    right: 1.5vw;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 12px;
+    height: 12px;
+    background-color: #FF66A3;
+    border-radius: 50%;
+}
+
+/* Panel historii wagi */
+.weight-history-panel {
+    flex: 1;
+    background-color: #F6F6F6;
+    border-radius: 1vw;
+    padding: 2vw;
+    min-height: 300px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.history-title {
+    color: #934CBE;
+    text-align: center;
+    margin-bottom: 3vh;
+    font-size: 1.8em;
+}
+
+.history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5vh;
+}
+
+.history-item {
+    background-color: #8F769E;
+    color: white;
+    padding: 1vw 1.5vw;
+    border-radius: 0.8vw;
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Jua', sans-serif;
+}
+
+/* Responsywność mobilna */
+@media (max-width: 480px) {
+    .care-content {
+        flex-direction: column;
+        width: 90vw;
+    }
+    .care-grid {
+        width: 100%;
+    }
+    .weight-history-panel {
+        width: 100%;
+        min-height: auto;
+    }
+}
