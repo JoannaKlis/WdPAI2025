@@ -3,14 +3,14 @@
 <link rel="stylesheet" type="text/css" href="public/styles/editPet.css">
 <link rel="stylesheet" type="text/css" href="public/styles/addingScreens/addPetModal.css">
 <link rel="stylesheet" type="text/css" href="public/styles/addingScreens/addVaccination.css">
-    <title>Add Deworming</title>
+    <title>Add Shearing</title>
 </head>
 
 <body>
-    <form class="modal-content wrapper" method="POST" action="/addDeworming">
+    <form class="modal-content wrapper" method="POST" action="/addShearing">
             
         <div class="modal-header-actions">
-            <a href="/deworming" class="action-btn close-btn">
+            <a href="/shearing" class="action-btn close-btn">
                 <img src="public/img/cancel.png" alt="Close">
             </a>
             <div class="right-actions">
@@ -24,9 +24,9 @@
         </div>
 
         <div class="input-group vaccination-name-group">
-            <label class="input-label">Deworming name</label>
+            <label class="input-label">Name</label>
             <div class="container">
-                <input type="text" name="vaccinationName" placeholder="Internal deworming">
+                <input type="text" name="vaccinationName" placeholder="Classic shearing">
             </div>
         </div>
 
@@ -40,19 +40,10 @@
         </div>
 
         <div class="input-group">
-            <label class="input-label">Dose</label>
+            <label class="input-label">Time</label>
             <div class="row-layout">
-                <div class="container dose-input-small">
-                    <input type="text" name="dose" placeholder="230">
-                </div>
-                    
-                <div class="unit-selector-container">
-                    <select name="unit" class="unit-dropdown">
-                        <option value="ml">ml</option>
-                        <option value="l">l</option>
-                        <option value="mg">mg</option>
-                        <option value="g">g</option>
-                    </select>
+                <div class="container dose-input-small time">
+                    <input type="text" name="dose" placeholder="14:00">
                 </div>
             </div>
         </div>
