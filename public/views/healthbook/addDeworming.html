@@ -1,0 +1,61 @@
+<?php include '/app/public/views/partials/header.php'; ?>
+<link rel="stylesheet" type="text/css" href="public/styles/profile.css">
+<link rel="stylesheet" type="text/css" href="public/styles/editPet.css">
+<link rel="stylesheet" type="text/css" href="public/styles/addingScreens/addPetModal.css">
+<link rel="stylesheet" type="text/css" href="public/styles/addingScreens/addVaccination.css">
+    <title>Add Vaccination</title>
+</head>
+
+<body>
+    <form class="modal-content wrapper" method="POST" action="/addVaccination">
+            
+        <div class="modal-header-actions">
+            <a href="/deworming" class="action-btn close-btn">
+                <img src="public/img/cancel.png" alt="Close">
+            </a>
+            <div class="right-actions">
+                <button type="submit" class="action-btn save-btn">
+                    <img src="public/img/confirm.png" alt="Save">
+                </button>
+                <button type="button" class="action-btn delete-btn">
+                    <img src="public/img/delete.png" alt="Delete">
+                </button>
+            </div>
+        </div>
+
+        <div class="input-group vaccination-name-group">
+            <label class="input-label">Deworming name</label>
+            <div class="container">
+                <input type="text" name="vaccinationName" placeholder="Rabies">
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label class="input-label">Date</label>
+            <div class="row-layout">
+                <div class="container date-input-container">
+                    <input type="date" name="date" value="2024-08-24">
+                </div>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label class="input-label">Dose</label>
+            <div class="row-layout">
+                <div class="container dose-input-small">
+                    <input type="text" name="dose" placeholder="0.4">
+                </div>
+                    
+                <div class="unit-selector-container">
+                    <select name="unit" class="unit-dropdown">
+                        <option value="ml">ml</option>
+                        <option value="l">l</option>
+                        <option value="mg">mg</option>
+                        <option value="g">g</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </form>
+</body>
+</html>
