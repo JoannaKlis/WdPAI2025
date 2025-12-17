@@ -157,4 +157,52 @@ class SecurityController extends AppController {
     public function addPet() {
         return $this->render("pets/addPet");
     }
+
+    public function addVaccination() {
+        return $this->render("healthbook/addVaccination");
+    }
+
+    public function addDeworming() {
+        return $this->render("healthbook/addDeworming");
+    }
+
+    public function addTreatments() {
+        return $this->render("healthbook/addTreatments");
+    }
+
+    public function addVisits() {
+        return $this->render("healthbook/addVisits");
+    }
+
+    public function addWeight() {
+        return $this->render("care/addWeight");
+    }
+
+    public function addGroom() {
+        return $this->render("care/addGroom");
+    }
+
+    public function addShearing() {
+        return $this->render("care/addShearing");
+    }
+
+    public function addTrimming() {
+        return $this->render("care/addTrimming");
+    }
+
+    public function addNutrition() {
+        return $this->render("nutrition/addNutrition");
+    }
+
+    public function addSensitivities() {
+        return $this->render("nutrition/addSensitivities");
+    }
+
+    public function addFavorite() {
+        return $this->render("nutrition/addFavorite");
+    }
+
+    public function editSchedule() {
+        return $this->render("nutrition/editSchedule");
+    }
 }

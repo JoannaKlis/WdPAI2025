@@ -6,88 +6,86 @@
 </head>
 
 <body>
-    <div class="modal-overlay">
-        <form class="modal-content wrapper" method="POST" action="/addPet" enctype="multipart/form-data">
+    <form class="modal-content wrapper" method="POST" action="/addPet" enctype="multipart/form-data">
             
-            <div class="modal-header-actions">
-                <a href="/pets" class="action-btn close-btn">
-                    <img src="public/img/cancel.png" alt="Close">
-                </a>
-                <div class="right-actions">
-                    <button type="submit" class="action-btn save-btn">
-                        <img src="public/img/confirm.png" alt="Save">
+        <div class="modal-header-actions">
+            <a href="/pets" class="action-btn close-btn">
+                <img src="public/img/cancel.png" alt="Close">
+            </a>
+            <div class="right-actions">
+                <button type="submit" class="action-btn save-btn">
+                    <img src="public/img/confirm.png" alt="Save">
                     </button>
-                    <button type="button" class="action-btn delete-btn">
-                        <img src="public/img/delete.png" alt="Delete">
-                    </button>
-                </div>
+                <button type="button" class="action-btn delete-btn">
+                    <img src="public/img/delete.png" alt="Delete">
+                </button>
             </div>
+        </div>
 
-            <div class="profile-pic-container">
-                <div class="profile-pic"> 
-                    <img src="public/img/dog.png" alt="Pet Picture" class="profile-icon-main pet-img">
-                </div>
-                <div class="edit-icon"> 
-                    <img src="public/img/edit.png" alt="Edit Icon" class="edit-icon-img">
-                </div>
+        <div class="profile-pic-container">
+            <div class="profile-pic"> 
+                <img src="public/img/dog.png" alt="Pet Picture" class="profile-icon-main pet-img">
             </div>
-
-            <div class="input-group">
-                <label class="input-label">Pet type</label>
-                <div class="container">
-                    <input type="text" name="type" placeholder="Dog / Cat">
-                </div>
+            <div class="edit-icon"> 
+                <img src="public/img/edit.png" alt="Edit Icon" class="edit-icon-img">
             </div>
+        </div>
 
-            <div class="input-group">
-                <label class="input-label">Name</label>
-                <div class="container">
-                    <input type="text" name="name" placeholder="Pumpkin">
-                </div>
+        <div class="input-group">
+            <label class="input-label">Pet type</label>
+            <div class="container">
+                <input type="text" name="type" placeholder="Dog / Cat">
             </div>
+        </div>
 
-            <div class="input-group">
-                <label class="input-label">Date of birth</label>
-                <div class="container">
-                    <input type="text" name="birthDate" placeholder="05/12/2024">
-                </div>
+        <div class="input-group">
+            <label class="input-label">Name</label>
+            <div class="container">
+                <input type="text" name="name" placeholder="Pumpkin">
             </div>
+        </div>
 
-            <div class="input-group">
-                <label class="input-label">Sex</label>
-                <div class="sex-selection">
-                    <button type="button" class="sex-button male active">
-                        <img src="public/img/male.png" class="sex-icon"> Male
-                    </button>
-                    <button type="button" class="sex-button female">
-                        <img src="public/img/female.png" class="sex-icon"> Female
-                    </button>
-                </div>
+        <div class="input-group">
+            <label class="input-label">Date of birth</label>
+            <div class="container">
+                <input type="text" name="birthDate" placeholder="05/12/2024">
             </div>
+        </div>
 
-            <div class="input-group">
-                <label class="input-label">Bread</label>
-                <div class="container">
-                    <input type="text" name="breed" placeholder="Welsh Corgi Pembroke">
-                </div>
+        <div class="input-group">
+            <label class="input-label">Sex</label>
+            <div class="sex-selection">
+                <button type="button" class="sex-button male active">
+                    <img src="public/img/male.png" class="sex-icon"> Male
+                </button>
+                <button type="button" class="sex-button female">
+                    <img src="public/img/female.png" class="sex-icon"> Female
+                </button>
             </div>
+        </div>
 
-            <div class="input-group">
-                <label class="input-label">Color</label>
-                <div class="container">
-                    <input type="text" name="color" placeholder="Red and White">
-                </div>
+        <div class="input-group">
+            <label class="input-label">Bread</label>
+            <div class="container">
+                <input type="text" name="breed" placeholder="Welsh Corgi Pembroke">
             </div>
+        </div>
 
-            <div class="input-group">
-                <label class="input-label">Microchip number</label>
-                <div class="container">
-                    <input type="text" name="microchip" placeholder="9002147294610283">
-                </div>
+        <div class="input-group">
+            <label class="input-label">Color</label>
+            <div class="container">
+                <input type="text" name="color" placeholder="Red and White">
             </div>
+        </div>
 
-        </form>
-    </div>
+        <div class="input-group">
+            <label class="input-label">Microchip number</label>
+            <div class="container">
+                <input type="text" name="microchip" placeholder="9002147294610283">
+            </div>
+        </div>
+
+    </form>
     
     <script src="public/scripts/sexSelection.js" defer></script>
 </body>

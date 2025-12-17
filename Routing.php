@@ -97,6 +97,54 @@ class Routing {
         "addPet" => [
             "controller" => "SecurityController",
             "action" => "addPet"
+        ],
+        "addVaccination" => [
+            "controller" => "SecurityController",
+            "action" => "addVaccination"
+        ],
+        "addDeworming" => [
+            "controller" => "SecurityController",
+            "action" => "addDeworming"
+        ],
+        "addTreatments" => [
+            "controller" => "SecurityController",
+            "action" => "addTreatments"
+        ],
+        "addVisits" => [
+            "controller" => "SecurityController",
+            "action" => "addVisits"
+        ],
+        "addWeight" => [
+            "controller" => "SecurityController",
+            "action" => "addWeight"
+        ],
+        "addGroom" => [
+            "controller" => "SecurityController",
+            "action" => "addGroom"
+        ],
+        "addShearing" => [
+            "controller" => "SecurityController",
+            "action" => "addShearing"
+        ],
+        "addTrimming" => [
+            "controller" => "SecurityController",
+            "action" => "addTrimming"
+        ],
+        "addNutrition" => [
+            "controller" => "SecurityController",
+            "action" => "addNutrition"
+        ],
+        "addSensitivities" => [
+            "controller" => "SecurityController",
+            "action" => "addSensitivities"
+        ],
+        "addFavorite" => [
+            "controller" => "SecurityController",
+            "action" => "addFavorite"
+        ],
+        "editSchedule" => [
+            "controller" => "SecurityController",
+            "action" => "editSchedule"
         ]
     ];
 

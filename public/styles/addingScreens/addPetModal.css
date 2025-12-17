@@ -2,11 +2,6 @@
     margin-top: 0.5vw;
 }
 
-.modal-overlay {
-    background-color: #E0E0E0;
-    padding: 20px 0;
-}
-
 .modal-content {
     background-color: #ECECEC;
     width: clamp(18rem, 85vw, 26rem);
@@ -14,6 +9,8 @@
     padding: clamp(1vw, 2vw, 3vw);
     box-shadow: 0 10px 25px rgba(0,0,0,0.1);
     margin: auto;
+    margin-top: 2vw;
+    margin-bottom: 2vw;
 }
 
 .modal-header-actions {
@@ -47,4 +44,10 @@
     font-family: 'Jua';
     color: #934CBE;
     margin-top: 0.5vw;
+}
+
+@media (max-width: 480px) {
+    .container {
+        width: clamp(19em, 19rem + 4.25vw, 21em);
+    }
 }

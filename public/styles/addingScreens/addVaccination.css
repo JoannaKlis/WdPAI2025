@@ -1,0 +1,64 @@
+.vaccination-name-group {
+    margin-top: clamp(1rem, 4vw, 2rem);
+}
+
+.row-layout {
+    display: flex;
+    align-items: center;
+    gap: 1.5vw;
+}
+
+.date-input-container {
+    background-color: #8F769E;
+    width: fit-content;
+    padding: 0.5vw 1.5vw;
+    border-radius: 1.25vw;
+}
+
+.date-input-container input {
+    color: white;
+    font-family: 'Jua';
+    cursor: pointer;
+    font-size: clamp(1rem, 1.2vw, 1.4rem);
+}
+
+.date-input-container input::-webkit-calendar-picker-indicator {
+    filter: brightness(0) invert(1);
+}
+
+.dose-input-small {
+    width: clamp(5rem, 10vw, 8rem);
+    height: clamp(1rem, 2vw, 2rem);
+    padding: 0.5vw 1vw;
+    border-radius: 1.25vw;
+}
+
+.unit-selector-container {
+    background-color: #8F769E;
+    height: clamp(1rem, 2vw, 2rem);
+    border-radius: 1.25vw;
+    padding: 0.5vw 1vw;
+    display: flex;
+    align-items: center;
+}
+
+.unit-dropdown {
+    background: #8F769E;
+    border: none;
+    color: white;
+    font-family: 'Jua';
+    font-size: clamp(1rem, 1.2vw, 1.4rem);
+    cursor: pointer;
+    outline: none;
+    padding-right: 0.5vw;
+}
+
+@media (max-width: 480px) {
+    .date-input-container {
+        border-radius: 2.5vw;
+    }
+
+    .dose-input-small {
+        border-radius: 2.5vw;
+    }
+}
