@@ -106,13 +106,13 @@ class Routing {
             "controller" => "SecurityController",
             "action" => "addDeworming"
         ],
-        "addTreatments" => [
+        "addTreatment" => [
             "controller" => "SecurityController",
-            "action" => "addTreatments"
+            "action" => "addTreatment"
         ],
-        "addVisits" => [
+        "addVisit" => [
             "controller" => "SecurityController",
-            "action" => "addVisits"
+            "action" => "addVisit"
         ],
         "addWeight" => [
             "controller" => "SecurityController",

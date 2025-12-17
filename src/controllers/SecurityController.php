@@ -166,12 +166,12 @@ class SecurityController extends AppController {
         return $this->render("healthbook/addDeworming");
     }
 
-    public function addTreatments() {
-        return $this->render("healthbook/addTreatments");
+    public function addTreatment() {
+        return $this->render("healthbook/addTreatment");
     }
 
-    public function addVisits() {
-        return $this->render("healthbook/addVisits");
+    public function addVisit() {
+        return $this->render("healthbook/addVisit");
     }
 
     public function addWeight() {
