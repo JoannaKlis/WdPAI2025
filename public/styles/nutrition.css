@@ -46,6 +46,7 @@
     padding: 0.5vw 1.2vw;
     border-radius: 0.5vw;
     font-size: 0.9em;
+    text-decoration: none;
 }
 
 .alert-tag { background-color: #FFEBEE; color: #E57373; border: none; }
