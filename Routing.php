@@ -142,6 +142,10 @@ class Routing {
             "controller" => "SecurityController",
             "action" => "addFavorite"
         ],
+        "addSupplements" => [
+            "controller" => "SecurityController",
+            "action" => "addSupplements"
+        ],
         "editSchedule" => [
             "controller" => "SecurityController",
             "action" => "editSchedule"

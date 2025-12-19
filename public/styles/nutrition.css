@@ -1,23 +1,16 @@
-.nutrition-left, .nutrition-right {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 2vh;
+.card-container-welcome {
+    align-items: center;
+    gap: clamp(1vw, 2vw, 3vw); 
 }
 
 .nutrition-card {
-    width: clamp(20em, 20rem + 5vw, 30em);
-    background-color: #F6F6F6;
-    border-radius: 1vw;
-    padding: 1.5vw;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    width: clamp(20em, 22rem + 2vw, 28em); 
+    padding: 1.3vw;
 }
 
 .card-header {
     display: flex;
-    align-items: center;
-    margin-bottom: 1.5vh;
-    position: relative;
+    margin-bottom: 1.2vh;
 }
 
 .status-icon {
@@ -26,67 +19,61 @@
 }
 
 .card-title {
-    font-family: 'Jua', sans-serif;
-    font-size: clamp(1.1em, 1.1rem + 0.2vw, 1.5em);
+    font-size: clamp(1.1em, 1.1rem + 0.2vw, 1.4em);
     font-weight: bold;
+}
+
+.edit-schedule-link {
+    margin-left: auto;
+}
+
+.edit-schedule-icon {
+    width: 1.2em;
+    cursor: pointer;
 }
 
 .alert-text { color: #E57373; }
 .success-text { color: #81C784; }
 .blue-text { color: #64B5F6; }
+.purple-text { color: #934CBE; }
 
 .tag-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.8vw;
+    gap: 0.5vw;
 }
 
-.tag, .tag-add {
-    font-family: 'Jua', sans-serif;
-    padding: 0.5vw 1.2vw;
+.tag {
+    padding: 0.4vw 0.8vw;
     border-radius: 0.5vw;
-    font-size: 0.9em;
+    font-size: 0.85em;
     text-decoration: none;
 }
 
-.alert-tag { background-color: #FFEBEE; color: #E57373; border: none; }
-.success-tag { background-color: #E8F5E9; color: #81C784; border: none; }
-
-.tag-add {
-    cursor: pointer;
-    font-weight: bold;
-}
-
-.edit-schedule-icon {
-    position: absolute;
-    right: 0;
-    width: 1.2em;
-    cursor: pointer;
-}
+.alert-tag { background-color: #FFEBEE; color: #E57373; }
+.success-tag { background-color: #E8F5E9; color: #81C784; }
+.purple-tag { background-color: #F3E5F5; color: #934CBE; }
 
 .schedule-list {
     display: flex;
     flex-direction: column;
-    gap: 1vh;
+    gap: 0.6vh;
 }
 
 .schedule-item {
     display: flex;
     justify-content: space-between;
     color: #64B5F6;
-    font-family: 'Jua', sans-serif;
-    font-size: 1.1em;
 }
 
-/* Dostosowanie mobilne */
 @media (max-width: 480px) {
-    .nutrition-content {
-        flex-direction: column;
-        width: 90vw;
+    .card-container-welcome {
+        gap: 4vw;
     }
-    
+
     .nutrition-card {
-        border-radius: 3vw;
+        width: 85vw;
         padding: 4vw;
+        border-radius: 3vw;
     }
 }

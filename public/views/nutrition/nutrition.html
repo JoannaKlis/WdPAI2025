@@ -23,9 +23,9 @@
             <div class="pet-name-display">Simba</div>
         </div>
 
-        <div class="card-container-welcome features-grid">
+        <div class="card-container-welcome">
             
-            <div class="nutrition-card sensitivity-card">
+            <div class="card-welcome nutrition-card">
                 <div class="card-header">
                     <img src="public/img/alert.png" class="status-icon">
                     <span class="card-title alert-text">Sensitivities and allergies</span>
@@ -33,26 +33,38 @@
                 <div class="tag-container">
                     <span class="tag alert-tag">Chicken</span>
                     <span class="tag alert-tag">Beef</span>
-                    <a href="/addSensitivities" class="tag-add alert-tag">+</a>
+                    <a href="/addSensitivities" class="tag alert-tag">+</a>
                 </div>
             </div>
 
-            <div class="nutrition-card favorite-card">
+            <div class="card-welcome nutrition-card">
                 <div class="card-header">
                     <img src="public/img/check.png" class="status-icon">
                     <span class="card-title success-text">Favorite food</span>
                 </div>
                 <div class="tag-container">
                     <span class="tag success-tag">PURINA PRO PLAN</span>
-                    <a href="/addFavorite" class="tag-add success-tag">+</a>
+                    <a href="/addFavorite" class="tag success-tag">+</a>
                 </div>
             </div>
 
-            <div class="nutrition-card schedule-card">
+            <div class="card-welcome nutrition-card">
+                <div class="card-header">
+                    <img src="public/img/pill.png" class="status-icon">
+                    <span class="card-title purple-text">Supplements</span>
+                </div>
+                <div class="tag-container">
+                    <span class="tag purple-tag">Omega-3</span>
+                    <span class="tag purple-tag">Probiotics</span>
+                    <a href="/addSupplements" class="tag purple-tag">+</a>
+                </div>
+            </div>
+
+            <div class="card-welcome nutrition-card schedule-card">
                 <div class="card-header">
                     <img src="public/img/clock.png" class="status-icon">
                     <span class="card-title blue-text">Feeding schedule</span>
-                    <a href="/editSchedule">
+                    <a href="/editSchedule" class="edit-schedule-link">
                         <img src="public/img/edit_blue.png" class="edit-schedule-icon">
                     </a>
                 </div>
@@ -72,8 +84,6 @@
                 </div>
             </div>
         </div>
-
-        <button class="button add-button">+</button>
 
     </form>
 </body>

@@ -202,6 +202,10 @@ class SecurityController extends AppController {
         return $this->render("nutrition/addFavorite");
     }
 
+    public function addSupplements() {
+        return $this->render("nutrition/addSupplements");
+    }
+
     public function editSchedule() {
         return $this->render("nutrition/editSchedule");
     }
