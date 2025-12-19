@@ -158,6 +158,10 @@ class SecurityController extends AppController {
         return $this->render("pets/addPet");
     }
 
+    public function addEvent() {
+        return $this->render("main/addEvent");
+    }
+
     public function addVaccination() {
         return $this->render("healthbook/addVaccination");
     }

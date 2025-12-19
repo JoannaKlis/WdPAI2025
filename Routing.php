@@ -98,6 +98,10 @@ class Routing {
             "controller" => "SecurityController",
             "action" => "addPet"
         ],
+        "addEvent" => [
+            "controller" => "SecurityController",
+            "action" => "addEvent"
+        ],
         "addVaccination" => [
             "controller" => "SecurityController",
             "action" => "addVaccination"
