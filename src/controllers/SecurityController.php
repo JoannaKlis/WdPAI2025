@@ -25,12 +25,12 @@ class SecurityController extends AppController {
 
         // walidacja maila i hasła
         if (!$user || !password_verify($password, $user['password'])) {
-            return $this->render('login', ['messages' => 'Incorrect email or password!']);
+            return $this->render('auth/login', ['messages' => 'Incorrect email or password!']);
         }
 
         //TODO: create user session, cookie etc.
         $url = "http://$_SERVER[HTTP_HOST]";
-        header("Location: {$url}\profile");
+        header("Location: {$url}/welcome");
     }
 
 
@@ -50,28 +50,28 @@ class SecurityController extends AppController {
 
         // walidacja formatu email (musi zawierać @ i domenę po .)
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            return $this->render('registration', ['messages' => 'Email address is incorrect!']);
+            return $this->render('auth/registration', ['messages' => 'Email address is incorrect!']);
         }
 
         // walidacja zgodności haseł
         if ($password !== $confirmedPassword) {
-            return $this->render('registration', ['messages' => 'Passwords should be the same!']);
+            return $this->render('auth/registration', ['messages' => 'Passwords should be the same!']);
         }
 
         // funkcja pomocnicza do walidacji hasła
-        $isValidPassword = function (string $password): bool {
-            if (strlen($password) < 6) return false; // min. 6 znaków
-            if (!preg_match('/[A-Z]/', $password)) return false; // min. 1 duża litera
-            if (!preg_match('/[0-9]/', $password)) return false; // min. 1 cyfra
-            if (!preg_match('/[^A-Za-z0-9]/', $password)) return false; // min. 1 znak specjalny
-            return true;
-        };
+        // $isValidPassword = function (string $password): bool {
+        //     if (strlen($password) < 6) return false; // min. 6 znaków
+        //     if (!preg_match('/[A-Z]/', $password)) return false; // min. 1 duża litera
+        //     if (!preg_match('/[0-9]/', $password)) return false; // min. 1 cyfra
+        //     if (!preg_match('/[^A-Za-z0-9]/', $password)) return false; // min. 1 znak specjalny
+        //     return true;
+        // };
 
         // walidacja siły hasła i unikalności emaila (do poprawy w przyszłości)
-        if (!$isValidPassword($password || $this->userRepository->getUserByEmail($email))) {
-            return $this->render('registration', ['messages' => 'Inccorect email or
-            Password must be at least 6 characters long, 1 uppercase letter, 1 number and 1 special character.']);
-        }   
+        // if (!$isValidPassword($password || $this->userRepository->getUserByEmail($email))) {
+        //     return $this->render('auth/registration', ['messages' => 'Inccorect email or
+        //     Password must be at least 6 characters long, 1 uppercase letter, 1 number and 1 special character.']);
+        // }   
 
     $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
