@@ -8,6 +8,7 @@ class SecurityController extends AppController {
 
     public function __construct()
     {
+        parent::__construct(); 
         $this->userRepository = new UserRepository();
     }
 
@@ -28,11 +29,43 @@ class SecurityController extends AppController {
             return $this->render('auth/login', ['messages' => 'Incorrect email or password!']);
         }
 
-        //TODO: create user session, cookie etc.
+        // regeneracja ID dla bezpieczeństwa
+        session_regenerate_id(true);
+
+        // zapisanie danych użytkownika w sesji
+        $_SESSION['user_id'] = $user['id'];
+        $_SESSION['user_email'] = $user['email'];
+
+        //TODO: cookie etc.
         $url = "http://$_SERVER[HTTP_HOST]";
         header("Location: {$url}/welcome");
+        exit();
+
     }
 
+    public function logout() {
+        // uruchomienie sesji, jeśli nie wystartowała w konstruktorze
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        $_SESSION = array(); // czyszczenie danych sesji
+
+        // usuwanie ciasteczek sesyjnych z przeglądarki
+        if (ini_get("session.use_cookies")) {
+            $params = session_get_cookie_params();
+            setcookie(session_name(), '', time() - 42000,
+            $params["path"], $params["domain"],
+            $params["secure"], $params["httponly"]
+            );
+        }
+
+        session_destroy(); // niszczenie sesji na serwerze
+
+        $url = "http://$_SERVER[HTTP_HOST]";
+        header("Location: {$url}/login");
+        exit();
+    }
 
     public function registration() {
         if($this->isGet()) {
@@ -87,11 +120,8 @@ class SecurityController extends AppController {
     }
 
     public function profile() {
+        $this->checkAuthentication(); // blokuje dostęp dla niezalogowanych
         return $this->render("profile/profile");
-    }
-
-    public function pets() {
-        return $this->render(template: "pets/pets");
     }
 
     public function calendar() {
@@ -99,6 +129,7 @@ class SecurityController extends AppController {
     }
 
     public function welcome() {
+        $this->checkAuthentication();
         return $this->render("main/welcome");
     }
 
@@ -152,10 +183,6 @@ class SecurityController extends AppController {
 
     public function trimming() {
         return $this->render("care/trimming");
-    }
-
-    public function addPet() {
-        return $this->render("pets/addPet");
     }
 
     public function addEvent() {

@@ -1,6 +1,19 @@
 <?php
 
 class AppController {
+    public function __construct(){
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+    }
+
+    protected function checkAuthentication() {
+        if (!isset($_SESSION['user_id'])) {
+            $url = "http://$_SERVER[HTTP_HOST]";
+            header("Location: {$url}/login");
+            exit();
+        }
+    }
 
     // metoda sprawdzająca, czy żądanie to GET
         protected function isGet(): bool

@@ -158,7 +158,7 @@ VALUES (
     'Jan',
     'Kowalski',
     'jan.kowalski@example.com',
-    '$2b$10$ZbzQrqD1vDhLJpYe/vzSbeDJHTUnVPCpwlXclkiFa8dO5gOAfg8tq', -- hasło: "password123"
+    '$2y$10$ejsy0sJ6.EbvvDCVD1rjpu82Xjo1H2JDfjHuMF6jdCB5ymNguYLoq', -- hasło: "test"
     'Miłośnik zwierząt i programowania.',
     'public/img/profile.png',
     TRUE
@@ -169,7 +169,7 @@ VALUES (
     'Anna',
     'Nowak',
     'anna.nowak@example.com',
-    '$2b$10$ZbzQrqD1vDhLJpYe/vzSbeDJHTUnVPCpwlXclkiFa8dO5gOAfg8tq',
+    '$2y$10$ejsy0sJ6.EbvvDCVD1rjpu82Xjo1H2JDfjHuMF6jdCB5ymNguYLoq',
     'Opiekunka zwierząt.',
     TRUE
 );

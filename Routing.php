@@ -3,6 +3,7 @@
 require_once 'src/controllers/SecurityController.php';
 require_once 'src/controllers/UserController.php';
 require_once 'src/controllers/DashboardController.php';
+require_once 'src/controllers/PetController.php';
 
 class Routing {
     # TODO: singleton, regex, sesja użytkownika
@@ -13,6 +14,10 @@ class Routing {
         "login" => [
             "controller" => "SecurityController",
             "action" => "login"
+        ],
+        "logout" => [
+            "controller" => "SecurityController",
+            "action" => "logout"
         ],
         "registration" => [
             "controller" => "SecurityController",
@@ -31,7 +36,7 @@ class Routing {
             "action" => "profile"
         ],
         "pets" => [
-            "controller" => "SecurityController",
+            "controller" => "PetController",
             "action" => "pets"
         ],
         "calendar" => [
@@ -43,11 +48,11 @@ class Routing {
             "action" => "welcome"
         ],
         "features" => [
-            "controller" => "SecurityController",
+            "controller" => "PetController",
             "action" => "features"
         ],
         "editPet" => [
-            "controller" => "SecurityController",
+            "controller" => "PetController",
             "action" => "editPet"
         ],
         "care" => [
@@ -95,7 +100,7 @@ class Routing {
             "action" => "trimming"
         ],
         "addPet" => [
-            "controller" => "SecurityController",
+            "controller" => "PetController",
             "action" => "addPet"
         ],
         "addEvent" => [
@@ -170,16 +175,15 @@ class Routing {
 
 
     public static function run(string $path) {
-        // /dashboard/12234 -- wyciagnie nam jakis element o wskazanym ID
-        $dashboard_details_regex = '/^dashboard(?:\/(\d+))?$/'; // ścieżka do "dashboard" z opcjonalnym ID
-        $user_details_regex = '/^user\/(\d+)$/'; // ścieżka do "user{id}"
+        $dashboard_details_regex = '/^dashboard(?:\/(\d+))?$/';
+        $user_details_regex = '/^user\/(\d+)$/';
         
         if (preg_match($dashboard_details_regex, $path, $matches)) {
             // $matches[1] będzie zawierać przechwycone ID lub będzie puste/null
             $id = $matches[1] ?? null;
         
             $controllerObj = self::getControllerInstance("DashboardController");
-            $controllerObj->index($id); // wywołanie metody z ID lub null
+            $controllerObj->index($id);
             return;
         }
 

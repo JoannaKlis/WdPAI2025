@@ -128,6 +128,18 @@
     color: #C0C0C0;
 }
 
+.logout-container {
+    width: auto;
+    display: flex;
+    gap: 1.5vw;
+    align-items: center;
+}
+
+.logout-icon {
+    width: clamp(1.5em, 1.5rem + 0.5vw, 2.5em);
+    cursor: pointer;
+}
+
 @media (max-width: 480px) {
     .top-bar-welcome {
         height: 8vh;
