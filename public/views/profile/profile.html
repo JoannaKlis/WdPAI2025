@@ -15,11 +15,10 @@
 
         <div class="profile-pic-container" onclick="document.getElementById('file-input').click()">
             <div class="profile-pic"> 
-                <img src="<?= $user['picture_url'] ?: 'public/img/profile.png' ?>" alt="Profile" class="profile-icon-main" id="profile-preview">
-                <!-- <img src="<?= $user['picture_url'] ? $user['picture_url'] : 'public/img/profile.png' ?>" 
+                <img src="<?= $user['picture_url'] ? $user['picture_url'] : 'public/img/profile.png' ?>" 
                  alt="Profile" 
                  class="profile-icon-main <?= $user['picture_url'] ? 'user-photo' : '' ?>" 
-                 id="profile-preview"> -->
+                 id="profile-preview">
             </div>
     
             <div class="edit-icon"> 
@@ -45,24 +44,11 @@
 
         <div class="container">
             <img src="public/img/padlock.png" class="icon">
-            <input type="password" name="password" id="password-field" placeholder="New Password (leave blank to keep current)">
+            <input type="password" name="password" id="password-field" placeholder="New Password">
             <img src="public/img/invisible.png" id="toggle-password" class="icon-switch">
         </div>
 
         <button type="submit" class="button button-save" id="save-button">Save changes</button>
 
+        <script src="public/scripts/picture.js" defer></script>
 <?php include '/app/public/views/partials/footer.php'; ?>
-
-<script>
-function previewImage(input) {
-    if (input.files && input.files[0]) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            const preview = document.getElementById('profile-preview');
-            preview.src = e.target.result;
-            preview.classList.add('user-photo'); // Usuwa filtr po wybraniu zdjęcia
-        }
-        reader.readAsDataURL(input.files[0]);
-    }
-}
-</script>

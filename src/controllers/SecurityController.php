@@ -149,12 +149,15 @@ class SecurityController extends AppController {
     }
 
     public function calendar() {
-        return $this->render("main/calendar");
+        $this->checkAuthentication();
+        $user = $this->userRepository->getUserByEmail($_SESSION['user_email']);
+        return $this->render("main/calendar", ['user' => $user]);
     }
 
     public function welcome() {
         $this->checkAuthentication();
-        return $this->render("main/welcome");
+        $user = $this->userRepository->getUserByEmail($_SESSION['user_email']);
+        return $this->render("main/welcome", ['user' => $user]);
     }
 
     public function features() {

@@ -16,7 +16,9 @@
             <div class="profile-pic-container profile">
                 <a href="/profile">
                     <div class="profile-pic"> 
-                        <img src="public/img/profile.png" alt="Profile Picture" class="profile-icon-main">
+                        <img src="<?= $user['picture_url'] ? $user['picture_url'] : 'public/img/profile.png' ?>" 
+                        alt="Profile Picture" 
+                        class="profile-icon-main <?= $user['picture_url'] ? 'user-photo' : '' ?>">
                     </div>
                 </a>
             </div>
@@ -76,5 +78,6 @@
         <a href="/addEvent" class="button add-button">+</a>
     </form>
     <script src="public/scripts/calendar-view-switcher.js" defer></script>
+    <script src="public/scripts/picture.js" defer></script>
 </body>
 </html>
