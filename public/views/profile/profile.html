@@ -4,7 +4,7 @@
 </head>
 
 <body>
-    <form class="wrapper" method="POST" action="/profile">
+    <form class="wrapper" method="POST" action="/profile" enctype="multipart/form-data">
         
         <div class="top-bar">
             <a href="/welcome" class="back-arrow">&lt;</a> 
@@ -13,37 +13,38 @@
 
         <?php include '/app/public/views/partials/status-messages.php'; ?>
 
-        <div class="profile-pic-container">
+        <div class="profile-pic-container" onclick="document.getElementById('file-input').click()">
             <div class="profile-pic"> 
-                <img src="public/img/profile.png" alt="Profile Picture" class="profile-icon-main">
+                <img src="<?= $user['picture_url'] ?: 'public/img/profile.png' ?>" alt="Profile" class="profile-icon-main" id="profile-preview">
             </div>
     
             <div class="edit-icon"> 
                 <img src="public/img/edit.png" alt="Edit Icon" class="edit-icon-img">
             </div>
+            <input type="file" name="picture" id="file-input" style="display:none" onchange="previewImage(this)">
         </div>
 
         <div class="container">
             <img src="public/img/profile.png" class="email-icon">
-            <input type="text" name="firstName" placeholder="First name">
+            <input type="text" name="firstName" value="<?= $user['firstname'] ?>" placeholder="First name">
         </div>
 
         <div class="container">
             <img src="public/img/profile.png" class="email-icon">
-            <input type="text" name="lastName" placeholder="Last name">
+            <input type="text" name="lastName" value="<?= $user['lastname'] ?>" placeholder="Last name">
         </div>
 
         <div class="container">
             <img src="public/img/email.png" class="email-icon">
-            <input type="email" name="email" placeholder="Email">
+            <input type="email" name="email" value="<?= $user['email'] ?>" placeholder="Email">
         </div>
 
         <div class="container">
             <img src="public/img/padlock.png" class="icon">
-            <input type="password" name="password" id="password-field" placeholder="Password">
+            <input type="password" name="password" id="password-field" placeholder="New Password (leave blank to keep current)">
             <img src="public/img/invisible.png" id="toggle-password" class="icon-switch">
         </div>
 
-        <button class="button button-save">Save changes</button>
+        <button type="submit" class="button button-save" id="save-button">Save changes</button>
 
 <?php include '/app/public/views/partials/footer.php'; ?>
