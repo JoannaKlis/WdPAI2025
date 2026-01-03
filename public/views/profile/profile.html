@@ -16,12 +16,16 @@
         <div class="profile-pic-container" onclick="document.getElementById('file-input').click()">
             <div class="profile-pic"> 
                 <img src="<?= $user['picture_url'] ?: 'public/img/profile.png' ?>" alt="Profile" class="profile-icon-main" id="profile-preview">
+                <!-- <img src="<?= $user['picture_url'] ? $user['picture_url'] : 'public/img/profile.png' ?>" 
+                 alt="Profile" 
+                 class="profile-icon-main <?= $user['picture_url'] ? 'user-photo' : '' ?>" 
+                 id="profile-preview"> -->
             </div>
     
             <div class="edit-icon"> 
                 <img src="public/img/edit.png" alt="Edit Icon" class="edit-icon-img">
             </div>
-            <input type="file" name="picture" id="file-input" style="display:none" onchange="previewImage(this)">
+            <input type="file" name="picture" id="file-input" style="display:none" accept="image/*" onchange="previewImage(this)">
         </div>
 
         <div class="container">
@@ -48,3 +52,17 @@
         <button type="submit" class="button button-save" id="save-button">Save changes</button>
 
 <?php include '/app/public/views/partials/footer.php'; ?>
+
+<script>
+function previewImage(input) {
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const preview = document.getElementById('profile-preview');
+            preview.src = e.target.result;
+            preview.classList.add('user-photo'); // Usuwa filtr po wybraniu zdjęcia
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+</script>
