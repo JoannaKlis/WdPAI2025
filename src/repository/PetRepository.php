@@ -44,28 +44,44 @@ class PetRepository extends Repository {
     return $pet ?: null;
 }
 
-public function updatePet(int $id, array $data): void {
-    $stmt = $this->database->connect()->prepare('
-        UPDATE pets SET 
-            name = ?, 
-            pet_type = ?, 
-            birth_date = ?, 
-            sex = ?, 
-            breed = ?, 
-            color = ?, 
-            microchip_number = ? 
-        WHERE id = ?
-    ');
+public function updatePet(int $id, array $data, ?string $pictureUrl = null): void {
+        $sql = "UPDATE pets SET 
+                name = :name, 
+                pet_type = :type, 
+                birth_date = :birthDate, 
+                sex = :sex, 
+                breed = :breed, 
+                color = :color, 
+                microchip_number = :microchip";
+        
+        $params = [
+            ':name' => $data['name'],
+            ':type' => $data['type'],
+            ':birthDate' => $data['birthDate'],
+            ':sex' => $data['sex'],
+            ':breed' => $data['breed'],
+            ':color' => $data['color'],
+            ':microchip' => $data['microchip'],
+            ':id' => $id
+        ];
 
-    $stmt->execute([
-        $data['name'],
-        $data['type'],
-        $data['birthDate'],
-        $data['sex'],
-        $data['breed'],
-        $data['color'],
-        $data['microchip'],
-        $id
-    ]);
-}
+        // jeśli przesłano nowe zdjęcie, aktualizujemy je, jeśli null to zostawiamy stare bez zmian
+        if ($pictureUrl) {
+            $sql .= ", picture_url = :pictureUrl";
+            $params[':pictureUrl'] = $pictureUrl;
+        }
+
+        $sql .= " WHERE id = :id";
+
+        $stmt = $this->database->connect()->prepare($sql);
+        $stmt->execute($params);
+    }
+
+    public function deletePet(int $id): void {
+        $stmt = $this->database->connect()->prepare('
+            DELETE FROM pets WHERE id = :id
+        ');
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+    }
 }

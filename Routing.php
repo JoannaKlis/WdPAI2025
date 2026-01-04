@@ -55,6 +55,10 @@ class Routing {
             "controller" => "PetController",
             "action" => "editPet"
         ],
+        "deletePet" => [
+            "controller" => "PetController",
+            "action" => "deletePet"
+        ],
         "care" => [
             "controller" => "SecurityController",
             "action" => "care"

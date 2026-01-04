@@ -78,26 +78,66 @@ class PetController extends AppController {
     public function editPet() {
         session_start();
         $userId = $_SESSION['user_id'] ?? null;
-        $petId = $_REQUEST['id'] ?? null; // pobiera z GET lub POST
+        // pobranie ID z parametru URL (GET) lub z formularza (POST)
+        $petId = $_REQUEST['id'] ?? null;
 
         if (!$petId || !$userId) {
             header("Location: http://$_SERVER[HTTP_HOST]/pets");
             exit;
         }
 
+        // walidacja właściciela zwierzaka
         $pet = $this->petRepository->getPetById((int)$petId);
-
         if (!$pet || $pet['user_id'] !== $userId) {
             return $this->render('404');
         }
 
         if ($this->isPost()) {
-            // logika zapisu zmian
-            $this->petRepository->updatePet((int)$petId, $_POST);
+            // obsługa zdjęcia
+            $pictureUrl = null;
+            if (isset($_FILES['picture']) && is_uploaded_file($_FILES['picture']['tmp_name'])) {
+                $imageData = file_get_contents($_FILES['picture']['tmp_name']);
+                $mimeType = mime_content_type($_FILES['picture']['tmp_name']);
+                $pictureUrl = 'data:' . $mimeType . ';base64,' . base64_encode($imageData);
+            }
+
+            // aktualizacja w bazie
+            $this->petRepository->updatePet((int)$petId, $_POST, $pictureUrl);
+            
+            // przekierowanie do widoku szczegółów
             header("Location: http://$_SERVER[HTTP_HOST]/features?id=" . $petId);
             exit;
         }
 
         return $this->render('pets/editPet', ['pet' => $pet]);
+    }
+
+    public function deletePet() {
+        session_start();
+        $userId = $_SESSION['user_id'] ?? null;
+
+        // zabezpieczenie: jeśli ktoś próbuje wejść tu przez GET (wpisując url), od razu wyrzuć go do listy zwierząt.
+        if (!$this->isPost()) {
+            header("Location: http://$_SERVER[HTTP_HOST]/pets");
+            exit;
+        }
+
+        $petId = $_POST['id'] ?? null;
+
+        // walidacja danych sesji i ID
+        if (!$petId || !$userId) {
+             header("Location: http://$_SERVER[HTTP_HOST]/pets");
+             exit;
+        }
+
+        // sprawdzenie czy użytkownik jest właścicielem (bezpieczeństwo)
+        $pet = $this->petRepository->getPetById((int)$petId);
+        if ($pet && $pet['user_id'] === $userId) {
+            $this->petRepository->deletePet((int)$petId);
+        }
+
+        // przekierowanie do widoku /pets po wykonaniu akcji
+        header("Location: http://$_SERVER[HTTP_HOST]/pets");
+        exit;
     }
 }
