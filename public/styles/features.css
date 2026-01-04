@@ -11,10 +11,12 @@
     border-radius: 50%;
     display: flex;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
 }
 
 .pet-photo-circle img {
     width: 100%;
+    aspect-ratio: 1/1;
 }
 
 .pet-name-display {

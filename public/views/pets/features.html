@@ -3,8 +3,7 @@
 <link rel="stylesheet" type= "text/css" href="public/styles/welcome.css">
 <link rel="stylesheet" type= "text/css" href="public/styles/features.css">
 <link rel="stylesheet" type= "text/css" href="public/styles/pets.css">
-
-    <title>Pet Features</title>
+    <title>Features - <?= htmlspecialchars($pet['name']) ?></title>
 </head>
 
 <body>
@@ -12,19 +11,19 @@
         
         <div class="top-bar top-bar-clear">
             <a href="/pets" class="back-arrow">&lt;</a> 
-            <h1>Simba</h1>
+            <h1><?= htmlspecialchars($pet['name']) ?></h1>
         </div>
 
         <div class="pet-header-container">
             <div class="pet-photo-circle">
-                <img src="public/img/simba.png" alt="Simba">
+                <img src="<?= htmlspecialchars($pet['picture_url'] ?? 'public/img/default_pet.png') ?>" alt="<?= htmlspecialchars($pet['name']) ?>">
             </div>
-            <div class="pet-name-display">Simba</div>
+            <div class="pet-name-display"><?= htmlspecialchars($pet['name']) ?></div>
         </div>
 
         <div class="card-container-welcome features-grid">
 
-            <a href="/editPet" class="card-welcome feature-tile">
+            <a href="/editPet?id=<?= $pet['id'] ?>" class="card-welcome feature-tile">
                 <div class="feature-icon-box">
                     <img src="public/img/profile.png" class="feature-icon">
                 </div>
@@ -32,7 +31,7 @@
                 <span class="feature-arrow">&gt;</span>
             </a>
 
-            <a href="/care" class="card-welcome feature-tile">
+            <a href="/care?id=<?= $pet['id'] ?>" class="card-welcome feature-tile">
                 <div class="feature-icon-box">
                     <img src="public/img/care.png" class="feature-icon">
                 </div>
@@ -40,7 +39,7 @@
                 <span class="feature-arrow">&gt;</span>
             </a>
 
-            <a href="/healthBook" class="card-welcome feature-tile">
+            <a href="/healthBook?id=<?= $pet['id'] ?>" class="card-welcome feature-tile">
                 <div class="feature-icon-box">
                     <img src="public/img/book.png" class="feature-icon">
                 </div>
@@ -48,7 +47,7 @@
                 <span class="feature-arrow">&gt;</span>
             </a>
 
-            <a href="/nutrition" class="card-welcome feature-tile">
+            <a href="/nutrition?id=<?= $pet['id'] ?>" class="card-welcome feature-tile">
                 <div class="feature-icon-box">
                     <img src="public/img/nutrition.png" class="feature-icon">
                 </div>

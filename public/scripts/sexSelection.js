@@ -1,13 +1,5 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const sexButtons = document.querySelectorAll('.sex-button');
-
-    sexButtons.forEach(button => {
-        button.addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            sexButtons.forEach(btn => btn.classList.remove('active'));
-            
-            this.classList.add('active');
-        });
-    });
-});
+function setSex(sex, element) {
+    document.getElementById('sexInput').value = sex;
+    document.querySelectorAll('.sex-button').forEach(btn => btn.classList.remove('active'));
+    element.classList.add('active');
+}

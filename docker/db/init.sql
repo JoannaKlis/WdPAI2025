@@ -14,7 +14,7 @@ CREATE TABLE users (
 CREATE TABLE pets (
     id SERIAL PRIMARY KEY,
     user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    picture_url VARCHAR(255),
+    picture_url TEXT,
     pet_type VARCHAR(50) NOT NULL,
     name VARCHAR(100) NOT NULL,
     birth_date DATE,
