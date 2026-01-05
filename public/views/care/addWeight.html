@@ -7,18 +7,15 @@
 </head>
 
 <body>
-    <form class="modal-content wrapper" method="POST" action="/addWeight">
+    <form class="modal-content wrapper" method="POST" action="/addWeight?id=<?= $petId ?>">
             
         <div class="modal-header-actions">
-            <a href="/weight" class="action-btn close-btn">
+            <a href="/weight?id=<?= $petId ?>" class="action-btn close-btn">
                 <img src="public/img/cancel.png" alt="Close">
             </a>
             <div class="right-actions">
                 <button type="submit" class="action-btn save-btn">
                     <img src="public/img/confirm.png" alt="Save">
-                </button>
-                <button type="button" class="action-btn delete-btn">
-                    <img src="public/img/delete.png" alt="Delete">
                 </button>
             </div>
         </div>
@@ -27,13 +24,13 @@
             <label class="input-label">Weight</label>
             <div class="row-layout">
                 <div class="container dose-input-small">
-                    <input type="text" name="dose" placeholder="0.4">
+                    <input type="text" name="weight" placeholder="0.4" required>
                 </div>
                     
                 <div class="unit-selector-container">
                     <select name="unit" class="unit-dropdown">
-                        <option value="g">g</option>
                         <option value="kg">kg</option>
+                        <option value="g">g</option>
                     </select>
                 </div>
             </div>
@@ -43,16 +40,7 @@
             <label class="input-label">Date</label>
             <div class="row-layout">
                 <div class="container date-input-container">
-                    <input type="date" name="date" value="2024-08-24">
-                </div>
-            </div>
-        </div>
-
-        <div class="input-group">
-            <label class="input-label">Time</label>
-            <div class="row-layout">
-                <div class="container dose-input-small time">
-                    <input type="text" name="dose" placeholder="14:00">
+                    <input type="date" name="date" value="<?= date('Y-m-d') ?>" required>
                 </div>
             </div>
         </div>

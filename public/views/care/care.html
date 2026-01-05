@@ -12,69 +12,60 @@
     <form class="wrapper" method="POST" action="/care">
         
         <div class="top-bar top-bar-clear">
-            <a href="/features" class="back-arrow">&lt;</a> 
+            <a href="/features?id=<?= $pet['id'] ?>" class="back-arrow">&lt;</a> 
             <h1>Care</h1>
         </div>
 
         <div class="pet-header-container">
             <div class="pet-photo-circle">
-                <img src="public/img/simba.png" alt="Simba">
+                <img src="<?= $pet['picture_url'] ? $pet['picture_url'] : 'public/img/default_pet.png' ?>" alt="<?= $pet['name'] ?>">
             </div>
-            <div class="pet-name-display">Simba</div>
+            <div class="pet-name-display"><?= $pet['name'] ?></div>
         </div>
 
         <div class="card-container-welcome">
             
             <div class="care-grid">
                 
-                <a href="/weight" class="card-welcome">
+                <a href="/weight?id=<?= $pet['id'] ?>" class="card-welcome">
                     <div class="feature-icon-box">
                             <img src="public/img/weight.png" class="feature-icon">
                     </div>
                     <span class="care-label-main">Weight</span>
-                    <span class="care-label-sub">5,2 kg</span>
-                    <span class="care-label-sub">15/08/2025</span>
+                    <span class="care-label-sub">Check history</span>
                 </a>
 
-                <a href="/groom" class="card-welcome">
+                <a href="/groom?id=<?= $pet['id'] ?>" class="card-welcome">
                     <div class="feature-icon-box">
                         <img src="public/img/shower.png" class="feature-icon">
                     </div>
                     <span class="care-label-main">Groom</span>
-                    <span class="care-label-sub">Last time</span>
-                    <span class="care-label-sub">12/08/2025</span>
+                    <span class="care-label-sub">Check history</span>
                 </a>
 
-                <a href="/shearing" class="card-welcome">
+                <a href="/shearing?id=<?= $pet['id'] ?>" class="card-welcome">
                     <div class="feature-icon-box">
                         <img src="public/img/scissors.png" class="feature-icon">
                     </div>
                     <span class="care-label-main">Shearing</span>
-                    <span class="care-label-sub">Last time</span>
-                    <span class="care-label-sub">10/06/2025</span>
+                    <span class="care-label-sub">Check history</span>
                 </a>
 
-                <a href="/trimming" class="card-welcome">
+                <a href="/trimming?id=<?= $pet['id'] ?>" class="card-welcome">
                     <div class="feature-icon-box">
                         <img src="public/img/paw.png" class="feature-icon">
                     </div>
                     <span class="care-label-main">Trimming claws</span>
-                    <span class="care-label-sub">Last time</span>
-                    <span class="care-label-sub">18/08/2025</span>
+                    <span class="care-label-sub">Check history</span>
                 </a>
 
             </div>
 
             <div class="card-weight">
-                <h2 class="history-title">Weight history</h2>
+                <h2 class="history-title">Weight history summary</h2>
                 <div class="history-list">
                     <div class="history-item">
-                        <span>15/08/2025</span>
-                        <span class="history-value">5,2 kg</span>
-                    </div>
-                    <div class="history-item">
-                        <span>03/05/2025</span>
-                        <span class="history-value">4,9 kg</span>
+                        <span>Click "Weight" above to see full history.</span>
                     </div>
                 </div>
             </div>

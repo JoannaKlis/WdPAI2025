@@ -32,7 +32,6 @@ CREATE TABLE pet_weights (
     weight DECIMAL(10,2) NOT NULL,
     unit VARCHAR(10) NOT NULL CHECK (unit IN ('g', 'kg')),
     recorded_date DATE NOT NULL,
-    recorded_time TIME,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

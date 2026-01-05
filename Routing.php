@@ -60,7 +60,7 @@ class Routing {
             "action" => "deletePet"
         ],
         "care" => [
-            "controller" => "SecurityController",
+            "controller" => "PetController",
             "action" => "care"
         ],
         "healthBook" => [
@@ -88,7 +88,7 @@ class Routing {
             "action" => "visits"
         ],
         "weight" => [
-            "controller" => "SecurityController",
+            "controller" => "PetController",
             "action" => "weight"
         ],
         "groom" => [
@@ -128,8 +128,12 @@ class Routing {
             "action" => "addVisit"
         ],
         "addWeight" => [
-            "controller" => "SecurityController",
+            "controller" => "PetController",
             "action" => "addWeight"
+        ],
+        "deleteWeight" => [
+            "controller" => "PetController",
+            "action" => "deleteWeight"
         ],
         "addGroom" => [
             "controller" => "SecurityController",

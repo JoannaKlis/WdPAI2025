@@ -84,4 +84,45 @@ public function updatePet(int $id, array $data, ?string $pictureUrl = null): voi
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
     }
+
+    public function getPetWeights(int $petId): array {
+        $stmt = $this->database->connect()->prepare('
+            SELECT * FROM pet_weights 
+            WHERE pet_id = :petId 
+            ORDER BY recorded_date DESC, id DESC
+        ');
+        $stmt->bindParam(':petId', $petId, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function addPetWeight(int $petId, array $data): void {
+        $stmt = $this->database->connect()->prepare('
+            INSERT INTO pet_weights (pet_id, weight, unit, recorded_date)
+            VALUES (?, ?, ?, ?)
+        ');
+
+        $stmt->execute([
+            $petId,
+            $data['weight'],
+            $data['unit'],
+            $data['date']
+        ]);
+    }
+
+    public function getWeightById(int $weightId): ?array {
+        $stmt = $this->database->connect()->prepare('SELECT * FROM pet_weights WHERE id = :id');
+        $stmt->bindParam(':id', $weightId, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+    }
+
+    public function deletePetWeight(int $id): void {
+        $stmt = $this->database->connect()->prepare('
+            DELETE FROM pet_weights WHERE id = :id
+            ');
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+    }
 }

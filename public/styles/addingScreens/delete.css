@@ -65,8 +65,3 @@ body {
     border: none;
     cursor: pointer;
 }
-
-.right-actions {
-    display: flex;
-    gap: 0.75vw;
-}

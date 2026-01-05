@@ -140,4 +140,100 @@ class PetController extends AppController {
         header("Location: http://$_SERVER[HTTP_HOST]/pets");
         exit;
     }
+
+    public function care() {
+        session_start();
+        $userId = $_SESSION['user_id'] ?? null;
+        $petId = $_GET['id'] ?? null;
+
+        if (!$petId || !$userId) {
+            header("Location: /pets");
+            exit;
+        }
+
+        // pobranie danych zwierzaka
+        $pet = $this->petRepository->getPetById((int)$petId);
+
+        // walidacja właściciela
+        if (!$pet || $pet['user_id'] !== $userId) {
+            return $this->render('404');
+        }
+
+        return $this->render('care/care', ['pet' => $pet]);
+    }
+
+    public function weight() {
+        session_start();
+        $userId = $_SESSION['user_id'] ?? null;
+        $petId = $_GET['id'] ?? null;
+
+        if (!$petId || !$userId) {
+            header("Location: /pets");
+            exit;
+        }
+
+        // pobranie danych zwierzaka (dla nagłówka, zdjęcia itp.)
+        $pet = $this->petRepository->getPetById((int)$petId);
+        
+        // walidacja czy to zwierzak zalogowanego użytkownika
+        if (!$pet || $pet['user_id'] !== $userId) {
+            return $this->render('404');
+        }
+
+        // pobranie historii wagi
+        $weights = $this->petRepository->getPetWeights((int)$petId);
+
+        return $this->render('care/weight', ['pet' => $pet, 'weights' => $weights]);
+    }
+
+    public function addWeight() {
+        session_start();
+        $userId = $_SESSION['user_id'] ?? null;
+        // ID może przyjść z GET (wyświetlenie formularza) lub POST (wysłanie formularza)
+        $petId = $_REQUEST['id'] ?? null;
+
+        if (!$petId || !$userId) {
+            header("Location: /pets");
+            exit;
+        }
+
+        // walidacja właściciela
+        $pet = $this->petRepository->getPetById((int)$petId);
+        if (!$pet || $pet['user_id'] !== $userId) {
+            return $this->render('404');
+        }
+
+        if ($this->isPost()) {
+            $this->petRepository->addPetWeight((int)$petId, $_POST);
+            
+            // powrót do listy wag tego zwierzaka
+            header("Location: /weight?id=" . $petId);
+            exit;
+        }
+
+        // wyświetlenie formularza - przekazanie petId, żeby formularz wiedział gdzie wysłać POST
+        return $this->render('care/addWeight', ['petId' => $petId]);
+    }
+
+    public function deleteWeight() {
+        session_start();
+        $userId = $_SESSION['user_id'] ?? null;
+        if (!$this->isPost() || !$userId) { header("Location: /pets"); exit; }
+
+        $weightId = $_POST['weight_id'] ?? null;
+        
+        // sprawdzenie czy waga istnieje
+        $weightEntry = $this->petRepository->getWeightById((int)$weightId);
+        if (!$weightEntry) { header("Location: /pets"); exit; }
+
+        // sprawdzenie czy zwierzak należy do użytkownika
+        $pet = $this->petRepository->getPetById($weightEntry['pet_id']);
+        if ($pet && (int)$pet['user_id'] === (int)$userId) {
+            $this->petRepository->deletePetWeight((int)$weightId);
+        }
+
+        // powrót do widoku wagi
+        header("Location: /weight?id=" . $weightEntry['pet_id']);
+        exit;
+    }
 }
