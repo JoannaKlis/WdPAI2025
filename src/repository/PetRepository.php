@@ -165,4 +165,44 @@ public function updatePet(int $id, array $data, ?string $pictureUrl = null): voi
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
     }
+
+    public function getPetShearing(int $petId): array {
+        $stmt = $this->database->connect()->prepare('
+            SELECT * FROM pet_shearing 
+            WHERE pet_id = :petId 
+            ORDER BY shearing_date DESC, id DESC
+        ');
+        $stmt->bindParam(':petId', $petId, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function addPetShearing(int $petId, array $data): void {
+        $stmt = $this->database->connect()->prepare('
+            INSERT INTO pet_shearing (pet_id, name, shearing_date)
+            VALUES (?, ?, ?)
+        ');
+
+        $stmt->execute([
+            $petId,
+            $data['name'],
+            $data['date']
+        ]);
+    }
+
+    public function getShearingById(int $id): ?array {
+        $stmt = $this->database->connect()->prepare('SELECT * FROM pet_shearing WHERE id = :id');
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+    }
+
+    public function deletePetShearing(int $id): void {
+        $stmt = $this->database->connect()->prepare('
+            DELETE FROM pet_shearing WHERE id = :id
+        ');
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+    }
 }

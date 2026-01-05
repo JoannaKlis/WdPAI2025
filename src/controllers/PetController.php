@@ -300,4 +300,68 @@ class PetController extends AppController {
         header("Location: /groom?id=" . $entry['pet_id']);
         exit;
     }
+
+    public function shearing() {
+        session_start();
+        $userId = $_SESSION['user_id'] ?? null;
+        $petId = $_GET['id'] ?? null;
+
+        if (!$petId || !$userId) {
+            header("Location: /pets");
+            exit;
+        }
+
+        $pet = $this->petRepository->getPetById((int)$petId);
+        if (!$pet || $pet['user_id'] !== $userId) {
+            return $this->render('404');
+        }
+
+        // pobranie listy strzyżeń
+        $shearingList = $this->petRepository->getPetShearing((int)$petId);
+
+        return $this->render('care/shearing', ['pet' => $pet, 'shearingList' => $shearingList]);
+    }
+
+    public function addShearing() {
+        session_start();
+        $userId = $_SESSION['user_id'] ?? null;
+        $petId = $_REQUEST['id'] ?? null;
+
+        if (!$petId || !$userId) {
+            header("Location: /pets");
+            exit;
+        }
+
+        $pet = $this->petRepository->getPetById((int)$petId);
+        if (!$pet || $pet['user_id'] !== $userId) {
+            return $this->render('404');
+        }
+
+        if ($this->isPost()) {
+            $this->petRepository->addPetShearing((int)$petId, $_POST);
+            header("Location: /shearing?id=" . $petId);
+            exit;
+        }
+
+        return $this->render('care/addShearing', ['petId' => $petId]);
+    }
+
+    public function deleteShearing() {
+        session_start();
+        $userId = $_SESSION['user_id'] ?? null;
+        if (!$this->isPost() || !$userId) { header("Location: /pets"); exit; }
+
+        $shearingId = $_POST['shearing_id'] ?? null;
+        
+        $entry = $this->petRepository->getShearingById((int)$shearingId);
+        if (!$entry) { header("Location: /pets"); exit; }
+
+        $pet = $this->petRepository->getPetById($entry['pet_id']);
+        if ($pet && (int)$pet['user_id'] === (int)$userId) {
+            $this->petRepository->deletePetShearing((int)$shearingId);
+        }
+
+        header("Location: /shearing?id=" . $entry['pet_id']);
+        exit;
+    }
 }
