@@ -12,59 +12,67 @@
     <form class="wrapper" method="POST" action="/healthBook">
         
         <div class="top-bar top-bar-clear">
-            <a href="/features" class="back-arrow">&lt;</a> 
+            <a href="/features?id=<?= $pet['id'] ?>" class="back-arrow">&lt;</a> 
             <h1>Health book</h1>
         </div>
 
         <div class="pet-header-container">
             <div class="pet-photo-circle">
-                <img src="public/img/simba.png" alt="Simba">
+                <img src="<?= $pet['picture_url'] ? $pet['picture_url'] : 'public/img/default_pet.png' ?>" alt="<?= $pet['name'] ?>">
             </div>
-            <div class="pet-name-display">Simba</div>
+            <div class="pet-name-display"><?= $pet['name'] ?></div>
         </div>
 
         <div class="card-container-welcome features-grid">
 
-            <a href="/vaccinations" class="card-welcome feature-tile">
+            <a href="/vaccinations?id=<?= $pet['id'] ?>" class="card-welcome feature-tile">
                 <div class="feature-icon-box health-box">
                     <img src="public/img/vaccinations.png" class="feature-icon">
                 </div>
                 <div class="feature-text-container">
                     <span class="feature-text book-text">Vaccinations</span>
-                    <span class="subtext">3 entries</span>
+                    <span class="subtext">
+                        <?= count($vaccinations) ?> entry(s)
+                    </span>
                 </div>
                 <span class="feature-arrow">&gt;</span>
             </a>
 
-            <a href="/treatments" class="card-welcome feature-tile">
+            <a href="/treatments?id=<?= $pet['id'] ?>" class="card-welcome feature-tile">
                 <div class="feature-icon-box health-box">
                     <img src="public/img/treatments.png" class="feature-icon">
                 </div>
                 <div class="feature-text-container">
                     <span class="feature-text book-text">Treatments and surgeries</span>
-                    <span class="subtext">1 entry</span>
+                    <span class="subtext">
+                        <?= count($treatments) ?> entry(s)
+                    </span>
                 </div>
                 <span class="feature-arrow">&gt;</span>
             </a>
 
-            <a href="/deworming" class="card-welcome feature-tile">
+            <a href="/deworming?id=<?= $pet['id'] ?>" class="card-welcome feature-tile">
                 <div class="feature-icon-box health-box">
                     <img src="public/img/deworming.png" class="feature-icon">
                 </div>
                 <div class="feature-text-container">
                     <span class="feature-text book-text">Deworming</span>
-                    <span class="subtext">Last: 15/05/2025</span>
+                    <span class="subtext">
+                        Last: <?= !empty($deworming) ? date('d.m.Y', strtotime($deworming[0]['deworming_date'])) : '-' ?>
+                    </span>
                 </div>
                 <span class="feature-arrow">&gt;</span>
             </a>
 
-            <a href="/visits" class="card-welcome feature-tile">
+            <a href="/visits?id=<?= $pet['id'] ?>" class="card-welcome feature-tile">
                 <div class="feature-icon-box health-box">
                     <img src="public/img/visits.png" class="feature-icon">
                 </div>
                 <div class="feature-text-container">
                     <span class="feature-text book-text">Visits to the vet</span>
-                    <span class="subtext">Last: 20/10/2025</span>
+                    <span class="subtext">
+                        Last: <?= !empty($visits) ? date('d.m.Y', strtotime($visits[0]['visit_date'])) : '-' ?>
+                    </span>
                 </div>
                 <span class="feature-arrow">&gt;</span>
             </a>

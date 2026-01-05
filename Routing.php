@@ -64,7 +64,7 @@ class Routing {
             "action" => "care"
         ],
         "healthBook" => [
-            "controller" => "SecurityController",
+            "controller" => "PetController",
             "action" => "healthBook"
         ],
         "nutrition" => [
@@ -72,19 +72,19 @@ class Routing {
             "action" => "nutrition"
         ],
         "vaccinations" => [
-            "controller" => "SecurityController",
+            "controller" => "PetController",
             "action" => "vaccinations"
         ],
         "treatments" => [
-            "controller" => "SecurityController",
+            "controller" => "PetController",
             "action" => "treatments"
         ],
         "deworming" => [
-            "controller" => "SecurityController",
+            "controller" => "PetController",
             "action" => "deworming"
         ],
         "visits" => [
-            "controller" => "SecurityController",
+            "controller" => "PetController",
             "action" => "visits"
         ],
         "weight" => [
@@ -112,20 +112,36 @@ class Routing {
             "action" => "addEvent"
         ],
         "addVaccination" => [
-            "controller" => "SecurityController",
+            "controller" => "PetController",
             "action" => "addVaccination"
         ],
+        "deleteVaccination" => [
+            "controller" => "PetController",
+            "action" => "deleteVaccination"
+        ],
         "addDeworming" => [
-            "controller" => "SecurityController",
+            "controller" => "PetController",
             "action" => "addDeworming"
         ],
+        "deleteDeworming" => [
+            "controller" => "PetController",
+            "action" => "deleteDeworming"
+        ],
         "addTreatment" => [
-            "controller" => "SecurityController",
+            "controller" => "PetController",
             "action" => "addTreatment"
         ],
+        "deleteTreatment" => [
+            "controller" => "PetController",
+            "action" => "deleteTreatment"
+        ],
         "addVisit" => [
-            "controller" => "SecurityController",
+            "controller" => "PetController",
             "action" => "addVisit"
+        ],
+        "deleteVisit" => [
+            "controller" => "PetController",
+            "action" => "deleteVisit"
         ],
         "addWeight" => [
             "controller" => "PetController",

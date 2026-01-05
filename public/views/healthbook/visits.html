@@ -4,67 +4,64 @@
 <link rel="stylesheet" type= "text/css" href="public/styles/features.css">
 <link rel="stylesheet" type= "text/css" href="public/styles/pets.css">
 <link rel="stylesheet" type= "text/css" href="public/styles/vaccinations.css">
+<link rel="stylesheet" type= "text/css" href="public/styles/addingScreens/delete.css">
 
     <title>Visits</title>
 </head>
 
 <body>
-    <form class="wrapper" method="POST" action="/treatments">
-        
+    <div class="wrapper">
         <div class="top-bar">
-            <a href="/healthBook" class="back-arrow">&lt;</a> 
+            <a href="/healthBook?id=<?= $pet['id'] ?>" class="back-arrow">&lt;</a> 
             <h1>Visits to the vet</h1>
             
             <div class="profile-pic-container profile-mini">
-                <a href="/features">
+                <a href="/features?id=<?= $pet['id'] ?>">
                     <div class="profile-pic"> 
-                        <img src="public/img/simba.png" alt="Simba" class="profile-icon-main pet-mini-fix">
+                        <img src="<?= $pet['picture_url'] ? $pet['picture_url'] : 'public/img/default_pet.png' ?>" class="pet-mini-fix">
                     </div>
                 </a>
             </div>
         </div>
 
         <div class="vaccinations-list">
-
-            <a href="/visitsDetails" class="card-welcome vaccination-item">
-                <div class="feature-icon-box health-box">
-                    <img src="public/img/visits.png" class="feature-icon">
-                </div>
-                <div class="feature-text-container">
-                    <span class="feature-text">Follow-up visit</span>
-                    <span class="feature-subtext">20/10/2025</span>
-                    <span class="feature-subtext">10:00</span>
-                </div>
-                <span class="feature-arrow">&gt;</span>
-            </a>
-
-            <a href="/visitsDetails" class="card-welcome vaccination-item">
-                <div class="feature-icon-box health-box">
-                    <img src="public/img/visits.png" class="feature-icon">
-                </div>
-                <div class="feature-text-container">
-                    <span class="feature-text">Deworming</span>
-                    <span class="feature-subtext">15/05/2025</span>
-                    <span class="feature-subtext">14:00</span>
-                </div>
-                <span class="feature-arrow">&gt;</span>
-            </a>
-
-            <a href="/visitsDetails" class="card-welcome vaccination-item">
-                <div class="feature-icon-box health-box">
-                    <img src="public/img/visits.png" class="feature-icon">
-                </div>
-                <div class="feature-text-container">
-                    <span class="feature-text">Rabies vaccination</span>
-                    <span class="feature-subtext">24/08/2024</span>
-                    <span class="feature-subtext">09:00</span>
-                </div>
-                <span class="feature-arrow">&gt;</span>
-            </a>
+            <?php if(empty($list)): ?>
+                <div class="card-name" style="text-align: center; margin-top: 20px;">No visits recorded yet.</div>
+            <?php else: ?>
+                <?php foreach ($list as $item): ?>
+                    <div class="card-welcome vaccination-item">
+                        <div class="feature-icon-box health-box">
+                            <img src="public/img/visits.png" class="feature-icon">
+                        </div>
+                        <div class="feature-text-container">
+                            <span class="feature-text"><?= $item['visit_name'] ?></span>
+                            <span class="feature-subtext"><?= date('d.m.Y', strtotime($item['visit_date'])) ?></span>
+                            <span class="feature-subtext"><?= $item['visit_time'] ? date('H:i', strtotime($item['visit_time'])) : '' ?></span>
+                        </div>
+                        <button type="button" class="action-btn delete-btn" data-id="<?= $item['id'] ?>" onclick="openDeleteModal(this.dataset.id)" style="margin-left: auto;">
+                            <img src="public/img/delete.png" alt="Delete">
+                        </button>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
         </div>
 
-        <a href="/addVisit" class="button add-button">+</a>
+        <a href="/addVisit?id=<?= $pet['id'] ?>" class="button add-button">+</a>
 
-    </form>
+        <div id="deleteModal" class="modal-overlay">
+            <div class="modal-box">
+                <h3>Are you sure?</h3>
+                <p>Do you really want to delete this visit?</p>
+                <div class="modal-buttons">
+                    <button type="button" class="btn-cancel" onclick="closeDeleteModal()">Cancel</button>
+                    <form action="/deleteVisit" method="POST" style="margin:0;">
+                        <input type="hidden" name="id" id="modalWeightId" value="">
+                        <button type="submit" class="btn-delete">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="public/scripts/deleteWindow.js" defer></script>
 </body>
 </html>

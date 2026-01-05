@@ -444,4 +444,222 @@ class PetController extends AppController {
         header("Location: /trimming?id=" . $entry['pet_id']);
         exit;
     }
+
+    public function healthBook() {
+        session_start();
+        $userId = $_SESSION['user_id'] ?? null;
+        $petId = $_GET['id'] ?? null;
+
+        if (!$petId || !$userId) {
+            header("Location: /pets");
+            exit;
+        }
+
+        $pet = $this->petRepository->getPetById((int)$petId);
+        if (!$pet || $pet['user_id'] !== $userId) {
+            return $this->render('404');
+        }
+
+        // pobranie listy, aby wyświetlić liczniki i ostatnie daty na kafelkach
+        $vaccinations = $this->petRepository->getPetVaccinations((int)$petId);
+        $treatments = $this->petRepository->getPetTreatments((int)$petId);
+        $deworming = $this->petRepository->getPetDeworming((int)$petId);
+        $visits = $this->petRepository->getPetVisits((int)$petId);
+
+        return $this->render('healthbook/healthBook', [
+            'pet' => $pet,
+            'vaccinations' => $vaccinations,
+            'treatments' => $treatments,
+            'deworming' => $deworming,
+            'visits' => $visits
+        ]);
+    }
+
+    public function vaccinations() {
+        session_start();
+        $userId = $_SESSION['user_id'] ?? null;
+        $petId = $_GET['id'] ?? null;
+        if (!$petId || !$userId) { header("Location: /pets"); exit; }
+
+        $pet = $this->petRepository->getPetById((int)$petId);
+        if (!$pet || $pet['user_id'] !== $userId) { return $this->render('404'); }
+
+        $list = $this->petRepository->getPetVaccinations((int)$petId);
+        return $this->render('healthbook/vaccinations', ['pet' => $pet, 'list' => $list]);
+    }
+
+    public function addVaccination() {
+        session_start();
+        $userId = $_SESSION['user_id'] ?? null;
+        $petId = $_REQUEST['id'] ?? null;
+        if (!$petId || !$userId) { header("Location: /pets"); exit; }
+
+        $pet = $this->petRepository->getPetById((int)$petId);
+        if (!$pet || $pet['user_id'] !== $userId) { return $this->render('404'); }
+
+        if ($this->isPost()) {
+            $this->petRepository->addPetVaccination((int)$petId, $_POST);
+            header("Location: /vaccinations?id=" . $petId);
+            exit;
+        }
+        return $this->render('healthbook/addVaccination', ['petId' => $petId]);
+    }
+
+    public function deleteVaccination() {
+        session_start();
+        $userId = $_SESSION['user_id'] ?? null;
+        if (!$this->isPost() || !$userId) { header("Location: /pets"); exit; }
+
+        $id = $_POST['id'] ?? null;
+        $entry = $this->petRepository->getVaccinationById((int)$id);
+        if (!$entry) { header("Location: /pets"); exit; }
+
+        $pet = $this->petRepository->getPetById($entry['pet_id']);
+        if ($pet && (int)$pet['user_id'] === (int)$userId) {
+            $this->petRepository->deletePetVaccination((int)$id);
+        }
+        header("Location: /vaccinations?id=" . $entry['pet_id']);
+        exit;
+    }
+
+    public function treatments() {
+        session_start();
+        $userId = $_SESSION['user_id'] ?? null;
+        $petId = $_GET['id'] ?? null;
+        if (!$petId || !$userId) { header("Location: /pets"); exit; }
+
+        $pet = $this->petRepository->getPetById((int)$petId);
+        if (!$pet || $pet['user_id'] !== $userId) { return $this->render('404'); }
+
+        $list = $this->petRepository->getPetTreatments((int)$petId);
+        return $this->render('healthbook/treatments', ['pet' => $pet, 'list' => $list]);
+    }
+
+    public function addTreatment() {
+        session_start();
+        $userId = $_SESSION['user_id'] ?? null;
+        $petId = $_REQUEST['id'] ?? null;
+        if (!$petId || !$userId) { header("Location: /pets"); exit; }
+
+        $pet = $this->petRepository->getPetById((int)$petId);
+        if (!$pet || $pet['user_id'] !== $userId) { return $this->render('404'); }
+
+        if ($this->isPost()) {
+            $this->petRepository->addPetTreatment((int)$petId, $_POST);
+            header("Location: /treatments?id=" . $petId);
+            exit;
+        }
+        return $this->render('healthbook/addTreatment', ['petId' => $petId]);
+    }
+
+    public function deleteTreatment() {
+        session_start();
+        $userId = $_SESSION['user_id'] ?? null;
+        if (!$this->isPost() || !$userId) { header("Location: /pets"); exit; }
+
+        $id = $_POST['id'] ?? null;
+        $entry = $this->petRepository->getTreatmentById((int)$id);
+        if (!$entry) { header("Location: /pets"); exit; }
+
+        $pet = $this->petRepository->getPetById($entry['pet_id']);
+        if ($pet && (int)$pet['user_id'] === (int)$userId) {
+            $this->petRepository->deletePetTreatment((int)$id);
+        }
+        header("Location: /treatments?id=" . $entry['pet_id']);
+        exit;
+    }
+
+    public function deworming() {
+        session_start();
+        $userId = $_SESSION['user_id'] ?? null;
+        $petId = $_GET['id'] ?? null;
+        if (!$petId || !$userId) { header("Location: /pets"); exit; }
+
+        $pet = $this->petRepository->getPetById((int)$petId);
+        if (!$pet || $pet['user_id'] !== $userId) { return $this->render('404'); }
+
+        $list = $this->petRepository->getPetDeworming((int)$petId);
+        return $this->render('healthbook/deworming', ['pet' => $pet, 'list' => $list]);
+    }
+
+    public function addDeworming() {
+        session_start();
+        $userId = $_SESSION['user_id'] ?? null;
+        $petId = $_REQUEST['id'] ?? null;
+        if (!$petId || !$userId) { header("Location: /pets"); exit; }
+
+        $pet = $this->petRepository->getPetById((int)$petId);
+        if (!$pet || $pet['user_id'] !== $userId) { return $this->render('404'); }
+
+        if ($this->isPost()) {
+            $this->petRepository->addPetDeworming((int)$petId, $_POST);
+            header("Location: /deworming?id=" . $petId);
+            exit;
+        }
+        return $this->render('healthbook/addDeworming', ['petId' => $petId]);
+    }
+
+    public function deleteDeworming() {
+        session_start();
+        $userId = $_SESSION['user_id'] ?? null;
+        if (!$this->isPost() || !$userId) { header("Location: /pets"); exit; }
+
+        $id = $_POST['id'] ?? null;
+        $entry = $this->petRepository->getDewormingById((int)$id);
+        if (!$entry) { header("Location: /pets"); exit; }
+
+        $pet = $this->petRepository->getPetById($entry['pet_id']);
+        if ($pet && (int)$pet['user_id'] === (int)$userId) {
+            $this->petRepository->deletePetDeworming((int)$id);
+        }
+        header("Location: /deworming?id=" . $entry['pet_id']);
+        exit;
+    }
+
+    public function visits() {
+        session_start();
+        $userId = $_SESSION['user_id'] ?? null;
+        $petId = $_GET['id'] ?? null;
+        if (!$petId || !$userId) { header("Location: /pets"); exit; }
+
+        $pet = $this->petRepository->getPetById((int)$petId);
+        if (!$pet || $pet['user_id'] !== $userId) { return $this->render('404'); }
+
+        $list = $this->petRepository->getPetVisits((int)$petId);
+        return $this->render('healthbook/visits', ['pet' => $pet, 'list' => $list]);
+    }
+
+    public function addVisit() {
+        session_start();
+        $userId = $_SESSION['user_id'] ?? null;
+        $petId = $_REQUEST['id'] ?? null;
+        if (!$petId || !$userId) { header("Location: /pets"); exit; }
+
+        $pet = $this->petRepository->getPetById((int)$petId);
+        if (!$pet || $pet['user_id'] !== $userId) { return $this->render('404'); }
+
+        if ($this->isPost()) {
+            $this->petRepository->addPetVisit((int)$petId, $_POST);
+            header("Location: /visits?id=" . $petId);
+            exit;
+        }
+        return $this->render('healthbook/addVisit', ['petId' => $petId]);
+    }
+
+    public function deleteVisit() {
+        session_start();
+        $userId = $_SESSION['user_id'] ?? null;
+        if (!$this->isPost() || !$userId) { header("Location: /pets"); exit; }
+
+        $id = $_POST['id'] ?? null;
+        $entry = $this->petRepository->getVisitById((int)$id);
+        if (!$entry) { header("Location: /pets"); exit; }
+
+        $pet = $this->petRepository->getPetById($entry['pet_id']);
+        if ($pet && (int)$pet['user_id'] === (int)$userId) {
+            $this->petRepository->deletePetVisit((int)$id);
+        }
+        header("Location: /visits?id=" . $entry['pet_id']);
+        exit;
+    }
 }
