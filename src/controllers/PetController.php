@@ -159,7 +159,23 @@ class PetController extends AppController {
             return $this->render('404');
         }
 
-        return $this->render('care/care', ['pet' => $pet]);
+        // pobranie historii (Repository zwraca je posortowane datami malejąco)
+        $weights = $this->petRepository->getPetWeights((int)$petId);
+        $grooming = $this->petRepository->getPetGrooming((int)$petId);
+        $shearing = $this->petRepository->getPetShearing((int)$petId);
+        $trimming = $this->petRepository->getPetTrimming((int)$petId);
+
+        // przygotowanie danych dla widoku, pobranie 4 najnowszych wpisów wagi do sekcji summary
+        $recentWeights = array_slice($weights, 0, 4);
+
+        return $this->render('care/care', [
+            'pet' => $pet,
+            'latestWeight' => $weights[0] ?? null,      // najnowszy wpis lub null
+            'latestGroom' => $grooming[0] ?? null,
+            'latestShearing' => $shearing[0] ?? null,
+            'latestTrimming' => $trimming[0] ?? null,
+            'recentWeights' => $recentWeights           // tablica 4 ostatnich wag
+        ]);
     }
 
     public function weight() {

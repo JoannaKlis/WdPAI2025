@@ -32,7 +32,9 @@
                             <img src="public/img/weight.png" class="feature-icon">
                     </div>
                     <span class="care-label-main">Weight</span>
-                    <span class="care-label-sub">Check history</span>
+                    <span class="care-label-sub">
+                        <?= $latestWeight ? date('d.m.Y', strtotime($latestWeight['recorded_date'])) : 'Check history' ?>
+                    </span>
                 </a>
 
                 <a href="/groom?id=<?= $pet['id'] ?>" class="card-welcome">
@@ -40,7 +42,9 @@
                         <img src="public/img/shower.png" class="feature-icon">
                     </div>
                     <span class="care-label-main">Groom</span>
-                    <span class="care-label-sub">Check history</span>
+                    <span class="care-label-sub">
+                        <?= $latestGroom ? date('d.m.Y', strtotime($latestGroom['groom_date'])) : 'Check history' ?>
+                    </span>
                 </a>
 
                 <a href="/shearing?id=<?= $pet['id'] ?>" class="card-welcome">
@@ -48,7 +52,9 @@
                         <img src="public/img/scissors.png" class="feature-icon">
                     </div>
                     <span class="care-label-main">Shearing</span>
-                    <span class="care-label-sub">Check history</span>
+                    <span class="care-label-sub">
+                        <?= $latestShearing ? date('d.m.Y', strtotime($latestShearing['shearing_date'])) : 'Check history' ?>
+                    </span>
                 </a>
 
                 <a href="/trimming?id=<?= $pet['id'] ?>" class="card-welcome">
@@ -56,7 +62,9 @@
                         <img src="public/img/paw.png" class="feature-icon">
                     </div>
                     <span class="care-label-main">Trimming claws</span>
-                    <span class="care-label-sub">Check history</span>
+                    <span class="care-label-sub">
+                        <?= $latestTrimming ? date('d.m.Y', strtotime($latestTrimming['trimming_date'])) : 'Check history' ?>
+                    </span>
                 </a>
 
             </div>
@@ -64,9 +72,20 @@
             <div class="card-weight">
                 <h2 class="history-title">Weight history summary</h2>
                 <div class="history-list">
-                    <div class="history-item">
-                        <span>Click "Weight" above to see full history.</span>
-                    </div>
+                    
+                    <?php if (empty($recentWeights)): ?>
+                        <div class="history-item">
+                            <span>No weight recorded yet.</span>
+                        </div>
+                    <?php else: ?>
+                        <?php foreach ($recentWeights as $w): ?>
+                            <div class="history-item">
+                                <span><?= date('d.m.Y', strtotime($w['recorded_date'])) ?></span>
+                                <span class="history-value"><?= $w['weight'] ?> <?= $w['unit'] ?></span>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+
                 </div>
             </div>
 
