@@ -4,54 +4,74 @@
 <link rel="stylesheet" type= "text/css" href="public/styles/features.css">
 <link rel="stylesheet" type= "text/css" href="public/styles/pets.css">
 <link rel="stylesheet" type= "text/css" href="public/styles/vaccinations.css">
+<link rel="stylesheet" type= "text/css" href="public/styles/addingScreens/delete.css">
 
-    <title>Trimming</title>
+    <title>Trimming History</title>
 </head>
 
 <body>
-    <form class="wrapper" method="POST" action="/trimming">
+    <div class="wrapper">
         
         <div class="top-bar">
-            <a href="/care" class="back-arrow">&lt;</a> 
+            <a href="/care?id=<?= $pet['id'] ?>" class="back-arrow">&lt;</a> 
             <h1>Trimming</h1>
             
             <div class="profile-pic-container profile-mini">
-                <a href="/features">
+                <a href="/features?id=<?= $pet['id'] ?>">
                     <div class="profile-pic"> 
-                        <img src="public/img/simba.png" alt="Simba" class="profile-icon-main pet-mini-fix">
+                        <img src="<?= $pet['picture_url'] ? $pet['picture_url'] : 'public/img/default_pet.png' ?>" 
+                             alt="<?= $pet['name'] ?>" class="pet-mini-fix">
                     </div>
                 </a>
             </div>
         </div>
 
         <div class="vaccinations-list">
-
-            <a href="/weightDetails" class="card-welcome vaccination-item">
-                <div class="feature-icon-box health-box">
-                    <img src="public/img/paw.png" class="feature-icon">
-                </div>
-                <div class="feature-text-container">
-                    <span class="feature-text">Trimming claws 2</span>
-                    <span class="feature-subtext">18/08/2025</span>
-                </div>
-                <span class="feature-arrow">&gt;</span>
-            </a>
-
-            <a href="/weightDetails" class="card-welcome vaccination-item">
-                <div class="feature-icon-box health-box">
-                    <img src="public/img/paw.png" class="feature-icon">
-                </div>
-                <div class="feature-text-container">
-                    <span class="feature-text">Trimming claws 1</span>
-                    <span class="feature-subtext">01/07/2025</span>
-                </div>
-                <span class="feature-arrow">&gt;</span>
-            </a>
-
+            <?php if(empty($trimmingList)): ?>
+                <div class="card-name" style="text-align: center; margin-top: 20px;">No trimming history yet.</div>
+            <?php else: ?>
+                <?php foreach ($trimmingList as $item): ?>
+                    <div class="card-welcome vaccination-item">
+                        <div class="feature-icon-box health-box">
+                            <img src="public/img/paw.png" class="feature-icon">
+                        </div>
+                        <div class="feature-text-container">
+                            <span class="feature-text"><?= $item['name'] ?></span>
+                            <span class="feature-subtext">
+                                <?= date('d.m.Y', strtotime($item['trimming_date'])) ?>
+                            </span>
+                        </div>
+                        
+                        <button type="button" 
+                            class="action-btn delete-btn" 
+                            data-id="<?= $item['id'] ?>" 
+                            onclick="openDeleteModal(this.dataset.id)" 
+                            style="margin-left: auto;">
+                            <img src="public/img/delete.png" alt="Delete">
+                        </button>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
         </div>
 
-        <a href="/addTrimming" class="button add-button">+</a>
+        <a href="/addTrimming?id=<?= $pet['id'] ?>" class="button add-button">+</a>
 
-    </form>
+        <div id="deleteModal" class="modal-overlay">
+            <div class="modal-box">
+                <h3>Are you sure?</h3>
+                <p>Do you really want to delete this entry?</p>
+                <div class="modal-buttons">
+                    <button type="button" class="btn-cancel" onclick="closeDeleteModal()">Cancel</button>
+                
+                    <form action="/deleteTrimming" method="POST" style="margin:0;">
+                        <input type="hidden" name="trimming_id" id="modalWeightId" value="">
+                        <button type="submit" class="btn-delete">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="public/scripts/deleteWindow.js" defer></script>
 </body>
 </html>

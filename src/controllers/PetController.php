@@ -364,4 +364,68 @@ class PetController extends AppController {
         header("Location: /shearing?id=" . $entry['pet_id']);
         exit;
     }
+
+    public function trimming() {
+        session_start();
+        $userId = $_SESSION['user_id'] ?? null;
+        $petId = $_GET['id'] ?? null;
+
+        if (!$petId || !$userId) {
+            header("Location: /pets");
+            exit;
+        }
+
+        $pet = $this->petRepository->getPetById((int)$petId);
+        if (!$pet || $pet['user_id'] !== $userId) {
+            return $this->render('404');
+        }
+
+        // pobranie listy
+        $trimmingList = $this->petRepository->getPetTrimming((int)$petId);
+
+        return $this->render('care/trimming', ['pet' => $pet, 'trimmingList' => $trimmingList]);
+    }
+
+    public function addTrimming() {
+        session_start();
+        $userId = $_SESSION['user_id'] ?? null;
+        $petId = $_REQUEST['id'] ?? null;
+
+        if (!$petId || !$userId) {
+            header("Location: /pets");
+            exit;
+        }
+
+        $pet = $this->petRepository->getPetById((int)$petId);
+        if (!$pet || $pet['user_id'] !== $userId) {
+            return $this->render('404');
+        }
+
+        if ($this->isPost()) {
+            $this->petRepository->addPetTrimming((int)$petId, $_POST);
+            header("Location: /trimming?id=" . $petId);
+            exit;
+        }
+
+        return $this->render('care/addTrimming', ['petId' => $petId]);
+    }
+
+    public function deleteTrimming() {
+        session_start();
+        $userId = $_SESSION['user_id'] ?? null;
+        if (!$this->isPost() || !$userId) { header("Location: /pets"); exit; }
+
+        $trimmingId = $_POST['trimming_id'] ?? null;
+        
+        $entry = $this->petRepository->getTrimmingById((int)$trimmingId);
+        if (!$entry) { header("Location: /pets"); exit; }
+
+        $pet = $this->petRepository->getPetById($entry['pet_id']);
+        if ($pet && (int)$pet['user_id'] === (int)$userId) {
+            $this->petRepository->deletePetTrimming((int)$trimmingId);
+        }
+
+        header("Location: /trimming?id=" . $entry['pet_id']);
+        exit;
+    }
 }

@@ -7,18 +7,15 @@
 </head>
 
 <body>
-    <form class="modal-content wrapper" method="POST" action="/addTrimming">
+    <form class="modal-content wrapper" method="POST" action="/addTrimming?id=<?= $petId ?>">
             
         <div class="modal-header-actions">
-            <a href="/trimming" class="action-btn close-btn">
+            <a href="/trimming?id=<?= $petId ?>" class="action-btn close-btn">
                 <img src="public/img/cancel.png" alt="Close">
             </a>
             <div class="right-actions">
                 <button type="submit" class="action-btn save-btn">
                     <img src="public/img/confirm.png" alt="Save">
-                </button>
-                <button type="button" class="action-btn delete-btn">
-                    <img src="public/img/delete.png" alt="Delete">
                 </button>
             </div>
         </div>
@@ -26,7 +23,7 @@
         <div class="input-group vaccination-name-group">
             <label class="input-label">Name</label>
             <div class="container">
-                <input type="text" name="vaccinationName" placeholder="Trimming claws 1">
+                <input type="text" name="name" placeholder="Trimming claws 1" required>
             </div>
         </div>
 
@@ -34,16 +31,7 @@
             <label class="input-label">Date</label>
             <div class="row-layout">
                 <div class="container date-input-container">
-                    <input type="date" name="date" value="2024-08-24">
-                </div>
-            </div>
-        </div>
-
-        <div class="input-group">
-            <label class="input-label">Time</label>
-            <div class="row-layout">
-                <div class="container dose-input-small time">
-                    <input type="text" name="dose" placeholder="14:00">
+                    <input type="date" name="date" value="<?= date('Y-m-d') ?>" required>
                 </div>
             </div>
         </div>

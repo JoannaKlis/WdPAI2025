@@ -100,7 +100,7 @@ class Routing {
             "action" => "shearing"
         ],
         "trimming" => [
-            "controller" => "SecurityController",
+            "controller" => "PetController",
             "action" => "trimming"
         ],
         "addPet" => [
@@ -152,8 +152,12 @@ class Routing {
             "action" => "deleteShearing"
         ],
         "addTrimming" => [
-            "controller" => "SecurityController",
+            "controller" => "PetController",
             "action" => "addTrimming"
+        ],
+        "deleteTrimming" => [
+            "controller" => "PetController",
+            "action" => "deleteTrimming"
         ],
         "addNutrition" => [
             "controller" => "SecurityController",
