@@ -92,7 +92,7 @@ class Routing {
             "action" => "weight"
         ],
         "groom" => [
-            "controller" => "SecurityController",
+            "controller" => "PetController",
             "action" => "groom"
         ],
         "shearing" => [
@@ -136,8 +136,12 @@ class Routing {
             "action" => "deleteWeight"
         ],
         "addGroom" => [
-            "controller" => "SecurityController",
+            "controller" => "PetController",
             "action" => "addGroom"
+        ],
+        "deleteGroom" => [
+            "controller" => "PetController",
+            "action" => "deleteGroom"
         ],
         "addShearing" => [
             "controller" => "SecurityController",

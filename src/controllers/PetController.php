@@ -236,4 +236,68 @@ class PetController extends AppController {
         header("Location: /weight?id=" . $weightEntry['pet_id']);
         exit;
     }
+
+    public function groom() {
+        session_start();
+        $userId = $_SESSION['user_id'] ?? null;
+        $petId = $_GET['id'] ?? null;
+
+        if (!$petId || !$userId) {
+            header("Location: /pets");
+            exit;
+        }
+
+        $pet = $this->petRepository->getPetById((int)$petId);
+        if (!$pet || $pet['user_id'] !== $userId) {
+            return $this->render('404');
+        }
+
+        // pobranie listy zabiegów pielęgnacyjnych
+        $groomingList = $this->petRepository->getPetGrooming((int)$petId);
+
+        return $this->render('care/groom', ['pet' => $pet, 'groomingList' => $groomingList]);
+    }
+
+    public function addGroom() {
+        session_start();
+        $userId = $_SESSION['user_id'] ?? null;
+        $petId = $_REQUEST['id'] ?? null;
+
+        if (!$petId || !$userId) {
+            header("Location: /pets");
+            exit;
+        }
+
+        $pet = $this->petRepository->getPetById((int)$petId);
+        if (!$pet || $pet['user_id'] !== $userId) {
+            return $this->render('404');
+        }
+
+        if ($this->isPost()) {
+            $this->petRepository->addPetGrooming((int)$petId, $_POST);
+            header("Location: /groom?id=" . $petId);
+            exit;
+        }
+
+        return $this->render('care/addGroom', ['petId' => $petId]);
+    }
+
+    public function deleteGroom() {
+        session_start();
+        $userId = $_SESSION['user_id'] ?? null;
+        if (!$this->isPost() || !$userId) { header("Location: /pets"); exit; }
+
+        $groomId = $_POST['groom_id'] ?? null;
+        
+        $entry = $this->petRepository->getGroomingById((int)$groomId);
+        if (!$entry) { header("Location: /pets"); exit; }
+
+        $pet = $this->petRepository->getPetById($entry['pet_id']);
+        if ($pet && (int)$pet['user_id'] === (int)$userId) {
+            $this->petRepository->deletePetGrooming((int)$groomId);
+        }
+
+        header("Location: /groom?id=" . $entry['pet_id']);
+        exit;
+    }
 }

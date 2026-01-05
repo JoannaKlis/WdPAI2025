@@ -125,4 +125,44 @@ public function updatePet(int $id, array $data, ?string $pictureUrl = null): voi
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
     }
+
+    public function getPetGrooming(int $petId): array {
+        $stmt = $this->database->connect()->prepare('
+            SELECT * FROM pet_grooming 
+            WHERE pet_id = :petId 
+            ORDER BY groom_date DESC, id DESC
+        ');
+        $stmt->bindParam(':petId', $petId, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function addPetGrooming(int $petId, array $data): void {
+        $stmt = $this->database->connect()->prepare('
+            INSERT INTO pet_grooming (pet_id, name, groom_date)
+            VALUES (?, ?, ?)
+        ');
+
+        $stmt->execute([
+            $petId,
+            $data['name'],
+            $data['date']
+        ]);
+    }
+
+    public function getGroomingById(int $groomId): ?array {
+        $stmt = $this->database->connect()->prepare('SELECT * FROM pet_grooming WHERE id = :id');
+        $stmt->bindParam(':id', $groomId, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+    }
+
+    public function deletePetGrooming(int $id): void {
+        $stmt = $this->database->connect()->prepare('
+            DELETE FROM pet_grooming WHERE id = :id
+        ');
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+    }
 }

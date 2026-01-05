@@ -41,7 +41,6 @@ CREATE TABLE pet_grooming (
     pet_id INT NOT NULL REFERENCES pets(id) ON DELETE CASCADE,
     name VARCHAR(200) NOT NULL,
     groom_date DATE NOT NULL,
-    groom_time TIME,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -51,7 +50,6 @@ CREATE TABLE pet_shearing (
     pet_id INT NOT NULL REFERENCES pets(id) ON DELETE CASCADE,
     name VARCHAR(200) NOT NULL,
     shearing_date DATE NOT NULL,
-    shearing_time TIME,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -61,7 +59,6 @@ CREATE TABLE pet_trimming (
     pet_id INT NOT NULL REFERENCES pets(id) ON DELETE CASCADE,
     name VARCHAR(200) NOT NULL,
     trimming_date DATE NOT NULL,
-    trimming_time TIME,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
