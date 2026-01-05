@@ -4,23 +4,22 @@
 <link rel="stylesheet" type= "text/css" href="public/styles/features.css">
 <link rel="stylesheet" type= "text/css" href="public/styles/pets.css">
 <link rel="stylesheet" type= "text/css" href="public/styles/nutrition.css">
-
-    <title>Nutrition</title>
+<title>Nutrition</title>
 </head>
 
 <body>
-    <form class="wrapper" method="POST" action="/nutrition">
+    <div class="wrapper">
         
         <div class="top-bar top-bar-clear">
-            <a href="/features" class="back-arrow">&lt;</a> 
+            <a href="/features?id=<?= $pet['id'] ?>" class="back-arrow">&lt;</a> 
             <h1>Nutrition</h1>
         </div>
 
         <div class="pet-header-container">
             <div class="pet-photo-circle">
-                <img src="public/img/simba.png" alt="Simba">
+                <img src="<?= $pet['picture_url'] ? $pet['picture_url'] : 'public/img/default_pet.png' ?>" alt="<?= $pet['name'] ?>">
             </div>
-            <div class="pet-name-display">Simba</div>
+            <div class="pet-name-display"><?= $pet['name'] ?></div>
         </div>
 
         <div class="card-container-welcome">
@@ -28,12 +27,15 @@
             <div class="card-welcome nutrition-card">
                 <div class="card-header">
                     <img src="public/img/alert.png" class="status-icon">
-                    <span class="card-title alert-text">Sensitivities and allergies</span>
+                    <span class="card-title alert-text">Sensitivities</span>
                 </div>
                 <div class="tag-container">
-                    <span class="tag alert-tag">Chicken</span>
-                    <span class="tag alert-tag">Beef</span>
-                    <a href="/addSensitivities" class="tag alert-tag">+</a>
+                    <?php foreach ($sensitivities as $s): ?>
+                        <span class="tag alert-tag">
+                            <?= $s['food'] ?>
+                        </span>
+                    <?php endforeach; ?>
+                    <a href="/addSensitivities?id=<?= $pet['id'] ?>" class="tag alert-tag">+</a>
                 </div>
             </div>
 
@@ -43,8 +45,12 @@
                     <span class="card-title success-text">Favorite food</span>
                 </div>
                 <div class="tag-container">
-                    <span class="tag success-tag">PURINA PRO PLAN</span>
-                    <a href="/addFavorite" class="tag success-tag">+</a>
+                    <?php foreach ($favorites as $f): ?>
+                        <span class="tag success-tag">
+                            <?= $f['food'] ?>
+                        </span>
+                    <?php endforeach; ?>
+                    <a href="/addFavorite?id=<?= $pet['id'] ?>" class="tag success-tag">+</a>
                 </div>
             </div>
 
@@ -54,9 +60,12 @@
                     <span class="card-title purple-text">Supplements</span>
                 </div>
                 <div class="tag-container">
-                    <span class="tag purple-tag">Omega-3</span>
-                    <span class="tag purple-tag">Probiotics</span>
-                    <a href="/addSupplements" class="tag purple-tag">+</a>
+                    <?php foreach ($supplements as $sup): ?>
+                        <span class="tag purple-tag">
+                            <?= $sup['supplement_name'] ?>
+                        </span>
+                    <?php endforeach; ?>
+                    <a href="/addSupplements?id=<?= $pet['id'] ?>" class="tag purple-tag">+</a>
                 </div>
             </div>
 
@@ -64,27 +73,21 @@
                 <div class="card-header">
                     <img src="public/img/clock.png" class="status-icon">
                     <span class="card-title blue-text">Feeding schedule</span>
-                    <a href="/editSchedule" class="edit-schedule-link">
+                    <a href="/editSchedule?id=<?= $pet['id'] ?>" class="edit-schedule-link">
                         <img src="public/img/edit_blue.png" class="edit-schedule-icon">
                     </a>
                 </div>
                 <div class="schedule-list">
-                    <div class="schedule-item">
-                        <span>Canned cat food</span>
-                        <span class="time">8:00</span>
-                    </div>
-                    <div class="schedule-item">
-                        <span>Cat kribble</span>
-                        <span class="time">13:00</span>
-                    </div>
-                    <div class="schedule-item">
-                        <span>Canned cat food</span>
-                        <span class="time">18:00</span>
-                    </div>
+                    <?php foreach ($schedule as $sch): ?>
+                        <div class="schedule-item">
+                            <span><?= $sch['name'] ?></span>
+                            <span class="time"><?= date('H:i', strtotime($sch['feeding_time'])) ?></span>
+                        </div>
+                    <?php endforeach; ?>
                 </div>
             </div>
         </div>
 
-    </form>
+    </div>
 </body>
 </html>

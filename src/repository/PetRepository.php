@@ -387,4 +387,92 @@ public function updatePet(int $id, array $data, ?string $pictureUrl = null): voi
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
     }
+
+    public function getSensitivities(int $petId): array {
+        $stmt = $this->database->connect()->prepare('SELECT * FROM pet_sensitivities WHERE pet_id = :petId ORDER BY id DESC');
+        $stmt->bindParam(':petId', $petId, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    public function addSensitivity(int $petId, string $food): void {
+        $stmt = $this->database->connect()->prepare('INSERT INTO pet_sensitivities (pet_id, food) VALUES (?, ?)');
+        $stmt->execute([$petId, $food]);
+    }
+    public function getSensitivityById(int $id): ?array {
+        $stmt = $this->database->connect()->prepare('SELECT * FROM pet_sensitivities WHERE id = :id');
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+    }
+    public function deleteSensitivity(int $id): void {
+        $stmt = $this->database->connect()->prepare('DELETE FROM pet_sensitivities WHERE id = :id');
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+    }
+
+    public function getFavoriteFood(int $petId): array {
+        $stmt = $this->database->connect()->prepare('SELECT * FROM pet_favorite_food WHERE pet_id = :petId ORDER BY id DESC');
+        $stmt->bindParam(':petId', $petId, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    public function addFavoriteFood(int $petId, string $food): void {
+        $stmt = $this->database->connect()->prepare('INSERT INTO pet_favorite_food (pet_id, food) VALUES (?, ?)');
+        $stmt->execute([$petId, $food]);
+    }
+    public function getFavoriteFoodById(int $id): ?array {
+        $stmt = $this->database->connect()->prepare('SELECT * FROM pet_favorite_food WHERE id = :id');
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+    }
+    public function deleteFavoriteFood(int $id): void {
+        $stmt = $this->database->connect()->prepare('DELETE FROM pet_favorite_food WHERE id = :id');
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+    }
+
+    public function getSupplements(int $petId): array {
+        $stmt = $this->database->connect()->prepare('SELECT * FROM pet_supplements WHERE pet_id = :petId ORDER BY id DESC');
+        $stmt->bindParam(':petId', $petId, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    public function addSupplement(int $petId, string $name): void {
+        $stmt = $this->database->connect()->prepare('INSERT INTO pet_supplements (pet_id, supplement_name) VALUES (?, ?)');
+        $stmt->execute([$petId, $name]);
+    }
+    public function getSupplementById(int $id): ?array {
+        $stmt = $this->database->connect()->prepare('SELECT * FROM pet_supplements WHERE id = :id');
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+    }
+    public function deleteSupplement(int $id): void {
+        $stmt = $this->database->connect()->prepare('DELETE FROM pet_supplements WHERE id = :id');
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+    }
+
+    public function getFeedingSchedule(int $petId): array {
+        $stmt = $this->database->connect()->prepare('SELECT * FROM pet_feeding_schedule WHERE pet_id = :petId ORDER BY feeding_time ASC');
+        $stmt->bindParam(':petId', $petId, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    public function addScheduleItem(int $petId, array $data): void {
+        $stmt = $this->database->connect()->prepare('INSERT INTO pet_feeding_schedule (pet_id, name, feeding_time) VALUES (?, ?, ?)');
+        $stmt->execute([$petId, $data['name'], $data['time']]);
+    }
+    public function getScheduleItemById(int $id): ?array {
+        $stmt = $this->database->connect()->prepare('SELECT * FROM pet_feeding_schedule WHERE id = :id');
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+    }
+    public function deleteScheduleItem(int $id): void {
+        $stmt = $this->database->connect()->prepare('DELETE FROM pet_feeding_schedule WHERE id = :id');
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+    }
 }

@@ -662,4 +662,123 @@ class PetController extends AppController {
         header("Location: /visits?id=" . $entry['pet_id']);
         exit;
     }
+
+    public function nutrition() {
+        session_start();
+        $userId = $_SESSION['user_id'] ?? null;
+        $petId = $_GET['id'] ?? null;
+        if (!$petId || !$userId) { header("Location: /pets"); exit; }
+
+        $pet = $this->petRepository->getPetById((int)$petId);
+        if (!$pet || $pet['user_id'] !== $userId) { return $this->render('404'); }
+
+        return $this->render('nutrition/nutrition', [
+            'pet' => $pet,
+            'sensitivities' => $this->petRepository->getSensitivities((int)$petId),
+            'favorites' => $this->petRepository->getFavoriteFood((int)$petId),
+            'supplements' => $this->petRepository->getSupplements((int)$petId),
+            'schedule' => $this->petRepository->getFeedingSchedule((int)$petId)
+        ]);
+    }
+
+    public function addSensitivities() {
+        session_start();
+        $userId = $_SESSION['user_id'] ?? null;
+        $petId = $_REQUEST['id'] ?? null;
+        if (!$petId || !$userId) { header("Location: /pets"); exit; }
+
+        $pet = $this->petRepository->getPetById((int)$petId);
+        if (!$pet || $pet['user_id'] !== $userId) { return $this->render('404'); }
+
+        if ($this->isPost()) {
+            $this->petRepository->addSensitivity((int)$petId, $_POST['name']);
+            header("Location: /nutrition?id=" . $petId);
+            exit;
+        }
+        return $this->render('nutrition/addSensitivities', ['petId' => $petId]);
+    }
+
+    public function deleteSensitivities() {
+        $this->handleDelete('Sensitivities', 'deleteSensitivity', 'getSensitivityById');
+    }
+
+    public function addFavorite() {
+        session_start();
+        $userId = $_SESSION['user_id'] ?? null;
+        $petId = $_REQUEST['id'] ?? null;
+        if (!$petId || !$userId) { header("Location: /pets"); exit; }
+
+        $pet = $this->petRepository->getPetById((int)$petId);
+        if (!$pet || $pet['user_id'] !== $userId) { return $this->render('404'); }
+
+        if ($this->isPost()) {
+            $this->petRepository->addFavoriteFood((int)$petId, $_POST['name']);
+            header("Location: /nutrition?id=" . $petId);
+            exit;
+        }
+        return $this->render('nutrition/addFavorite', ['petId' => $petId]);
+    }
+
+    public function deleteFavorite() {
+        $this->handleDelete('FavoriteFood', 'deleteFavoriteFood', 'getFavoriteFoodById');
+    }
+
+    public function addSupplements() {
+        session_start();
+        $userId = $_SESSION['user_id'] ?? null;
+        $petId = $_REQUEST['id'] ?? null;
+        if (!$petId || !$userId) { header("Location: /pets"); exit; }
+
+        $pet = $this->petRepository->getPetById((int)$petId);
+        if (!$pet || $pet['user_id'] !== $userId) { return $this->render('404'); }
+
+        if ($this->isPost()) {
+            $this->petRepository->addSupplement((int)$petId, $_POST['name']);
+            header("Location: /nutrition?id=" . $petId);
+            exit;
+        }
+        return $this->render('nutrition/addSupplements', ['petId' => $petId]);
+    }
+
+    public function deleteSupplements() {
+        $this->handleDelete('Supplement', 'deleteSupplement', 'getSupplementById');
+    }
+
+    public function editSchedule() {
+        session_start();
+        $userId = $_SESSION['user_id'] ?? null;
+        $petId = $_REQUEST['id'] ?? null;
+        if (!$petId || !$userId) { header("Location: /pets"); exit; }
+
+        $pet = $this->petRepository->getPetById((int)$petId);
+        if (!$pet || $pet['user_id'] !== $userId) { return $this->render('404'); }
+
+        if ($this->isPost()) {
+            $this->petRepository->addScheduleItem((int)$petId, $_POST);
+            header("Location: /nutrition?id=" . $petId);
+            exit;
+        }
+        return $this->render('nutrition/editSchedule', ['petId' => $petId]);
+    }
+
+    public function deleteSchedule() {
+        $this->handleDelete('ScheduleItem', 'deleteScheduleItem', 'getScheduleItemById');
+    }
+
+    private function handleDelete($type, $deleteMethod, $fetchMethod) {
+        session_start();
+        $userId = $_SESSION['user_id'] ?? null;
+        if (!$this->isPost() || !$userId) { header("Location: /pets"); exit; }
+
+        $id = $_POST['id'] ?? null;
+        $entry = $this->petRepository->$fetchMethod((int)$id);
+        if (!$entry) { header("Location: /pets"); exit; }
+
+        $pet = $this->petRepository->getPetById($entry['pet_id']);
+        if ($pet && (int)$pet['user_id'] === (int)$userId) {
+            $this->petRepository->$deleteMethod((int)$id);
+        }
+        header("Location: /nutrition?id=" . $entry['pet_id']);
+        exit;
+    }
 }

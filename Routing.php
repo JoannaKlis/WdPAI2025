@@ -68,7 +68,7 @@ class Routing {
             "action" => "healthBook"
         ],
         "nutrition" => [
-            "controller" => "SecurityController",
+            "controller" => "PetController",
             "action" => "nutrition"
         ],
         "vaccinations" => [
@@ -175,25 +175,37 @@ class Routing {
             "controller" => "PetController",
             "action" => "deleteTrimming"
         ],
-        "addNutrition" => [
-            "controller" => "SecurityController",
-            "action" => "addNutrition"
-        ],
         "addSensitivities" => [
-            "controller" => "SecurityController",
+            "controller" => "PetController",
             "action" => "addSensitivities"
         ],
+        "deleteSensitivities" => [
+            "controller" => "PetController",
+            "action" => "deleteSensitivities"
+        ],
         "addFavorite" => [
-            "controller" => "SecurityController",
+            "controller" => "PetController",
             "action" => "addFavorite"
         ],
+        "deleteFavorite" => [
+            "controller" => "PetController",
+            "action" => "deleteFavorite"
+        ],
         "addSupplements" => [
-            "controller" => "SecurityController",
+            "controller" => "PetController",
             "action" => "addSupplements"
         ],
+        "deleteSupplements" => [
+            "controller" => "PetController",
+            "action" => "deleteSupplements"
+        ],
         "editSchedule" => [
-            "controller" => "SecurityController",
+            "controller" => "PetController",
             "action" => "editSchedule"
+        ],
+        "deleteSchedule" => [
+            "controller" => "PetController",
+            "action" => "deleteSchedule"
         ]
     ];
 
