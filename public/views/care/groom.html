@@ -5,6 +5,9 @@
 <link rel="stylesheet" type= "text/css" href="public/styles/pets.css">
 <link rel="stylesheet" type= "text/css" href="public/styles/vaccinations.css">
 <link rel="stylesheet" type= "text/css" href="public/styles/addingScreens/delete.css">
+<link rel="stylesheet" type="text/css" href="public/styles/editPet.css">
+<link rel="stylesheet" type="text/css" href="public/styles/addingScreens/addPetModal.css">
+<link rel="stylesheet" type="text/css" href="public/styles/addingScreens/addVaccination.css">
 
     <title>Grooming History</title>
 </head>
@@ -54,7 +57,41 @@
             <?php endif; ?>
         </div>
 
-        <a href="/addGroom?id=<?= $pet['id'] ?>" class="button add-button">+</a>
+        <button type="button" class="button add-button" onclick="openAddModal()">+</button>
+        
+        <div id="addModal" class="modal-overlay">
+            <div class="modal-content wrapper">
+                <form method="POST" action="/addGroom?id=<?= $pet['id'] ?>">
+                    <div class="modal-header-actions">
+                        <button type="button" class="action-btn close-btn" onclick="closeAddModal()">
+                            <img src="public/img/cancel.png" alt="Close">
+                        </button>
+                        <div class="right-actions">
+                            <button type="submit" class="action-btn save-btn">
+                                <img src="public/img/confirm.png" alt="Save">
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="input-group vaccination-name-group">
+                        <label class="input-label">Name</label>
+                        <div class="container">
+                            <input type="text" name="name" placeholder="Flea bath at a groomer" required>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Date</label>
+                            <div class="row-layout">
+                                <div class="container date-input-container">
+                                <input type="date" name="date" value="<?= date('Y-m-d') ?>" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
 
         <div id="deleteModal" class="modal-overlay">
             <div class="modal-box">
@@ -72,6 +109,6 @@
         </div>
     </div>
 
-    <script src="public/scripts/deleteWindow.js" defer></script>
+    <script src="public/scripts/deleteAddWindow.js" defer></script>
 </body>
 </html>

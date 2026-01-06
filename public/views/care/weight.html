@@ -5,6 +5,10 @@
 <link rel="stylesheet" type= "text/css" href="public/styles/pets.css">
 <link rel="stylesheet" type= "text/css" href="public/styles/vaccinations.css">
 <link rel="stylesheet" type= "text/css" href="public/styles/addingScreens/delete.css">
+<link rel="stylesheet" type="text/css" href="public/styles/editPet.css">
+<link rel="stylesheet" type="text/css" href="public/styles/addingScreens/addPetModal.css">
+<link rel="stylesheet" type="text/css" href="public/styles/addingScreens/addVaccination.css">
+
     <title>Weight History</title>
 </head>
 
@@ -53,7 +57,49 @@
             <?php endif; ?>
         </div>
 
-        <a href="/addWeight?id=<?= $pet['id'] ?>" class="button add-button">+</a>
+        <button type="button" class="button add-button" onclick="openAddModal()">+</button>
+        
+        <div id="addModal" class="modal-overlay">
+            <div class="modal-content wrapper">
+                <form method="POST" action="/addWeight?id=<?= $pet['id'] ?>">
+                    <div class="modal-header-actions">
+                        <button type="button" class="action-btn close-btn" onclick="closeAddModal()">
+                            <img src="public/img/cancel.png" alt="Close">
+                        </button>
+                        <div class="right-actions">
+                            <button type="submit" class="action-btn save-btn">
+                                <img src="public/img/confirm.png" alt="Save">
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Weight</label>
+                        <div class="row-layout">
+                            <div class="container dose-input-small">
+                                <input type="text" name="weight" placeholder="0.4" required>
+                            </div>
+                                
+                            <div class="unit-selector-container">
+                                <select name="unit" class="unit-dropdown">
+                                    <option value="kg">kg</option>
+                                    <option value="g">g</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Date</label>
+                        <div class="row-layout">
+                            <div class="container date-input-container">
+                                <input type="date" name="date" value="<?= date('Y-m-d') ?>" required>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
 
         <div id="deleteModal" class="modal-overlay">
             <div class="modal-box">
@@ -71,6 +117,6 @@
         </div>
     </div>
     
-    <script src="public/scripts/deleteWindow.js" defer></script>
+    <script src="public/scripts/deleteAddWindow.js" defer></script>
 </body>
 </html>
