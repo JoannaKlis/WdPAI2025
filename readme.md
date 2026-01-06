@@ -1,6 +1,4 @@
 ---
-## Licencja / License
-
 **© 2026 Joanna Kliś | All rights reserved.**
 
 This work is legally protected and requires written permission for use.
@@ -84,4 +82,5 @@ This work is legally protected and requires written permission for use.
 
 🖥️ **Desktop version**
 > Coming soon!
+
 
