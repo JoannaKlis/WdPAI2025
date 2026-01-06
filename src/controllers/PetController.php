@@ -220,6 +220,10 @@ class PetController extends AppController {
         }
 
         if ($this->isPost()) {
+            // zamiana przecinka na kropkę
+            if (isset($_POST['weight'])) {
+                $_POST['weight'] = str_replace(',', '.', $_POST['weight']);
+            }
             $this->petRepository->addPetWeight((int)$petId, $_POST);
             
             // powrót do listy wag tego zwierzaka
@@ -498,6 +502,11 @@ class PetController extends AppController {
         if (!$pet || $pet['user_id'] !== $userId) { return $this->render('404'); }
 
         if ($this->isPost()) {
+            // zamiana przecinka na kropkę
+            if (isset($_POST['dose'])) {
+                $_POST['dose'] = str_replace(',', '.', $_POST['dose']);
+            }
+
             $this->petRepository->addPetVaccination((int)$petId, $_POST);
             header("Location: /vaccinations?id=" . $petId);
             exit;
@@ -592,6 +601,11 @@ class PetController extends AppController {
         if (!$pet || $pet['user_id'] !== $userId) { return $this->render('404'); }
 
         if ($this->isPost()) {
+            // zamiana przecinka na kropkę
+            if (isset($_POST['dose'])) {
+                $_POST['dose'] = str_replace(',', '.', $_POST['dose']);
+            }
+
             $this->petRepository->addPetDeworming((int)$petId, $_POST);
             header("Location: /deworming?id=" . $petId);
             exit;
