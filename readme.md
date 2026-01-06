@@ -1,8 +1,11 @@
+**© 2026 Joanna Kliś | All rights reserved.**
+
+This work is legally protected and requires written permission for use.
+
 # 🐾 PetNotes
 
 > Paw-fectly organized. Your pet's vital stats, health book, and history—all in your pocket.
 
----
 
 ## 📝 Application description
 
@@ -77,3 +80,6 @@
 
 🖥️ **Desktop version**
 > Coming soon!
+
+
+
