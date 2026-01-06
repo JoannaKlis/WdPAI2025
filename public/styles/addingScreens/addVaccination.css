@@ -18,12 +18,12 @@
 .date-input-container input {
     color: white;
     font-family: 'Jua';
-    cursor: pointer;
     font-size: clamp(1rem, 1.2vw, 1.4rem);
 }
 
 .date-input-container input::-webkit-calendar-picker-indicator {
     filter: brightness(0) invert(1);
+    cursor: pointer;
 }
 
 .dose-input-small {
@@ -34,7 +34,12 @@
 }
 
 .time {
-    width: clamp(2.5rem, 4vw, 4rem);
+    width: clamp(4rem, 6vw, 6rem);
+}
+
+.dose-input-small input::-webkit-calendar-picker-indicator {
+    filter: invert(53%) sepia(26%) saturate(632%) hue-rotate(234deg) brightness(70%) contrast(90%);
+    cursor: pointer;
 }
 
 .unit-selector-container {
