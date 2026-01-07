@@ -93,7 +93,7 @@
             <h3>Are you sure?</h3>
             <p>Do you really want to delete <b><?= $pet['name'] ?></b>? This process cannot be undone.</p>
             <div class="modal-buttons">
-                <button class="btn-cancel" onclick="closeDeleteModal()">Cancel</button>
+                <button class="btn-cancel" onclick="closeModal('deleteModal')">Cancel</button>
                 
                 <form action="/deletePet" method="POST" style="margin:0;">
                     <input type="hidden" name="id" value="<?= $pet['id'] ?>">
@@ -106,5 +106,5 @@
 
     <script src="public/scripts/sexSelection.js" defer></script>
     <script src="public/scripts/picture.js" defer></script>
-    <script src="public/scripts/deleteWindow.js" defer></script>
+    <script src="public/scripts/deleteAddWindow.js" defer></script>
 <?php include '/app/public/views/partials/footer.php'; ?>

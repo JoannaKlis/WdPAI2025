@@ -1,6 +1,11 @@
 <?php include '/app/public/views/partials/header.php'; ?>
 <link rel="stylesheet" type="text/css" href="public/styles/profile.css">
 <link rel="stylesheet" type="text/css" href="public/styles/pets.css">
+<link rel="stylesheet" type="text/css" href="public/styles/editPet.css">
+<link rel="stylesheet" type="text/css" href="public/styles/addingScreens/addPetModal.css">
+<link rel="stylesheet" type="text/css" href="public/styles/addingScreens/addVaccination.css">
+<link rel="stylesheet" type="text/css" href="public/styles/addingScreens/delete.css">
+
     <title>MyPets</title>
 </head>
 <body>
@@ -21,8 +26,7 @@
 
         <div class="pets-list">
             <?php if (empty($pets)): ?>
-                    <p class="card-name">You don't have any pets added!</p>
-                </div>
+                <div class="card-name" style="text-align:center;">You don't have any pets added!</div>
             <?php else: ?>
                 <?php foreach ($pets as $pet): ?>
                     <a href="/features?id=<?= $pet['id'] ?>" class="card">
@@ -39,8 +43,99 @@
             <?php endif; ?>
         </div>
 
-        <a href="/addPet" class="button add-button">+</a>
+        <button type="button" class="button add-button" onclick="openModal('addModal')">+</button>
+
+        <div id="addModal" class="modal-overlay">
+            <div class="modal-content wrapper">
+                <form method="POST" action="/addPet" enctype="multipart/form-data">
+                    
+                    <div class="modal-header-actions">
+                        <button type="button" class="action-btn close-btn" onclick="closeModal('addModal')">
+                            <img src="public/img/cancel.png" alt="Close">
+                        </button>
+                        <div class="right-actions">
+                            <button type="submit" class="action-btn save-btn">
+                                <img src="public/img/confirm.png" alt="Save">
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="profile-pic-container" onclick="document.getElementById('file-input').click()">
+                        <div class="profile-pic"> 
+                            <img src="public/img/default_pet.png" 
+                                alt="Pet Picture" 
+                                class="profile-icon-main pet-img" 
+                                id="petImagePreview">
+                        </div>
+    
+                        <div class="edit-icon"> 
+                            <img src="public/img/edit.png" alt="Edit Icon" class="edit-icon-img">
+                        </div>
+                        <input type="file" name="picture" id="file-input" style="display:none" accept="image/*" onchange="previewImage(this)">
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Type</label>
+                        <div class="container">
+                            <input type="text" name="type" placeholder="Dog">
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Name</label>
+                        <div class="container">
+                            <input type="text" name="name" placeholder="Simba">
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Birth Date</label>
+                        <div class="container date-input-container">
+                            <input type="date" name="birthDate" value="<?= date('Y-m-d') ?>">
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Sex</label>
+                        <input type="hidden" name="sex" id="sexInput" value="Male">
+                        <div class="sex-selection">
+                            <button type="button" class="sex-button male active" onclick="setSex('Male', this)">
+                                <img src="public/img/male.png" class="sex-icon"> Male
+                            </button>
+                            <button type="button" class="sex-button female" onclick="setSex('Female', this)">
+                                <img src="public/img/female.png" class="sex-icon"> Female
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Breed</label>
+                        <div class="container">
+                            <input type="text" name="breed" placeholder="Welsh Corgi Pembroke">
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Color</label>
+                        <div class="container">
+                            <input type="text" name="color" placeholder="Red and White">
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Microchip number</label>
+                        <div class="container">
+                            <input type="text" name="microchip" placeholder="9002147294610283">
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
     </div>
+
     <script src="public/scripts/picture.js" defer></script>
+    <script src="public/scripts/sexSelection.js" defer></script>
+    <script src="public/scripts/deleteAddWindow.js" defer></script>
 </body>
 </html>
