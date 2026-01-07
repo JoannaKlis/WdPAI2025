@@ -1,7 +1,7 @@
 function openDeleteModal(id) {
     // jeśli przekazano ID, znajdź ukryty input i ustaw jego wartość
     if (id) {
-        const input = document.getElementById('modalWeightId');
+        const input = document.getElementById('modalWeightId') || document.getElementById('modalItemId');
         if (input) {
             input.value = id;
         }
@@ -10,28 +10,25 @@ function openDeleteModal(id) {
     document.getElementById('deleteModal').style.display = 'flex';
 }
 
-function closeDeleteModal() {
-    document.getElementById('deleteModal').style.display = 'none';
+// otwiera dowolny modal po jego ID
+function openModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.style.display = 'flex';
+    }
 }
 
-// ekran dodawania
-function openAddModal() {
-    document.getElementById('addModal').style.display = 'flex';
-}
-
-function closeAddModal() {
-    document.getElementById('addModal').style.display = 'none';
+// zamyka dowolny modal po jego ID
+function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.style.display = 'none';
+    }
 }
 
 // zamknij modal, jeśli kliknięto w tło
 window.onclick = function(event) {
-    const deleteModal = document.getElementById('deleteModal');
-    const addModal = document.getElementById('addModal');
-    
-    if (event.target == deleteModal) {
-        deleteModal.style.display = "none";
-    }
-    if (event.target == addModal) {
-        addModal.style.display = "none";
+    if (event.target.classList.contains('modal-overlay')) {
+        event.target.style.display = "none";
     }
 }

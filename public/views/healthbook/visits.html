@@ -49,13 +49,14 @@
             <?php endif; ?>
         </div>
 
-        <button type="button" class="button add-button" onclick="openAddModal()">+</button>
+        <button type="button" class="button add-button" onclick="openModal('addModal')">+</button>
 
         <div id="addModal" class="modal-overlay">
             <div class="modal-content wrapper">
-                <form method="POST" action="/addDeworming?id=<?= $pet['id'] ?>">
+                <form method="POST" action="/addVisit?id=<?= $pet['id'] ?>">
+                    
                     <div class="modal-header-actions">
-                        <button type="button" class="action-btn close-btn" onclick="closeAddModal()">
+                        <button type="button" class="action-btn close-btn" onclick="closeModal('addModal')">
                             <img src="public/img/cancel.png" alt="Close">
                         </button>
                         <div class="right-actions">
@@ -98,7 +99,7 @@
                 <h3>Are you sure?</h3>
                 <p>Do you really want to delete this visit?</p>
                 <div class="modal-buttons">
-                    <button type="button" class="btn-cancel" onclick="closeDeleteModal()">Cancel</button>
+                    <button type="button" class="btn-cancel" onclick="closeModal('deleteModal')">Cancel</button>
                     <form action="/deleteVisit" method="POST" style="margin:0;">
                         <input type="hidden" name="id" id="modalWeightId" value="">
                         <button type="submit" class="btn-delete">Delete</button>

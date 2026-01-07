@@ -4,7 +4,12 @@
 <link rel="stylesheet" type= "text/css" href="public/styles/features.css">
 <link rel="stylesheet" type= "text/css" href="public/styles/pets.css">
 <link rel="stylesheet" type= "text/css" href="public/styles/nutrition.css">
-<title>Nutrition</title>
+<link rel="stylesheet" type= "text/css" href="public/styles/addingScreens/delete.css">
+<link rel="stylesheet" type="text/css" href="public/styles/editPet.css">
+<link rel="stylesheet" type="text/css" href="public/styles/addingScreens/addPetModal.css">
+<link rel="stylesheet" type="text/css" href="public/styles/addingScreens/addVaccination.css">
+
+    <title>Nutrition</title>
 </head>
 
 <body>
@@ -35,7 +40,7 @@
                             <?= $s['food'] ?>
                         </span>
                     <?php endforeach; ?>
-                    <a href="/addSensitivities?id=<?= $pet['id'] ?>" class="tag alert-tag">+</a>
+                    <button class="tag alert-tag" onclick="openModal('sensitivitiesModal')" style="cursor:pointer; border:none;">+</button>
                 </div>
             </div>
 
@@ -50,7 +55,7 @@
                             <?= $f['food'] ?>
                         </span>
                     <?php endforeach; ?>
-                    <a href="/addFavorite?id=<?= $pet['id'] ?>" class="tag success-tag">+</a>
+                    <button class="tag success-tag" onclick="openModal('favoriteModal')" style="cursor:pointer; border:none;">+</button>
                 </div>
             </div>
 
@@ -65,7 +70,7 @@
                             <?= $sup['supplement_name'] ?>
                         </span>
                     <?php endforeach; ?>
-                    <a href="/addSupplements?id=<?= $pet['id'] ?>" class="tag purple-tag">+</a>
+                    <button class="tag purple-tag" onclick="openModal('supplementsModal')" style="cursor:pointer; border:none;">+</button>
                 </div>
             </div>
 
@@ -73,9 +78,9 @@
                 <div class="card-header">
                     <img src="public/img/clock.png" class="status-icon">
                     <span class="card-title blue-text">Feeding schedule</span>
-                    <a href="/editSchedule?id=<?= $pet['id'] ?>" class="edit-schedule-link">
+                    <button onclick="openModal('scheduleModal')" class="edit-schedule-link" style="background:none; border:none; cursor:pointer;">
                         <img src="public/img/edit_blue.png" class="edit-schedule-icon">
-                    </a>
+                    </button>
                 </div>
                 <div class="schedule-list">
                     <?php foreach ($schedule as $sch): ?>
@@ -88,6 +93,108 @@
             </div>
         </div>
 
+        <div id="sensitivitiesModal" class="modal-overlay">
+            <div class="modal-content wrapper">
+                <form method="POST" action="/addSensitivities?id=<?= $pet['id'] ?>">
+                    <div class="modal-header-actions">
+                        <button type="button" class="action-btn close-btn" onclick="closeModal('sensitivitiesModal')">
+                            <img src="public/img/cancel.png" alt="Close">
+                        </button>
+                        <div class="right-actions">
+                            <button type="submit" class="action-btn save-btn">
+                                <img src="public/img/confirm.png" alt="Save">
+                            </button>
+                        </div>
+                    </div>
+                    <div class="input-group vaccination-name-group">
+                        <label class="input-label">Food (Sensitivity)</label>
+                        <div class="container">
+                            <input type="text" name="name" placeholder="Chicken" required>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="favoriteModal" class="modal-overlay">
+            <div class="modal-content wrapper">
+                <form method="POST" action="/addFavorite?id=<?= $pet['id'] ?>">
+                    <div class="modal-header-actions">
+                        <button type="button" class="action-btn close-btn" onclick="closeModal('favoriteModal')">
+                            <img src="public/img/cancel.png" alt="Close">
+                        </button>
+                        <div class="right-actions">
+                            <button type="submit" class="action-btn save-btn">
+                                <img src="public/img/confirm.png" alt="Save">
+                            </button>
+                        </div>
+                    </div>
+                    <div class="input-group vaccination-name-group">
+                        <label class="input-label">Favorite Food</label>
+                        <div class="container">
+                            <input type="text" name="name" placeholder="Beef" required>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="supplementsModal" class="modal-overlay">
+            <div class="modal-content wrapper">
+                <form method="POST" action="/addSupplements?id=<?= $pet['id'] ?>">
+                    <div class="modal-header-actions">
+                        <button type="button" class="action-btn close-btn" onclick="closeModal('supplementsModal')">
+                            <img src="public/img/cancel.png" alt="Close">
+                        </button>
+                        <div class="right-actions">
+                            <button type="submit" class="action-btn save-btn">
+                                <img src="public/img/confirm.png" alt="Save">
+                            </button>
+                        </div>
+                    </div>
+                    <div class="input-group vaccination-name-group">
+                        <label class="input-label">Supplement Name</label>
+                        <div class="container">
+                            <input type="text" name="name" placeholder="Omega-3" required>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="scheduleModal" class="modal-overlay">
+            <div class="modal-content wrapper">
+                <form method="POST" action="/editSchedule?id=<?= $pet['id'] ?>">
+                    <div class="modal-header-actions">
+                        <button type="button" class="action-btn close-btn" onclick="closeModal('scheduleModal')">
+                            <img src="public/img/cancel.png" alt="Close">
+                        </button>
+                        <div class="right-actions">
+                            <button type="submit" class="action-btn save-btn">
+                                <img src="public/img/confirm.png" alt="Save">
+                            </button>
+                        </div>
+                    </div>
+                    <div class="input-group vaccination-name-group">
+                        <label class="input-label">Meal Name</label>
+                        <div class="container">
+                            <input type="text" name="name" placeholder="Canned cat food" required>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Time</label>
+                        <div class="row-layout">
+                            <div class="container dose-input-small time">
+                                <input type="time" name="time" value="<?= date('H:i') ?>" required>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
     </div>
+    
+    <script src="public/scripts/deleteAddWindow.js" defer></script>
 </body>
 </html>
