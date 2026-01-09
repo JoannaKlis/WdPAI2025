@@ -475,4 +475,16 @@ public function updatePet(int $id, array $data, ?string $pictureUrl = null): voi
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
     }
+
+    public function updateScheduleItem(int $id, string $name, string $time): void {
+        $stmt = $this->database->connect()->prepare('
+            UPDATE pet_feeding_schedule 
+            SET name = :name, feeding_time = :time 
+            WHERE id = :id
+        ');
+        $stmt->bindParam(':name', $name, PDO::PARAM_STR);
+        $stmt->bindParam(':time', $time, PDO::PARAM_STR);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+    }
 }

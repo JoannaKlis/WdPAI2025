@@ -762,13 +762,28 @@ class PetController extends AppController {
         session_start();
         $userId = $_SESSION['user_id'] ?? null;
         $petId = $_REQUEST['id'] ?? null;
-        if (!$petId || !$userId) { header("Location: /pets"); exit; }
+
+        if (!$petId || !$userId) {
+            header("Location: /pets");
+            exit;
+        }
 
         $pet = $this->petRepository->getPetById((int)$petId);
-        if (!$pet || $pet['user_id'] !== $userId) { return $this->render('404'); }
+        if (!$pet || $pet['user_id'] !== $userId) {
+            return $this->render('404');
+        }
 
         if ($this->isPost()) {
-            $this->petRepository->addScheduleItem((int)$petId, $_POST);
+            $scheduleId = $_POST['schedule_id'] ?? null;
+
+            if (!empty($scheduleId)) {
+                // jeśli jest ID -> UPDATE
+                $this->petRepository->updateScheduleItem((int)$scheduleId, $_POST['name'], $_POST['time']);
+            } else {
+                // jeśli brak ID -> INSERT
+                $this->petRepository->addScheduleItem((int)$petId, $_POST);
+            }
+
             header("Location: /nutrition?id=" . $petId);
             exit;
         }

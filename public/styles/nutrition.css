@@ -53,6 +53,7 @@
 .alert-tag { background-color: #FFEBEE; color: #E57373; }
 .success-tag { background-color: #E8F5E9; color: #81C784; }
 .purple-tag { background-color: #F3E5F5; color: #934CBE; }
+.blue-tag { margin-left: auto; background-color: #E3F2FD; color: #64B5F6; }
 
 .schedule-list {
     display: flex;
