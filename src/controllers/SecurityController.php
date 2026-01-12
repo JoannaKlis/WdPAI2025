@@ -12,6 +12,10 @@ class SecurityController extends AppController {
         $this->userRepository = new UserRepository();
     }
 
+    public function start() {
+        return $this->render("main/start");
+    }
+
     public function login() {
         // jeśli GET to wyświetl stronę logowania
         if (!$this->isPost()) {

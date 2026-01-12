@@ -11,6 +11,10 @@ class Routing {
     private static $controllerInstances = [];
 
     public static $routes = [
+        "" => [
+            "controller" => "SecurityController",
+            "action" => "start"
+        ],
         "login" => [
             "controller" => "SecurityController",
             "action" => "login"
