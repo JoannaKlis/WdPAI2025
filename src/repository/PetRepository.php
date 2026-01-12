@@ -23,6 +23,16 @@ class PetRepository extends Repository {
         ]);
     }
 
+    public function countUserPets(int $userId): int {
+        $stmt = $this->database->connect()->prepare('
+            SELECT COUNT(*) FROM pets WHERE user_id = :userId
+        ');
+        $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
+        $stmt->execute();
+        
+        return (int)$stmt->fetchColumn();
+    }
+
     public function getPetsByUserId(int $userId): array {
         $stmt = $this->database->connect()->prepare('
             SELECT * FROM pets WHERE user_id = :userId ORDER BY created_at DESC

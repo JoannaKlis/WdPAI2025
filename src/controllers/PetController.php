@@ -38,6 +38,14 @@ class PetController extends AppController {
             exit;
         }
 
+        // użytkownik nie moze mieć więcej niż 50 zwierząt
+        $currentPetCount = $this->petRepository->countUserPets($userId);
+        if ($currentPetCount >= 50) {
+            // tu w przyszłości można dodać komunikat o błędzie 
+            header("Location: http://$_SERVER[HTTP_HOST]/pets?error=limit_reached");
+            exit;
+        }
+
         if (!$this->isPost()) {
             return $this->render('pets/addPet', ['pet' => ['picture_url' => null]]);
         }
