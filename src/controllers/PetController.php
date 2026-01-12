@@ -810,4 +810,54 @@ class PetController extends AppController {
         header("Location: /nutrition?id=" . $entry['pet_id']);
         exit;
     }
+
+    public function calendar() {
+        session_start();
+        $userId = $_SESSION['user_id'] ?? null;
+
+        if (!$userId) {
+            header("Location: /login");
+            exit;
+        }
+
+        $user = $this->userRepository->getUserByEmail($_SESSION['user_email']);
+        $events = $this->petRepository->getEvents($userId);
+        $pets = $this->petRepository->getPetsByUserId($userId);
+
+        return $this->render('main/calendar', [
+            'user' => $user,
+            'events' => $events,
+            'pets' => $pets
+        ]);
+    }
+
+    public function addEvent() {
+        session_start();
+        $userId = $_SESSION['user_id'] ?? null;
+
+        if (!$userId) {
+            header("Location: /login");
+            exit;
+        }
+
+        if ($this->isPost()) {
+            $petId = $_POST['pet_id'] ?? null;
+
+            if ($petId) {
+                $pet = $this->petRepository->getPetById((int)$petId);
+                if ($pet && (int)$pet['user_id'] === (int)$userId) {
+                    $this->petRepository->addPetEvent((int)$petId, [
+                        'name' => $_POST['name'],
+                        'date' => $_POST['date'],
+                        'time' => $_POST['time'] ?? null
+                    ]);
+                }
+            }
+            
+            header("Location: /calendar");
+            exit;
+        }
+        
+        header("Location: /calendar");
+    }
 }

@@ -247,9 +247,9 @@ VALUES
 -- EVENTS dla Simby (pet_id=1)
 INSERT INTO pet_events (pet_id, event_name, event_date, event_time)
 VALUES 
-    (1, 'Trimming claws', '2024-10-05', '14:00'),
-    (1, 'Vet checkup', '2024-10-20', '10:00'),
-    (1, 'Grooming appointment', '2024-10-12', '15:00');
+    (1, 'Trimming claws', '2026-02-05', '14:00'),
+    (1, 'Vet checkup', '2026-01-30', '10:00'),
+    (1, 'Grooming appointment', '2026-02-12', '15:00');
 
 -- DANE dla Pumpkin (pet_id=2)
 INSERT INTO pet_weights (pet_id, weight, unit, recorded_date, recorded_time)

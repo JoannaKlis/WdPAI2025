@@ -40,7 +40,7 @@ class Routing {
             "action" => "pets"
         ],
         "calendar" => [
-            "controller" => "SecurityController",
+            "controller" => "PetController",
             "action" => "calendar"
         ],
         "welcome" => [
@@ -108,8 +108,16 @@ class Routing {
             "action" => "addPet"
         ],
         "addEvent" => [
-            "controller" => "SecurityController",
+            "controller" => "PetController",
             "action" => "addEvent"
+        ],
+        "editEvent" => [
+            "controller" => "PetController",
+            "action" => "editEvent"
+        ],
+        "deleteEvent" => [
+            "controller" => "PetController",
+            "action" => "deleteEvent"
         ],
         "addVaccination" => [
             "controller" => "PetController",
