@@ -67,13 +67,18 @@
                                     <div class="event-details">
                                         <div class="event-title"><?= htmlspecialchars($event['title']) ?></div>
                                         <div class="event-pet-name">
-                                            <span class="dot" style="position: static; display: inline-block; margin-right: 5px; vertical-align: middle;"></span>
                                             <?= htmlspecialchars($event['pet_name']) ?> • <?= date('d.m.Y', strtotime($event['date'])) ?>
                                         </div>
                                     </div>
                                     <div class="event-time">
                                         <?= $event['time'] ? date('H:i', strtotime($event['time'])) : '' ?>
                                     </div>
+
+                                    <img src="public/img/delete_calendar.png" 
+                                     class="bin-icon"
+                                     data-id="<?= $event['id'] ?>"
+                                     data-action="/deleteEvent"
+                                     onclick="prepareDelete(this.dataset.id, this.dataset.action)">
                                 </div>
                                 <?php
                             }
@@ -103,7 +108,6 @@
                         <div class="event-details">
                             <div class="event-title"><?= htmlspecialchars($event['title']) ?></div>
                             <div class="event-pet-name">
-                                <span class="dot" style="position: static; display: inline-block; margin-right: 5px; vertical-align: middle;"></span>
                                 <?= htmlspecialchars($event['pet_name']) ?>
                             </div>
                         </div>
@@ -182,6 +186,20 @@
             </div>
         </div>
 
+        <div id="deleteModal" class="modal-overlay">
+            <div class="modal-box">
+                <h3>Are you sure?</h3>
+                <p>Do you really want to delete this event?</p>
+                <div class="modal-buttons">
+                    <button type="button" class="btn-cancel" onclick="closeModal('deleteModal')">Cancel</button>
+                    <form id="deleteForm" method="POST" style="margin:0;">
+                        <input type="hidden" name="id" id="modalItemId" value="">
+                        <button type="submit" class="btn-delete">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
     </div>
     
     <script id="calendar-data" type="application/json">
@@ -190,5 +208,7 @@
     <script src="public/scripts/calendar.js" defer></script>
     <script src="public/scripts/calendar-view-switcher.js" defer></script>
     <script src="public/scripts/deleteAddWindow.js" defer></script>
+    <script src="public/scripts/deleteNutrition.js" defer></script>
+
 </body>
 </html>

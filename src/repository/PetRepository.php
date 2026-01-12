@@ -502,42 +502,6 @@ public function updatePet(int $id, array $data, ?string $pictureUrl = null): voi
         $sql = "
             SELECT 'event' as type, e.id, p.name as pet_name, p.picture_url, e.event_name as title, e.event_date as date, e.event_time as time
             FROM pet_events e JOIN pets p ON e.pet_id = p.id WHERE p.user_id = :userId
-            
-            UNION ALL
-
-            SELECT 'visit' as type, v.id, p.name as pet_name, p.picture_url, v.visit_name as title, v.visit_date as date, v.visit_time as time
-            FROM pet_visits v JOIN pets p ON v.pet_id = p.id WHERE p.user_id = :userId
-            
-            UNION ALL
-            
-            SELECT 'treatment' as type, t.id, p.name as pet_name, p.picture_url, t.treatment_name as title, t.treatment_date as date, t.treatment_time as time
-            FROM pet_treatments t JOIN pets p ON t.pet_id = p.id WHERE p.user_id = :userId
-            
-            UNION ALL
-            
-            SELECT 'vaccination' as type, vac.id, p.name as pet_name, p.picture_url, vac.vaccination_name as title, vac.vaccination_date as date, NULL as time
-            FROM pet_vaccinations vac JOIN pets p ON vac.pet_id = p.id WHERE p.user_id = :userId
-            
-            UNION ALL
-            
-            SELECT 'deworming' as type, d.id, p.name as pet_name, p.picture_url, d.deworming_name as title, d.deworming_date as date, NULL as time
-            FROM pet_deworming d JOIN pets p ON d.pet_id = p.id WHERE p.user_id = :userId
-            
-            UNION ALL
-            
-            SELECT 'grooming' as type, g.id, p.name as pet_name, p.picture_url, g.name as title, g.groom_date as date, NULL as time
-            FROM pet_grooming g JOIN pets p ON g.pet_id = p.id WHERE p.user_id = :userId
-            
-            UNION ALL
-            
-            SELECT 'shearing' as type, s.id, p.name as pet_name, p.picture_url, s.name as title, s.shearing_date as date, NULL as time
-            FROM pet_shearing s JOIN pets p ON s.pet_id = p.id WHERE p.user_id = :userId
-            
-            UNION ALL
-            
-            SELECT 'trimming' as type, tr.id, p.name as pet_name, p.picture_url, tr.name as title, tr.trimming_date as date, NULL as time
-            FROM pet_trimming tr JOIN pets p ON tr.pet_id = p.id WHERE p.user_id = :userId
-            
             ORDER BY date ASC, time ASC
         ";
 
@@ -559,5 +523,18 @@ public function updatePet(int $id, array $data, ?string $pictureUrl = null): voi
             $data['date'],
             $data['time']
         ]);
+    }
+
+    public function getEventById(int $id): ?array {
+        $stmt = $this->database->connect()->prepare('SELECT * FROM pet_events WHERE id = :id');
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+    }
+
+    public function deleteEvent(int $id): void {
+        $stmt = $this->database->connect()->prepare('DELETE FROM pet_events WHERE id = :id');
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
     }
 }

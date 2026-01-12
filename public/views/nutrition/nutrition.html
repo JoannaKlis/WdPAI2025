@@ -103,7 +103,7 @@
                                      data-time="<?= date('H:i', strtotime($sch['feeding_time'])) ?>"
                                      onclick="openEditScheduleModal(this.dataset.id, this.dataset.name, this.dataset.time)">
                                 
-                                <img src="public/img/delete.png" 
+                                <img src="public/img/delete_nutrition.png" 
                                      class="edit-schedule-icon"
                                      data-id="<?= $sch['id'] ?>"
                                      data-action="/deleteSchedule"
@@ -209,7 +209,7 @@
                         <label class="input-label">Time</label>
                         <div class="row-layout">
                             <div class="container dose-input-small time">
-                                <input type="time" name="time" value="">
+                                <input type="time" name="time" id="scheduleModalTime" value="">
                             </div>
                         </div>
                     </div>

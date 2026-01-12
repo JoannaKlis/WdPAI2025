@@ -171,6 +171,12 @@
     display: none; 
 }
 
+.bin-icon {
+    margin-left: 0.75em;
+    width: 1.2em;
+    cursor: pointer;
+}
+
 @media (max-width: 480px) {
     .tab-switch {
         padding: 1.05vw;

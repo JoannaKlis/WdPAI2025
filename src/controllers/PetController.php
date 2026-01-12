@@ -868,4 +868,33 @@ class PetController extends AppController {
         
         header("Location: /calendar");
     }
+
+    public function deleteEvent() {
+        session_start();
+        $userId = $_SESSION['user_id'] ?? null;
+
+        if (!$this->isPost() || !$userId) {
+            header("Location: /calendar");
+            exit;
+        }
+
+        $id = $_POST['id'] ?? null;
+        
+        // 1. Pobieramy event, żeby sprawdzić czy należy do usera
+        $event = $this->petRepository->getEventById((int)$id);
+        
+        if ($event) {
+            // 2. Pobieramy zwierzaka powiązanego z eventem
+            $pet = $this->petRepository->getPetById($event['pet_id']);
+            
+            // 3. Sprawdzamy czy zwierzak należy do zalogowanego użytkownika
+            if ($pet && (int)$pet['user_id'] === (int)$userId) {
+                $this->petRepository->deleteEvent((int)$id);
+            }
+        }
+
+        // 4. Przekierowanie do kalendarza (a nie do nutrition!)
+        header("Location: /calendar");
+        exit;
+    }
 }

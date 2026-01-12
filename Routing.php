@@ -115,10 +115,6 @@ class Routing {
             "controller" => "PetController",
             "action" => "addEvent"
         ],
-        "editEvent" => [
-            "controller" => "PetController",
-            "action" => "editEvent"
-        ],
         "deleteEvent" => [
             "controller" => "PetController",
             "action" => "deleteEvent"
