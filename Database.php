@@ -33,10 +33,9 @@ class Database {
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             return $conn;
         }
-        // not the best idea to die in production code,
-        // better: redirect to error page
         catch(PDOException $e) {
-            die("Connection failed: " . $e->getMessage());
+            include 'public/views/500.html';
+            exit();
         }
     }
 

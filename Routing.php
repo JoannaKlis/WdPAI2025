@@ -16,6 +16,14 @@ class Routing {
             "controller" => "SecurityController",
             "action" => "start"
         ],
+        "401" => [
+            "controller" => "SecurityController",
+            "action" => "error401"
+        ],
+        "403" => [
+            "controller" => "SecurityController",
+            "action" => "error403"
+        ],
         "login" => [
             "controller" => "SecurityController",
             "action" => "login"

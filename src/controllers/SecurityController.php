@@ -16,6 +16,16 @@ class SecurityController extends AppController {
         return $this->render("main/start");
     }
 
+    public function error401() {
+        http_response_code(401);
+        return $this->render("401");
+    }
+
+    public function error403() {
+        http_response_code(403);
+        return $this->render("403");
+    }
+
     public function login() {
         // jeśli GET to wyświetl stronę logowania
         if (!$this->isPost()) {
@@ -140,7 +150,7 @@ class SecurityController extends AppController {
     }
 
     public function profile() {
-    $this->checkAuthentication();
+    $this->checkUser();
     $user = $this->userRepository->getUserByEmail($_SESSION['user_email']);
 
     if ($this->isPost()) {
@@ -169,13 +179,13 @@ class SecurityController extends AppController {
     }
 
     public function calendar() {
-        $this->checkAuthentication();
+        $this->checkUser();
         $user = $this->userRepository->getUserByEmail($_SESSION['user_email']);
         return $this->render("main/calendar", ['user' => $user]);
     }
 
     public function welcome() {
-        $this->checkAuthentication();
+        $this->checkUser();
         $user = $this->userRepository->getUserByEmail($_SESSION['user_email']);
         return $this->render("main/welcome", ['user' => $user]);
     }

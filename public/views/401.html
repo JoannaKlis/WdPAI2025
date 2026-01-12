@@ -1,7 +1,7 @@
 <?php include '/app/public/views/partials/header.php'; ?>
 <link rel="stylesheet" type="text/css" href="public/styles/error.css">
 
-    <title>Page Not Found</title>
+    <title>Unauthorized</title>
 </head>
 <body>
     <div class="wrapper">
@@ -11,14 +11,14 @@
                 <h1>PetNotes</h1>
             </div>
             
-            <div class="error-code">404</div>
+            <div class="error-code">401</div>
             
             <div class="error-message">
-                Oops! It seems you've wandered off the path.<br>
-                We couldn't find the page you're looking for.
+                Authorization Required.<br>
+                Your session has expired or you lack permission.
             </div>
             
-            <a href="/" class="home-btn">Go back home</a>
+            <a href="/login" class="home-btn">Log in</a>
         </div>
     </div>
 </body>

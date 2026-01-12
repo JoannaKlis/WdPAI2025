@@ -1,7 +1,7 @@
 <?php include '/app/public/views/partials/header.php'; ?>
 <link rel="stylesheet" type="text/css" href="public/styles/error.css">
 
-    <title>Page Not Found</title>
+    <title>Access Denied</title>
 </head>
 <body>
     <div class="wrapper">
@@ -11,14 +11,15 @@
                 <h1>PetNotes</h1>
             </div>
             
-            <div class="error-code">404</div>
+            <div class="error-code">403</div>
             
             <div class="error-message">
-                Oops! It seems you've wandered off the path.<br>
-                We couldn't find the page you're looking for.
+                Access Denied.<br>
+                You don't have permission to view this page.
             </div>
             
-            <a href="/" class="home-btn">Go back home</a>
+            <!-- <a href="/login" class="home-btn">Log in</a> -->
+            <a href="/welcome" class="home-btn">Go back to safety</a>
         </div>
     </div>
 </body>

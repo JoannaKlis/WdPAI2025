@@ -14,6 +14,7 @@ class PetController extends AppController {
     }
 
     public function pets() {
+        $this->checkUser();
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
@@ -30,6 +31,7 @@ class PetController extends AppController {
     }
 
     public function addPet() {
+        $this->checkUser();
         session_start();
         $userId = $_SESSION['user_id'] ?? null;
 
@@ -64,6 +66,7 @@ class PetController extends AppController {
     }
 
     public function features() {
+        $this->checkUser();
         session_start(); // inicjalizacja sesji
         $userId = $_SESSION['user_id'] ?? null;
         $petId = $_GET['id'] ?? null;
@@ -84,6 +87,7 @@ class PetController extends AppController {
     }
 
     public function editPet() {
+        $this->checkUser();
         session_start();
         $userId = $_SESSION['user_id'] ?? null;
         // pobranie ID z parametru URL (GET) lub z formularza (POST)
@@ -121,6 +125,7 @@ class PetController extends AppController {
     }
 
     public function deletePet() {
+        $this->checkUser();
         session_start();
         $userId = $_SESSION['user_id'] ?? null;
 
@@ -150,6 +155,7 @@ class PetController extends AppController {
     }
 
     public function care() {
+        $this->checkUser();
         session_start();
         $userId = $_SESSION['user_id'] ?? null;
         $petId = $_GET['id'] ?? null;
@@ -187,6 +193,7 @@ class PetController extends AppController {
     }
 
     public function weight() {
+        $this->checkUser();
         session_start();
         $userId = $_SESSION['user_id'] ?? null;
         $petId = $_GET['id'] ?? null;
@@ -211,6 +218,7 @@ class PetController extends AppController {
     }
 
     public function addWeight() {
+        $this->checkUser();
         session_start();
         $userId = $_SESSION['user_id'] ?? null;
         // ID może przyjść z GET (wyświetlenie formularza) lub POST (wysłanie formularza)
@@ -244,6 +252,7 @@ class PetController extends AppController {
     }
 
     public function deleteWeight() {
+        $this->checkUser();
         session_start();
         $userId = $_SESSION['user_id'] ?? null;
         if (!$this->isPost() || !$userId) { header("Location: /pets"); exit; }
@@ -266,6 +275,7 @@ class PetController extends AppController {
     }
 
     public function groom() {
+        $this->checkUser();
         session_start();
         $userId = $_SESSION['user_id'] ?? null;
         $petId = $_GET['id'] ?? null;
@@ -287,6 +297,7 @@ class PetController extends AppController {
     }
 
     public function addGroom() {
+        $this->checkUser();
         session_start();
         $userId = $_SESSION['user_id'] ?? null;
         $petId = $_REQUEST['id'] ?? null;
@@ -311,6 +322,7 @@ class PetController extends AppController {
     }
 
     public function deleteGroom() {
+        $this->checkUser();
         session_start();
         $userId = $_SESSION['user_id'] ?? null;
         if (!$this->isPost() || !$userId) { header("Location: /pets"); exit; }
@@ -330,6 +342,7 @@ class PetController extends AppController {
     }
 
     public function shearing() {
+        $this->checkUser();
         session_start();
         $userId = $_SESSION['user_id'] ?? null;
         $petId = $_GET['id'] ?? null;
@@ -351,6 +364,7 @@ class PetController extends AppController {
     }
 
     public function addShearing() {
+        $this->checkUser();
         session_start();
         $userId = $_SESSION['user_id'] ?? null;
         $petId = $_REQUEST['id'] ?? null;
@@ -375,6 +389,7 @@ class PetController extends AppController {
     }
 
     public function deleteShearing() {
+        $this->checkUser();
         session_start();
         $userId = $_SESSION['user_id'] ?? null;
         if (!$this->isPost() || !$userId) { header("Location: /pets"); exit; }
@@ -394,6 +409,7 @@ class PetController extends AppController {
     }
 
     public function trimming() {
+        $this->checkUser();
         session_start();
         $userId = $_SESSION['user_id'] ?? null;
         $petId = $_GET['id'] ?? null;
@@ -415,6 +431,7 @@ class PetController extends AppController {
     }
 
     public function addTrimming() {
+        $this->checkUser();
         session_start();
         $userId = $_SESSION['user_id'] ?? null;
         $petId = $_REQUEST['id'] ?? null;
@@ -439,6 +456,7 @@ class PetController extends AppController {
     }
 
     public function deleteTrimming() {
+        $this->checkUser();
         session_start();
         $userId = $_SESSION['user_id'] ?? null;
         if (!$this->isPost() || !$userId) { header("Location: /pets"); exit; }
@@ -458,6 +476,7 @@ class PetController extends AppController {
     }
 
     public function healthBook() {
+        $this->checkUser();
         session_start();
         $userId = $_SESSION['user_id'] ?? null;
         $petId = $_GET['id'] ?? null;
@@ -488,6 +507,7 @@ class PetController extends AppController {
     }
 
     public function vaccinations() {
+        $this->checkUser();
         session_start();
         $userId = $_SESSION['user_id'] ?? null;
         $petId = $_GET['id'] ?? null;
@@ -501,6 +521,7 @@ class PetController extends AppController {
     }
 
     public function addVaccination() {
+        $this->checkUser();
         session_start();
         $userId = $_SESSION['user_id'] ?? null;
         $petId = $_REQUEST['id'] ?? null;
@@ -523,6 +544,7 @@ class PetController extends AppController {
     }
 
     public function deleteVaccination() {
+        $this->checkUser();
         session_start();
         $userId = $_SESSION['user_id'] ?? null;
         if (!$this->isPost() || !$userId) { header("Location: /pets"); exit; }
@@ -540,6 +562,7 @@ class PetController extends AppController {
     }
 
     public function treatments() {
+        $this->checkUser();
         session_start();
         $userId = $_SESSION['user_id'] ?? null;
         $petId = $_GET['id'] ?? null;
@@ -553,6 +576,7 @@ class PetController extends AppController {
     }
 
     public function addTreatment() {
+        $this->checkUser();
         session_start();
         $userId = $_SESSION['user_id'] ?? null;
         $petId = $_REQUEST['id'] ?? null;
@@ -570,6 +594,7 @@ class PetController extends AppController {
     }
 
     public function deleteTreatment() {
+        $this->checkUser();
         session_start();
         $userId = $_SESSION['user_id'] ?? null;
         if (!$this->isPost() || !$userId) { header("Location: /pets"); exit; }
@@ -587,6 +612,7 @@ class PetController extends AppController {
     }
 
     public function deworming() {
+        $this->checkUser();
         session_start();
         $userId = $_SESSION['user_id'] ?? null;
         $petId = $_GET['id'] ?? null;
@@ -600,6 +626,7 @@ class PetController extends AppController {
     }
 
     public function addDeworming() {
+        $this->checkUser();
         session_start();
         $userId = $_SESSION['user_id'] ?? null;
         $petId = $_REQUEST['id'] ?? null;
@@ -622,6 +649,7 @@ class PetController extends AppController {
     }
 
     public function deleteDeworming() {
+        $this->checkUser();
         session_start();
         $userId = $_SESSION['user_id'] ?? null;
         if (!$this->isPost() || !$userId) { header("Location: /pets"); exit; }
@@ -639,6 +667,7 @@ class PetController extends AppController {
     }
 
     public function visits() {
+        $this->checkUser();
         session_start();
         $userId = $_SESSION['user_id'] ?? null;
         $petId = $_GET['id'] ?? null;
@@ -652,6 +681,7 @@ class PetController extends AppController {
     }
 
     public function addVisit() {
+        $this->checkUser();
         session_start();
         $userId = $_SESSION['user_id'] ?? null;
         $petId = $_REQUEST['id'] ?? null;
@@ -669,6 +699,7 @@ class PetController extends AppController {
     }
 
     public function deleteVisit() {
+        $this->checkUser();
         session_start();
         $userId = $_SESSION['user_id'] ?? null;
         if (!$this->isPost() || !$userId) { header("Location: /pets"); exit; }
@@ -686,6 +717,7 @@ class PetController extends AppController {
     }
 
     public function nutrition() {
+        $this->checkUser();
         session_start();
         $userId = $_SESSION['user_id'] ?? null;
         $petId = $_GET['id'] ?? null;
@@ -704,6 +736,7 @@ class PetController extends AppController {
     }
 
     public function addSensitivities() {
+        $this->checkUser();
         session_start();
         $userId = $_SESSION['user_id'] ?? null;
         $petId = $_REQUEST['id'] ?? null;
@@ -721,10 +754,12 @@ class PetController extends AppController {
     }
 
     public function deleteSensitivities() {
+        $this->checkUser();
         $this->handleDelete('Sensitivities', 'deleteSensitivity', 'getSensitivityById');
     }
 
     public function addFavorite() {
+        $this->checkUser();
         session_start();
         $userId = $_SESSION['user_id'] ?? null;
         $petId = $_REQUEST['id'] ?? null;
@@ -742,10 +777,12 @@ class PetController extends AppController {
     }
 
     public function deleteFavorite() {
+        $this->checkUser();
         $this->handleDelete('FavoriteFood', 'deleteFavoriteFood', 'getFavoriteFoodById');
     }
 
     public function addSupplements() {
+        $this->checkUser();
         session_start();
         $userId = $_SESSION['user_id'] ?? null;
         $petId = $_REQUEST['id'] ?? null;
@@ -763,10 +800,12 @@ class PetController extends AppController {
     }
 
     public function deleteSupplements() {
+        $this->checkUser();
         $this->handleDelete('Supplement', 'deleteSupplement', 'getSupplementById');
     }
 
     public function editSchedule() {
+        $this->checkUser();
         session_start();
         $userId = $_SESSION['user_id'] ?? null;
         $petId = $_REQUEST['id'] ?? null;
@@ -799,10 +838,12 @@ class PetController extends AppController {
     }
 
     public function deleteSchedule() {
+        $this->checkUser();
         $this->handleDelete('ScheduleItem', 'deleteScheduleItem', 'getScheduleItemById');
     }
 
     private function handleDelete($type, $deleteMethod, $fetchMethod) {
+        $this->checkUser();
         session_start();
         $userId = $_SESSION['user_id'] ?? null;
         if (!$this->isPost() || !$userId) { header("Location: /pets"); exit; }
@@ -820,6 +861,7 @@ class PetController extends AppController {
     }
 
     public function calendar() {
+        $this->checkUser();
         session_start();
         $userId = $_SESSION['user_id'] ?? null;
 
@@ -840,6 +882,7 @@ class PetController extends AppController {
     }
 
     public function addEvent() {
+        $this->checkUser();
         session_start();
         $userId = $_SESSION['user_id'] ?? null;
 
@@ -870,6 +913,7 @@ class PetController extends AppController {
     }
 
     public function deleteEvent() {
+        $this->checkUser();
         session_start();
         $userId = $_SESSION['user_id'] ?? null;
 
