@@ -15,6 +15,18 @@ class AppController {
         }
     }
 
+    // metoda tylko dla admina
+    protected function checkAdmin() {
+        $this->checkAuthentication();
+        
+        if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
+            // jeśli zalogowany ale nie admin -> przekieruj do widoku admin
+            $url = "http://$_SERVER[HTTP_HOST]";
+            header("Location: {$url}/admin"); 
+            exit();
+        }
+    }
+
     // metoda sprawdzająca, czy żądanie to GET
         protected function isGet(): bool
     {

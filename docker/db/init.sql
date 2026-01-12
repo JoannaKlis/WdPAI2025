@@ -4,7 +4,7 @@ CREATE TABLE users (
     lastname VARCHAR(100) NOT NULL,
     email VARCHAR(150) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
-    bio TEXT,
+    role VARCHAR(20) DEFAULT 'user',
     picture_url TEXT,
     enabled BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -149,24 +149,22 @@ CREATE TABLE pet_events (
 
 
 -- PRZYKŁADOWE DANE
-INSERT INTO users (firstname, lastname, email, password, bio, picture_url, enabled)
+INSERT INTO users (firstname, lastname, email, password, picture_url, enabled)
 VALUES (
     'Jan',
     'Kowalski',
     'jan.kowalski@example.com',
     '$2y$10$ejsy0sJ6.EbvvDCVD1rjpu82Xjo1H2JDfjHuMF6jdCB5ymNguYLoq', -- hasło: "test"
-    'Miłośnik zwierząt i programowania.',
     'public/img/profile.png',
     TRUE
 );
 
-INSERT INTO users (firstname, lastname, email, password, bio, enabled)
+INSERT INTO users (firstname, lastname, email, password, enabled)
 VALUES (
     'Anna',
     'Nowak',
     'anna.nowak@example.com',
     '$2y$10$ejsy0sJ6.EbvvDCVD1rjpu82Xjo1H2JDfjHuMF6jdCB5ymNguYLoq',
-    'Opiekunka zwierząt.',
     TRUE
 );
 

@@ -7,7 +7,7 @@ class UserRepository extends Repository {
     {
         $query = $this->database->connect()->prepare(
             "
-            SELECT * FROM users;
+            SELECT * FROM users ORDER BY id ASC;
             "
         );
         $query->execute();
@@ -36,21 +36,19 @@ class UserRepository extends Repository {
         string $firstname,
         string $lastname,
         string $email,
-        string $hashedPassword,
-        string $bio = ''
+        string $hashedPassword
     ) {
         $query = $this->database->connect()->prepare(
         "
-                INSERT INTO users (firstname, lastname, email, password, bio)
-                VALUES (?, ?, ?, ?, ?);
+                INSERT INTO users (firstname, lastname, email, password)
+                VALUES (?, ?, ?, ?);
                 "
         );
         $query->execute([
             $firstname,
             $lastname,
             $email,
-            $hashedPassword,
-            $bio
+            $hashedPassword
         ]);
     }
 
@@ -75,5 +73,32 @@ class UserRepository extends Repository {
         $sql .= " WHERE id = :id";
         $stmt = $this->database->connect()->prepare($sql);
         $stmt->execute($params);
+    }
+
+    public function deleteUser(int $id): void {
+        $stmt = $this->database->connect()->prepare('
+            DELETE FROM users WHERE id = :id
+        ');
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+    }
+
+    public function updateUserByAdmin(int $id, string $firstname, string $lastname, string $email, string $role): void {
+        $stmt = $this->database->connect()->prepare('
+            UPDATE users 
+            SET firstname = :firstname, 
+                lastname = :lastname, 
+                email = :email, 
+                role = :role 
+            WHERE id = :id
+        ');
+
+        $stmt->bindParam(':firstname', $firstname, PDO::PARAM_STR);
+        $stmt->bindParam(':lastname', $lastname, PDO::PARAM_STR);
+        $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+        $stmt->bindParam(':role', $role, PDO::PARAM_STR);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+
+        $stmt->execute();
     }
 }

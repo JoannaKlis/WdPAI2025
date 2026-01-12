@@ -19,6 +19,15 @@ class SecurityController extends AppController {
     public function login() {
         // jeśli GET to wyświetl stronę logowania
         if (!$this->isPost()) {
+            if(isset($_SESSION['user_id'])) {
+                $url = "http://$_SERVER[HTTP_HOST]";
+                if(isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin') {
+                    header("Location: {$url}/admin");
+                } else {
+                    header("Location: {$url}/pets");
+                }
+                exit();
+            }
             return $this->render("auth/login");
         }
 
@@ -39,10 +48,17 @@ class SecurityController extends AppController {
         // zapisanie danych użytkownika w sesji
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['user_email'] = $user['email'];
+        $_SESSION['user_role'] = $user['role'];
+
+        $url = "http://$_SERVER[HTTP_HOST]";
 
         //TODO: cookie etc.
-        $url = "http://$_SERVER[HTTP_HOST]";
-        header("Location: {$url}/welcome");
+        // logika przekierowania po zalogowaniu
+        if ($user['role'] === 'admin') {
+            header("Location: {$url}/admin");
+        } else {
+            header("Location: {$url}/welcome"); 
+        }
         exit();
 
     }

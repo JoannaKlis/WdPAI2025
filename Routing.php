@@ -4,6 +4,7 @@ require_once 'src/controllers/SecurityController.php';
 require_once 'src/controllers/UserController.php';
 require_once 'src/controllers/DashboardController.php';
 require_once 'src/controllers/PetController.php';
+require_once 'src/controllers/AdminController.php';
 
 class Routing {
     # TODO: singleton, regex, sesja użytkownika
@@ -27,9 +28,17 @@ class Routing {
             "controller" => "SecurityController",
             "action" => "registration"
         ],
-        "dashboard" => [
-            "controller" => "DashboardController",
+        "admin" => [
+            "controller" => "AdminController",
             "action" => "index"
+        ],
+        "editUser" => [
+            "controller" => "AdminController",
+            "action" => "editUser"
+        ],
+        "deleteUser" => [
+            "controller" => "AdminController",
+            "action" => "deleteUser"
         ],
         "search-cards" => [
             "controller" => "DashboardController",
