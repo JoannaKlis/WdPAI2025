@@ -21,6 +21,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const year = currentDate.getFullYear();
         const month = currentDate.getMonth();
 
+        // obiekt reprezentujący "dzisiaj" z wyzerowanym czasem do porównań
+        const realToday = new Date();
+        realToday.setHours(0, 0, 0, 0);
+
         const monthNames = [
             "January", "February", "March", "April", "May", "June",
             "July", "August", "September", "October", "November", "December"
@@ -38,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // dni poprzedniego miesiąca
         for (let i = startDayIndex; i > 0; i--) {
-            daysHTML += `<div class="day prev-date">${lastDateOfPrevMonth - i + 1}</div>`;
+            daysHTML += `<div class="day prev-date dimmed">${lastDateOfPrevMonth - i + 1}</div>`;
         }
 
         // dni aktualnego miesiąca
@@ -47,21 +51,30 @@ document.addEventListener("DOMContentLoaded", () => {
             const currentDayStr = String(i).padStart(2, '0');
             const fullDate = `${year}-${currentMonthStr}-${currentDayStr}`;
 
-            const today = new Date();
-            const isToday = (i === today.getDate() && month === today.getMonth() && year === today.getFullYear()) 
-                            ? "today" : "";
+            // data dla iterowanego dnia, aby sprawdzić przeszłość/teraźniejszość
+            const currentRenderDate = new Date(year, month, i);
+            currentRenderDate.setHours(0, 0, 0, 0);
 
-            // sprawdzamy, czy w tym dniu jest jakieś wydarzenie
+            let dayClasses = "day";
+
+            if (currentRenderDate.getTime() === realToday.getTime()) {
+                // dzisiejszy dzień podkreślony
+                dayClasses += " active-day";
+            } else if (currentRenderDate < realToday) {
+                // minione dni wyblakłe
+                dayClasses += " dimmed";
+            }
+
+            // sprawdzenie czy w tym dniu jest jakieś wydarzenie
             let hasEventHTML = "";
             const eventExists = serverEvents.some(event => event.date === fullDate);
             
             if (eventExists) {
-                // jeśli jest, wstawiamy kropkę
                 hasEventHTML = '<span class="dot"></span>';
             }
 
-            // renderujemy dzień z obsługą kliknięcia
-            daysHTML += `<div class="day ${isToday}" onclick="openModalWithDate('addModal', '${fullDate}')" style="cursor:pointer;">
+            // renderujemy dzień
+            daysHTML += `<div class="${dayClasses}" onclick="openModalWithDate('addModal', '${fullDate}')" style="cursor:pointer; position: relative;">
                             ${i}
                             ${hasEventHTML}
                          </div>`;
@@ -72,7 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const nextDays = 42 - totalDaysRendered;
 
         for (let i = 1; i <= nextDays; i++) {
-             daysHTML += `<div class="day next-date">${i}</div>`;
+             daysHTML += `<div class="day next-date dimmed">${i}</div>`;
         }
 
         daysGrid.innerHTML = daysHTML;
