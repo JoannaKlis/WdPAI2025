@@ -1,0 +1,24 @@
+.policy-container {
+    width: 80%;
+    max-width: 800px;
+    background-color: #F6F6F6;
+    padding: 30px;
+    border-radius: 20px;
+    margin-top: 20px;
+    color: #8F769E;
+    text-align: left;
+    line-height: 1.6;
+}
+    
+.policy-container h1 {
+    text-align: center;
+    margin-left: 0;
+}
+
+.back-btn {
+    display: inline-block;
+    margin-top: 20px;
+    color: #934CBE;
+    text-decoration: none;
+    font-weight: bold;
+}

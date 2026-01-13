@@ -102,6 +102,10 @@ class SecurityController extends AppController {
             return $this->render("auth/registration");
         }
 
+        if (!isset($_POST['privacyPolicy'])) {
+            return $this->render('auth/registration', ['messages' => 'You must accept the Privacy Policy!']);
+        }
+
         // pobranie danych z formularza
         $firstname = $_POST['firstName'] ?? '';
         $lastname = $_POST['lastName'] ?? '';
@@ -188,6 +192,10 @@ class SecurityController extends AppController {
         $this->checkUser();
         $user = $this->userRepository->getUserByEmail($_SESSION['user_email']);
         return $this->render("main/welcome", ['user' => $user]);
+    }
+
+    public function privacyPolicy() {
+        return $this->render("main/privacy");
     }
 
     public function features() {

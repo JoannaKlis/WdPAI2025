@@ -36,6 +36,10 @@ class Routing {
             "controller" => "SecurityController",
             "action" => "registration"
         ],
+        "privacy-policy" => [
+            "controller" => "SecurityController",
+            "action" => "privacyPolicy"
+        ],
         "admin" => [
             "controller" => "AdminController",
             "action" => "index"
