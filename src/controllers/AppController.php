@@ -2,58 +2,50 @@
 
 class AppController {
     public function __construct(){
+        // start sesji raz dla wszystkich kontrolerów
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
     }
 
     protected function checkAuthentication() {
-        // zablokowanie Cache (żeby przycisk "Wstecz" nie pokazał poprzedniej strony)
+        // blokada cache przeglądarki
         header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
         header("Cache-Control: post-check=0, pre-check=0", false);
         header("Pragma: no-cache");
 
-        $timeout_duration = 900; // 15 minut
+        $timeout_duration = 1800; // 30 minut
 
-        // sprawdzenie Timeoutu (gdy sesja PHP jeszcze istnieje, ale czas minął)
+        // sprawdzenie timeoutu (tylko jeśli sesja istnieje)
         if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) > $timeout_duration) {
-            $this->logoutAndRedirectToExpired(); // kieruje na 401
+            $this->logoutAndRedirectTo401();
         }
 
         // sprawdzenie czy użytkownik jest zalogowany
         if (!isset($_SESSION['user_id'])) {
-            
-            // jeśli brak sesji, ale jest ciasteczko 'app_active' -> sesja wygasła
-            if (isset($_COOKIE['app_active'])) {
-                $this->logoutAndRedirectToExpired(); // kieruje na 401
-            }
-
-            // jeśli brak sesji i brak ciasteczka -> zwykłe logowanie
+            // jeśli nie ma sesji -> idź do logowania
             $url = "http://$_SERVER[HTTP_HOST]";
             header("Location: {$url}/login");
             exit();
         }
 
-        //odświeżenie czasu ostatniej aktywności i ciasteczka
+        // odświeżenie czasu ostatniej aktywności
         $_SESSION['last_activity'] = time();
-        setcookie("app_active", "1", time() + $timeout_duration, "/"); 
     }
 
-    private function logoutAndRedirectToExpired() {
-        // sprawdzenie czy sesja jest aktywna, zanim spróbujemy ją zniszczyć
+    // metoda pomocnicza: czyści sesję i kieruje na błąd 401
+    private function logoutAndRedirectTo401() {
         if (session_status() === PHP_SESSION_ACTIVE) {
             session_unset();
             session_destroy();
         }
-        
-        // usuwanie ciasteczka pomocniczego
-        setcookie("app_active", "", time() - 3600, "/"); 
         
         $url = "http://$_SERVER[HTTP_HOST]";
         header("Location: {$url}/401");
         exit();
     }
 
+    // tylko dla Admina (User -> 403)
     protected function checkAdmin() {
         $this->checkAuthentication();
         
@@ -64,6 +56,7 @@ class AppController {
         }
     }
 
+    // tylko dla Usera (Admin -> 403)
     protected function checkUser() {
         // sprawdzenie czy zalogowany (i czy sesja nie wygasła)
         $this->checkAuthentication();
@@ -77,8 +70,7 @@ class AppController {
     }
 
     // metoda sprawdzająca, czy żądanie to GET
-    protected function isGet(): bool
-    {
+    protected function isGet(): bool{
         return $_SERVER["REQUEST_METHOD"] === 'GET';
     }
 
@@ -87,11 +79,8 @@ class AppController {
         return ($_SERVER['REQUEST_METHOD'] ?? '') === 'POST';
     }
 
-    protected function render(?string $template = null, array $variables = [])
-    {
-        if ($template === null) {
-            return;
-        }
+    protected function render(?string $template = null, array $variables = []) {
+        if ($template === null) return;
 
         $templatePath = 'public/views/' . $template . '.html';
         $templatePath404 = 'public/views/404.html';
@@ -109,7 +98,6 @@ class AppController {
         }
 
         $output = ob_get_clean();
-
         echo $output;
     }
 }
