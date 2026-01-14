@@ -9,7 +9,8 @@ class AdminController extends AppController {
     public function __construct()
     {
         parent::__construct();
-        $this->userRepository = new UserRepository();
+        // Singleton
+        $this->userRepository = UserRepository::getInstance();
     }
 
     public function index() {

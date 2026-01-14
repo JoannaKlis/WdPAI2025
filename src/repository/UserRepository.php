@@ -3,6 +3,23 @@
 require_once 'Repository.php';
 
 class UserRepository extends Repository {
+    private static $instance = null;
+
+    private function __construct()
+    {
+        parent::__construct();
+    }
+
+    // Singleton
+    public static function getInstance(): UserRepository
+    {
+        if (self::$instance === null) {
+            self::$instance = new UserRepository();
+        }
+
+        return self::$instance;
+    }
+
     public function getUsers(): ?array 
     {
         $query = $this->database->connect()->prepare(
@@ -12,9 +29,7 @@ class UserRepository extends Repository {
         );
         $query->execute();
 
-        $users = $query->fetchAll(PDO::FETCH_ASSOC);
-
-        return $users;
+        return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getUserByEmail(string $email)
@@ -27,9 +42,7 @@ class UserRepository extends Repository {
         $query->bindParam(':email', $email);
         $query->execute();
 
-        $user = $query->fetch(PDO::FETCH_ASSOC);
-
-        return $user;
+        return $query->fetch(PDO::FETCH_ASSOC);
     }
 
     public function createUser(

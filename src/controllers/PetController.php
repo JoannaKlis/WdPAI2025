@@ -9,11 +9,11 @@ class PetController extends AppController {
     private $userRepository;
 
     public function __construct() {
-        // uruchomienie sesji z AppController
         parent::__construct();
         
         $this->petRepository = new PetRepository();
-        $this->userRepository = new UserRepository();
+        // Singleton dla UserRepository
+        $this->userRepository = UserRepository::getInstance();
     }
 
     public function pets() {
@@ -228,10 +228,12 @@ class PetController extends AppController {
         }
 
         if ($this->isPost()) {
-            // zamiana przecinka na kropkę
-            if (isset($_POST['weight'])) {
-                $_POST['weight'] = str_replace(',', '.', $_POST['weight']);
-            }
+            $weightInput = $_POST['weight'] ?? '';
+            $weightInput = str_replace(',', '.', $weightInput);
+
+            if (!is_numeric($weightInput) || (float)$weightInput <= 0)  { return $this->render('422'); }
+
+            $_POST['weight'] = $weightInput;
             $this->petRepository->addPetWeight((int)$petId, $_POST);
             
             // powrót do listy wag tego zwierzaka
@@ -511,9 +513,12 @@ class PetController extends AppController {
 
         if ($this->isPost()) {
             // zamiana przecinka na kropkę
-            if (isset($_POST['dose'])) {
-                $_POST['dose'] = str_replace(',', '.', $_POST['dose']);
-            }
+            $doseInput = $_POST['dose'] ?? '';
+            $doseInput = str_replace(',', '.', $doseInput);
+
+            if (!is_numeric($doseInput) || (float)$doseInput <= 0) { return $this->render('422'); }
+
+            $_POST['dose'] = $doseInput;
 
             $this->petRepository->addPetVaccination((int)$petId, $_POST);
             header("Location: /vaccinations?id=" . $petId);
@@ -610,9 +615,12 @@ class PetController extends AppController {
 
         if ($this->isPost()) {
             // zamiana przecinka na kropkę
-            if (isset($_POST['dose'])) {
-                $_POST['dose'] = str_replace(',', '.', $_POST['dose']);
-            }
+            $doseInput = $_POST['dose'] ?? '';
+            $doseInput = str_replace(',', '.', $doseInput);
+
+            if (!is_numeric($doseInput) || (float)$doseInput <= 0) { return $this->render('422'); }
+
+            $_POST['dose'] = $doseInput;
 
             $this->petRepository->addPetDeworming((int)$petId, $_POST);
             header("Location: /deworming?id=" . $petId);
