@@ -40,7 +40,7 @@
         <div class="input-group">
             <label class="input-label">Name</label>
             <div class="container">
-                <input type="text" name="name" value="<?= $pet['name'] ?>" required>
+                <input type="text" name="name" value="<?= $pet['name'] ?>" maxlength="50" required>
             </div>
         </div>
 
@@ -67,21 +67,21 @@
         <div class="input-group">
             <label class="input-label">Breed</label>
             <div class="container">
-                <input type="text" name="breed" value="<?= $pet['breed'] ?>">
+                <input type="text" name="breed" value="<?= $pet['breed'] ?>" maxlength="100" required>
             </div>
         </div>
 
         <div class="input-group">
             <label class="input-label">Color</label>
             <div class="container">
-                <input type="text" name="color" value="<?= $pet['color'] ?>">
+                <input type="text" name="color" value="<?= $pet['color'] ?>" maxlength="50" required>
             </div>
         </div>
 
         <div class="input-group">
             <label class="input-label">Microchip number</label>
             <div class="container">
-                <input type="text" name="microchip" value="<?= $pet['microchip_number'] ?>">
+                <input type="text" name="microchip" value="<?= $pet['microchip_number'] ?>" maxlength="15" required>
             </div>
         </div>
 

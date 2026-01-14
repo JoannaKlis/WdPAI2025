@@ -52,6 +52,17 @@ class PetController extends AppController {
             return $this->render('pets/addPet', ['pet' => ['picture_url' => null]]);
         }
 
+        $name = $_POST['name'] ?? '';
+        $microchip = $_POST['microchip'] ?? '';
+
+        // walidacja mikroczipa (musi mieć dokładnie 15 cyfr, jeśli został podany)
+        if (!empty($microchip)) {
+            if (!preg_match('/^\d{15}$/', $microchip)) {
+                http_response_code(422);
+                return $this->render('422', ['message' => 'Microchip number must consist of exactly 15 digits.']);
+            }
+        }
+
         // obsługa uploadu zdjęcia
         $pictureUrl = null;
         if (isset($_FILES['picture']) && is_uploaded_file($_FILES['picture']['tmp_name'])) {
@@ -101,6 +112,16 @@ class PetController extends AppController {
         }
 
         if ($this->isPost()) {
+            $name = $_POST['name'] ?? '';
+            $microchip = $_POST['microchip'] ?? '';
+
+            if (!empty($microchip)) {
+                if (!preg_match('/^\d{15}$/', $microchip)) {
+                    http_response_code(422);
+                    return $this->render('422', ['message' => 'Microchip number must consist of exactly 15 digits.']);
+                }
+            }
+
             // obsługa zdjęcia
             $pictureUrl = null;
             if (isset($_FILES['picture']) && is_uploaded_file($_FILES['picture']['tmp_name'])) {

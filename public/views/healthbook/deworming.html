@@ -67,7 +67,7 @@
                     <div class="input-group vaccination-name-group">
                         <label class="input-label">Deworming name</label>
                         <div class="container">
-                            <input type="text" name="name" placeholder="Internal deworming" required>
+                            <input type="text" name="name" placeholder="Internal deworming" maxlength="255" required>
                         </div>
                     </div>
 
@@ -84,7 +84,7 @@
                         <label class="input-label">Dose</label>
                         <div class="row-layout">
                             <div class="container dose-input-small">
-                                <input type="text" name="dose" placeholder="230">
+                                <input type="text" name="dose" placeholder="230" maxlength="20" required>
                             </div>
                             <div class="unit-selector-container">
                                 <select name="unit" class="unit-dropdown">

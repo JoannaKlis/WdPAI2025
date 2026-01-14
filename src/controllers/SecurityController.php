@@ -114,7 +114,14 @@ class SecurityController extends AppController {
         $password = $_POST['password'] ?? '';
         $confirmedPassword = $_POST['confirmedPassword'] ?? '';
 
-        // TODO: dodać walidację danych na first i last name aby nie zawierały niepożądanych znaków
+        // sprawdzenie czy imię i nazwisko zawierają tylko litery
+        if (!preg_match('/^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+$/u', $firstname)) {
+            return $this->render('auth/registration', ['messages' => 'First name must contain only letters!']);
+        }
+
+        if (!preg_match('/^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+$/u', $lastname)) {
+            return $this->render('auth/registration', ['messages' => 'Last name must contain only letters!']);
+        }
 
         // walidacja formatu email (musi zawierać @ i domenę po .)
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
