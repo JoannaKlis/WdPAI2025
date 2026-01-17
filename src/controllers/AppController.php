@@ -69,6 +69,17 @@ class AppController {
         }
     }
 
+    // zmiana przecinka na kropkę
+    protected function validateAndSanitizeFloat(string $input): ?string {
+        $cleanInput = str_replace(',', '.', $input);
+        
+        if (!is_numeric($cleanInput) || (float)$cleanInput <= 0) {
+            return null;
+        }
+        
+        return $cleanInput;
+    }
+
     // metoda sprawdzająca, czy żądanie to GET
     protected function isGet(): bool{
         return $_SERVER["REQUEST_METHOD"] === 'GET';

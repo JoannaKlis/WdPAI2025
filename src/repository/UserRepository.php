@@ -45,23 +45,12 @@ class UserRepository extends Repository {
         return $query->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function createUser(
-        string $firstname,
-        string $lastname,
-        string $email,
-        string $hashedPassword
-    ) {
-        $query = $this->database->connect()->prepare(
-        "
-                INSERT INTO users (firstname, lastname, email, password)
-                VALUES (?, ?, ?, ?);
-                "
-        );
-        $query->execute([
-            $firstname,
-            $lastname,
-            $email,
-            $hashedPassword
+    public function createUser(string $firstname, string $lastname, string $email, string $hashedPassword) {
+        $this->insert('users', [
+            'firstname' => $firstname,
+            'lastname' => $lastname,
+            'email' => $email,
+            'password' => $hashedPassword
         ]);
     }
 

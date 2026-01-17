@@ -3,44 +3,51 @@
 // USERNAME, PASSWORD, HOST, DATABASE
 require_once "config.php";
 
-// todo: singleto można póżniej przenieś do src
 class Database {
     private $username;
     private $password;
     private $host;
     private $database;
-    // private $conn; // optional: to hold the connection instance
-
-    public function __construct()
+    
+    private static $instance = null;
+    private $conn; 
+    
+    private function __construct()
     {
         $this->username = USERNAME;
         $this->password = PASSWORD;
         $this->host = HOST;
         $this->database = DATABASE;
     }
+    public static function getInstance(): Database
+    {
+        if (self::$instance === null) {
+            self::$instance = new Database();
+        }
+        return self::$instance;
+    }
 
     public function connect()
     {
+        // Jeśli połączenie już istnieje
+        if ($this->conn !== null) {
+            return $this->conn;
+        }
+
         try {
-            $conn = new PDO(
-                "pgsql:host=$this->host;port=5432;dbname=$this->database", // connection string
+            $this->conn = new PDO(
+                "pgsql:host=$this->host;port=5432;dbname=$this->database",
                 $this->username,
                 $this->password,
                 ["sslmode"  => "prefer"]
             );
 
-            // set the PDO error mode to exception
-            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            return $conn;
+            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            return $this->conn;
         }
         catch(PDOException $e) {
             include 'public/views/500.html';
             exit();
         }
-    }
-
-    public function disconnect()
-    {
-        // $this->conn = null;
     }
 }

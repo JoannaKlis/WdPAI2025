@@ -2,9 +2,12 @@
 
 require_once 'src/controllers/SecurityController.php';
 require_once 'src/controllers/UserController.php';
-require_once 'src/controllers/DashboardController.php';
 require_once 'src/controllers/PetController.php';
 require_once 'src/controllers/AdminController.php';
+require_once 'src/controllers/PetEventController.php';
+require_once 'src/controllers/PetHealthController.php';
+require_once 'src/controllers/PetCareController.php';
+require_once 'src/controllers/PetNutritionController.php';
 
 class Routing {
     # TODO: singleton, regex, sesja użytkownika
@@ -37,7 +40,7 @@ class Routing {
             "action" => "registration"
         ],
         "privacy-policy" => [
-            "controller" => "SecurityController",
+            "controller" => "UserController",
             "action" => "privacyPolicy"
         ],
         "admin" => [
@@ -52,12 +55,8 @@ class Routing {
             "controller" => "AdminController",
             "action" => "deleteUser"
         ],
-        "search-cards" => [
-            "controller" => "DashboardController",
-            "action" => "search"
-        ],
         "profile" => [
-            "controller" => "SecurityController",
+            "controller" => "UserController",
             "action" => "profile"
         ],
         "pets" => [
@@ -65,11 +64,11 @@ class Routing {
             "action" => "pets"
         ],
         "calendar" => [
-            "controller" => "PetController",
+            "controller" => "PetEventController",
             "action" => "calendar"
         ],
         "welcome" => [
-            "controller" => "SecurityController",
+            "controller" => "UserController",
             "action" => "welcome"
         ],
         "features" => [
@@ -85,47 +84,47 @@ class Routing {
             "action" => "deletePet"
         ],
         "care" => [
-            "controller" => "PetController",
+            "controller" => "PetCareController",
             "action" => "care"
         ],
         "healthBook" => [
-            "controller" => "PetController",
+            "controller" => "PetHealthController",
             "action" => "healthBook"
         ],
         "nutrition" => [
-            "controller" => "PetController",
+            "controller" => "PetNutritionController",
             "action" => "nutrition"
         ],
         "vaccinations" => [
-            "controller" => "PetController",
+            "controller" => "PetHealthController",
             "action" => "vaccinations"
         ],
         "treatments" => [
-            "controller" => "PetController",
+            "controller" => "PetHealthController",
             "action" => "treatments"
         ],
         "deworming" => [
-            "controller" => "PetController",
+            "controller" => "PetHealthController",
             "action" => "deworming"
         ],
         "visits" => [
-            "controller" => "PetController",
+            "controller" => "PetHealthController",
             "action" => "visits"
         ],
         "weight" => [
-            "controller" => "PetController",
+            "controller" => "PetCareController",
             "action" => "weight"
         ],
         "groom" => [
-            "controller" => "PetController",
+            "controller" => "PetCareController",
             "action" => "groom"
         ],
         "shearing" => [
-            "controller" => "PetController",
+            "controller" => "PetCareController",
             "action" => "shearing"
         ],
         "trimming" => [
-            "controller" => "PetController",
+            "controller" => "PetCareController",
             "action" => "trimming"
         ],
         "addPet" => [
@@ -133,107 +132,107 @@ class Routing {
             "action" => "addPet"
         ],
         "addEvent" => [
-            "controller" => "PetController",
+            "controller" => "PetEventController",
             "action" => "addEvent"
         ],
         "deleteEvent" => [
-            "controller" => "PetController",
+            "controller" => "PetEventController",
             "action" => "deleteEvent"
         ],
         "addVaccination" => [
-            "controller" => "PetController",
+            "controller" => "PetHealthController",
             "action" => "addVaccination"
         ],
         "deleteVaccination" => [
-            "controller" => "PetController",
+            "controller" => "PetHealthController",
             "action" => "deleteVaccination"
         ],
         "addDeworming" => [
-            "controller" => "PetController",
+            "controller" => "PetHealthController",
             "action" => "addDeworming"
         ],
         "deleteDeworming" => [
-            "controller" => "PetController",
+            "controller" => "PetHealthController",
             "action" => "deleteDeworming"
         ],
         "addTreatment" => [
-            "controller" => "PetController",
+            "controller" => "PetHealthController",
             "action" => "addTreatment"
         ],
         "deleteTreatment" => [
-            "controller" => "PetController",
+            "controller" => "PetHealthController",
             "action" => "deleteTreatment"
         ],
         "addVisit" => [
-            "controller" => "PetController",
+            "controller" => "PetHealthController",
             "action" => "addVisit"
         ],
         "deleteVisit" => [
-            "controller" => "PetController",
+            "controller" => "PetHealthController",
             "action" => "deleteVisit"
         ],
         "addWeight" => [
-            "controller" => "PetController",
+            "controller" => "PetCareController",
             "action" => "addWeight"
         ],
         "deleteWeight" => [
-            "controller" => "PetController",
+            "controller" => "PetCareController",
             "action" => "deleteWeight"
         ],
         "addGroom" => [
-            "controller" => "PetController",
+            "controller" => "PetCareController",
             "action" => "addGroom"
         ],
         "deleteGroom" => [
-            "controller" => "PetController",
+            "controller" => "PetCareController",
             "action" => "deleteGroom"
         ],
         "addShearing" => [
-            "controller" => "PetController",
+            "controller" => "PetCareController",
             "action" => "addShearing"
         ],
         "deleteShearing" => [
-            "controller" => "PetController",
+            "controller" => "PetCareController",
             "action" => "deleteShearing"
         ],
         "addTrimming" => [
-            "controller" => "PetController",
+            "controller" => "PetCareController",
             "action" => "addTrimming"
         ],
         "deleteTrimming" => [
-            "controller" => "PetController",
+            "controller" => "PetCareController",
             "action" => "deleteTrimming"
         ],
         "addSensitivities" => [
-            "controller" => "PetController",
+            "controller" => "PetNutritionController",
             "action" => "addSensitivities"
         ],
         "deleteSensitivities" => [
-            "controller" => "PetController",
+            "controller" => "PetNutritionController",
             "action" => "deleteSensitivities"
         ],
         "addFavorite" => [
-            "controller" => "PetController",
+            "controller" => "PetNutritionController",
             "action" => "addFavorite"
         ],
         "deleteFavorite" => [
-            "controller" => "PetController",
+            "controller" => "PetNutritionController",
             "action" => "deleteFavorite"
         ],
         "addSupplements" => [
-            "controller" => "PetController",
+            "controller" => "PetNutritionController",
             "action" => "addSupplements"
         ],
         "deleteSupplements" => [
-            "controller" => "PetController",
+            "controller" => "PetNutritionController",
             "action" => "deleteSupplements"
         ],
         "editSchedule" => [
-            "controller" => "PetController",
+            "controller" => "PetNutritionController",
             "action" => "editSchedule"
         ],
         "deleteSchedule" => [
-            "controller" => "PetController",
+            "controller" => "PetNutritionController",
             "action" => "deleteSchedule"
         ]
     ];
@@ -252,17 +251,7 @@ class Routing {
 
 
     public static function run(string $path) {
-        $dashboard_details_regex = '/^dashboard(?:\/(\d+))?$/';
         $user_details_regex = '/^user\/(\d+)$/';
-        
-        if (preg_match($dashboard_details_regex, $path, $matches)) {
-            // $matches[1] będzie zawierać przechwycone ID lub będzie puste/null
-            $id = $matches[1] ?? null;
-        
-            $controllerObj = self::getControllerInstance("DashboardController");
-            $controllerObj->index($id);
-            return;
-        }
 
         if (preg_match($user_details_regex, $path, $matches)) {
             // $matches[1] będzie zawierać przechwycone ID użytkownika (np. 4578)

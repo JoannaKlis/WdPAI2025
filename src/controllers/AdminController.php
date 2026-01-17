@@ -9,15 +9,13 @@ class AdminController extends AppController {
     public function __construct()
     {
         parent::__construct();
-        // Singleton
         $this->userRepository = UserRepository::getInstance();
     }
 
     public function index() {
-        // Sprawdź czy to admin!
+        // weryfikacja czy to na pewno admin
         $this->checkAdmin(); 
 
-        // Pobierz wszystkich użytkowników
         $users = $this->userRepository->getUsers();
 
         return $this->render('admin/users', ['users' => $users]);
@@ -46,12 +44,6 @@ class AdminController extends AppController {
             $lastname = $_POST['lastname'];
             $email = $_POST['email'];
             $role = $_POST['role'];
-
-            // admin nie może edytować samego siebie
-            if ($id == $_SESSION['user_id']) {
-                header("Location: /admin?error=cannot_edit_self");
-                exit;
-            }
 
             if ($id) {
                 $this->userRepository->updateUserByAdmin((int)$id, $firstname, $lastname, $email, $role);
