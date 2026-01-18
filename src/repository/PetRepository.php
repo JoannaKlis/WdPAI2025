@@ -47,7 +47,12 @@ class PetRepository extends Repository {
 
     public function getPetsByUserId(int $userId): array {
         $stmt = $this->database->connect()->prepare('
-            SELECT * FROM pets WHERE user_id = :userId ORDER BY created_at DESC
+            SELECT 
+                p.*,
+                calculate_pet_age(p.birth_date) as age_display
+            FROM pets p
+            WHERE p.user_id = :userId 
+            ORDER BY p.created_at DESC
         ');
         $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
         $stmt->execute();

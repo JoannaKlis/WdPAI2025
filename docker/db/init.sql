@@ -148,7 +148,7 @@ CREATE TABLE pet_events (
 );
 
 
---- WIDOK DLA KALENDARZA
+-- WIDOK DLA KALENDARZA
 CREATE OR REPLACE VIEW v_pet_events_calendar AS
 SELECT 
     e.id AS event_id,
@@ -162,7 +162,7 @@ SELECT
 FROM pet_events e 
 JOIN pets p ON e.pet_id = p.id;
 
---- WIDOK DLA HEALTHBOOK
+-- WIDOK DLA HEALTHBOOK
 CREATE OR REPLACE VIEW v_pet_medical_history AS
 SELECT id, pet_id, 'Vaccination' as type, vaccination_name as name, vaccination_date as date, NULL::TIME as time, created_at FROM pet_vaccinations
 UNION ALL
@@ -172,6 +172,49 @@ SELECT id, pet_id, 'Deworming' as type, deworming_name as name, deworming_date a
 UNION ALL
 SELECT id, pet_id, 'Visit' as type, visit_name as name, visit_date as date, visit_time as time, created_at FROM pet_visits
 ORDER BY date DESC, time ASC;
+
+
+-- FUNKCJA OBLICZAJĄCA WIEK ZWIERZAKA
+CREATE OR REPLACE FUNCTION calculate_pet_age(birth_date DATE) 
+RETURNS VARCHAR AS $$
+DECLARE
+    age_interval INTERVAL;
+    years INT;
+    months INT;
+BEGIN
+    IF birth_date IS NULL THEN
+        RETURN 'Unknown';
+    END IF;
+
+    -- Wiek zwierzaka
+    age_interval := age(CURRENT_DATE, birth_date);
+
+    -- Lata i miesiące
+    years := EXTRACT(YEAR FROM age_interval);
+    months := EXTRACT(MONTH FROM age_interval);
+
+    -- Jeśli zwierzak ma skończony rok lub więcej
+    IF years > 0 THEN
+        IF years = 1 THEN
+            RETURN '1 year';
+        ELSE
+            RETURN years || ' years';
+        END IF;
+    END IF;
+
+    -- Jeśli zwierzak ma mniej niż rok, ale skończony miesiąc
+    IF months > 0 THEN
+        IF months = 1 THEN
+            RETURN '1 month';
+        ELSE
+            RETURN months || ' months';
+        END IF;
+    END IF;
+
+    -- Jeśli zwierzak ma mniej niż miesiąc (0 lat, 0 miesięcy)
+    RETURN '~1 month';
+END;
+$$ LANGUAGE plpgsql;
 
 
 -- PRZYKŁADOWE DANE
