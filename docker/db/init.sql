@@ -147,6 +147,16 @@ CREATE TABLE pet_events (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE audit_logs (
+    id SERIAL PRIMARY KEY,
+    table_name VARCHAR(50) NOT NULL,
+    record_id INT NOT NULL,
+    action VARCHAR(20) NOT NULL,
+    old_value TEXT,
+    new_value TEXT,
+    changed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 
 -- WIDOK DLA KALENDARZA
 CREATE OR REPLACE VIEW v_pet_events_calendar AS
@@ -215,6 +225,47 @@ BEGIN
     RETURN '~1 month';
 END;
 $$ LANGUAGE plpgsql;
+
+
+-- FUNKCJA SPRAWDZAJĄCA JAKA OPERACJA JEST WYKONYWANA I CO SIĘ ZMIENIŁO
+CREATE OR REPLACE FUNCTION log_sensitive_user_changes() 
+RETURNS TRIGGER AS $$
+BEGIN
+    -- Aktualizacja danych (sprawdzenie czy rola się zmieniła)
+    IF (TG_OP = 'UPDATE') THEN
+        IF OLD.role <> NEW.role THEN
+            INSERT INTO audit_logs (table_name, record_id, action, old_value, new_value)
+            VALUES (
+                'users', 
+                NEW.id, 
+                'ROLE_CHANGE', 
+                OLD.role,
+                NEW.role
+            );
+        END IF;
+        RETURN NEW;
+
+    -- Usunięcie konta
+    ELSIF (TG_OP = 'DELETE') THEN
+        INSERT INTO audit_logs (table_name, record_id, action, old_value, new_value)
+        VALUES (
+            'users', 
+            OLD.id, 
+            'DELETE_USER', 
+            'Email: ' || OLD.email || ', Role: ' || OLD.role, 
+            'ACCOUNT_DELETED'
+        );
+        RETURN OLD;
+    END IF;
+
+    RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trigger_audit_user_changes
+AFTER UPDATE OR DELETE ON users
+FOR EACH ROW
+EXECUTE FUNCTION log_sensitive_user_changes();
 
 
 -- PRZYKŁADOWE DANE
