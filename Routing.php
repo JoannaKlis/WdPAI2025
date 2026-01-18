@@ -10,269 +10,147 @@ require_once 'src/controllers/PetCareController.php';
 require_once 'src/controllers/PetNutritionController.php';
 
 class Routing {
-    # TODO: singleton, regex, sesja użytkownika
+    private static $instance = null;
+    private $routes = [];
 
-    private static $controllerInstances = [];
-
-    public static $routes = [
-        "" => [
-            "controller" => "SecurityController",
-            "action" => "start"
-        ],
-        "401" => [
-            "controller" => "SecurityController",
-            "action" => "error401"
-        ],
-        "403" => [
-            "controller" => "SecurityController",
-            "action" => "error403"
-        ],
-        "login" => [
-            "controller" => "SecurityController",
-            "action" => "login"
-        ],
-        "logout" => [
-            "controller" => "SecurityController",
-            "action" => "logout"
-        ],
-        "registration" => [
-            "controller" => "SecurityController",
-            "action" => "registration"
-        ],
-        "privacy-policy" => [
-            "controller" => "UserController",
-            "action" => "privacyPolicy"
-        ],
-        "admin" => [
-            "controller" => "AdminController",
-            "action" => "index"
-        ],
-        "editUser" => [
-            "controller" => "AdminController",
-            "action" => "editUser"
-        ],
-        "deleteUser" => [
-            "controller" => "AdminController",
-            "action" => "deleteUser"
-        ],
-        "profile" => [
-            "controller" => "UserController",
-            "action" => "profile"
-        ],
-        "pets" => [
-            "controller" => "PetController",
-            "action" => "pets"
-        ],
-        "calendar" => [
-            "controller" => "PetEventController",
-            "action" => "calendar"
-        ],
-        "welcome" => [
-            "controller" => "UserController",
-            "action" => "welcome"
-        ],
-        "features" => [
-            "controller" => "PetController",
-            "action" => "features"
-        ],
-        "editPet" => [
-            "controller" => "PetController",
-            "action" => "editPet"
-        ],
-        "deletePet" => [
-            "controller" => "PetController",
-            "action" => "deletePet"
-        ],
-        "care" => [
-            "controller" => "PetCareController",
-            "action" => "care"
-        ],
-        "healthBook" => [
-            "controller" => "PetHealthController",
-            "action" => "healthBook"
-        ],
-        "nutrition" => [
-            "controller" => "PetNutritionController",
-            "action" => "nutrition"
-        ],
-        "vaccinations" => [
-            "controller" => "PetHealthController",
-            "action" => "vaccinations"
-        ],
-        "treatments" => [
-            "controller" => "PetHealthController",
-            "action" => "treatments"
-        ],
-        "deworming" => [
-            "controller" => "PetHealthController",
-            "action" => "deworming"
-        ],
-        "visits" => [
-            "controller" => "PetHealthController",
-            "action" => "visits"
-        ],
-        "weight" => [
-            "controller" => "PetCareController",
-            "action" => "weight"
-        ],
-        "groom" => [
-            "controller" => "PetCareController",
-            "action" => "groom"
-        ],
-        "shearing" => [
-            "controller" => "PetCareController",
-            "action" => "shearing"
-        ],
-        "trimming" => [
-            "controller" => "PetCareController",
-            "action" => "trimming"
-        ],
-        "addPet" => [
-            "controller" => "PetController",
-            "action" => "addPet"
-        ],
-        "addEvent" => [
-            "controller" => "PetEventController",
-            "action" => "addEvent"
-        ],
-        "deleteEvent" => [
-            "controller" => "PetEventController",
-            "action" => "deleteEvent"
-        ],
-        "addVaccination" => [
-            "controller" => "PetHealthController",
-            "action" => "addVaccination"
-        ],
-        "deleteVaccination" => [
-            "controller" => "PetHealthController",
-            "action" => "deleteVaccination"
-        ],
-        "addDeworming" => [
-            "controller" => "PetHealthController",
-            "action" => "addDeworming"
-        ],
-        "deleteDeworming" => [
-            "controller" => "PetHealthController",
-            "action" => "deleteDeworming"
-        ],
-        "addTreatment" => [
-            "controller" => "PetHealthController",
-            "action" => "addTreatment"
-        ],
-        "deleteTreatment" => [
-            "controller" => "PetHealthController",
-            "action" => "deleteTreatment"
-        ],
-        "addVisit" => [
-            "controller" => "PetHealthController",
-            "action" => "addVisit"
-        ],
-        "deleteVisit" => [
-            "controller" => "PetHealthController",
-            "action" => "deleteVisit"
-        ],
-        "addWeight" => [
-            "controller" => "PetCareController",
-            "action" => "addWeight"
-        ],
-        "deleteWeight" => [
-            "controller" => "PetCareController",
-            "action" => "deleteWeight"
-        ],
-        "addGroom" => [
-            "controller" => "PetCareController",
-            "action" => "addGroom"
-        ],
-        "deleteGroom" => [
-            "controller" => "PetCareController",
-            "action" => "deleteGroom"
-        ],
-        "addShearing" => [
-            "controller" => "PetCareController",
-            "action" => "addShearing"
-        ],
-        "deleteShearing" => [
-            "controller" => "PetCareController",
-            "action" => "deleteShearing"
-        ],
-        "addTrimming" => [
-            "controller" => "PetCareController",
-            "action" => "addTrimming"
-        ],
-        "deleteTrimming" => [
-            "controller" => "PetCareController",
-            "action" => "deleteTrimming"
-        ],
-        "addSensitivities" => [
-            "controller" => "PetNutritionController",
-            "action" => "addSensitivities"
-        ],
-        "deleteSensitivities" => [
-            "controller" => "PetNutritionController",
-            "action" => "deleteSensitivities"
-        ],
-        "addFavorite" => [
-            "controller" => "PetNutritionController",
-            "action" => "addFavorite"
-        ],
-        "deleteFavorite" => [
-            "controller" => "PetNutritionController",
-            "action" => "deleteFavorite"
-        ],
-        "addSupplements" => [
-            "controller" => "PetNutritionController",
-            "action" => "addSupplements"
-        ],
-        "deleteSupplements" => [
-            "controller" => "PetNutritionController",
-            "action" => "deleteSupplements"
-        ],
-        "editSchedule" => [
-            "controller" => "PetNutritionController",
-            "action" => "editSchedule"
-        ],
-        "deleteSchedule" => [
-            "controller" => "PetNutritionController",
-            "action" => "deleteSchedule"
-        ]
-    ];
-
-    private static function getControllerInstance(string $controllerClass) {
-        if (isset(self::$controllerInstances[$controllerClass])) {
-            return self::$controllerInstances[$controllerClass];
+    private function __construct() {
+        // Zarządzanie sesją
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
         }
-        
-        // Klasa kontrolera jest ładowana przez require_once na początku
-        $instance = new $controllerClass();
-        self::$controllerInstances[$controllerClass] = $instance;
 
-        return $instance;
+        // Rejestracja tras przy inicjalizacji
+        $this->registerRoutes();
     }
 
+    public static function getInstance(): Routing {
+        if (self::$instance === null) {
+            self::$instance = new Routing();
+        }
+        return self::$instance;
+    }
 
     public static function run(string $path) {
-        $user_details_regex = '/^user\/(\d+)$/';
+        self::getInstance()->dispatch($path);
+    }
 
-        if (preg_match($user_details_regex, $path, $matches)) {
-            // $matches[1] będzie zawierać przechwycone ID użytkownika (np. 4578)
-            $userId = $matches[1];
+    private function dispatch(string $path) {
+        // Sprawdzenie dokładnych dopasowań
+        if (array_key_exists($path, $this->routes)) {
+            $this->invoke($this->routes[$path]);
+            return;
+        }
+
+        // Sprawdzenie tras Regex
+        foreach ($this->routes as $route => $config) {
+            // Jeśli trasa zaczyna się od ^ -> regex
+            if (str_starts_with($route, '^')) {
+                // Dodanie delimitera '/' do regexa
+                if (preg_match("/$route/", $path, $matches)) {
+                    // Usuwanie pełnych dopasowań, zostaje tylko grupy przechwycone (argumenty)
+                    array_shift($matches);
+                    $this->invoke($config, $matches);
+                    return;
+                }
+            }
+        }
+
+        // Brak dopasowania -> 404
+        $this->handleNotFound();
+    }
+
+    private function invoke(array $config, array $args = []) {
+        $controllerName = $config['controller'];
+        $actionName = $config['action'];
+
+        // Tworzenie instancji kontrolera
+        $object = new $controllerName();
         
-            $controllerObj = self::getControllerInstance("UserController");
-            $controllerObj->details($userId);
-            return;
-        }
+        // Wywołanie akcji z argumentami (jeśli są, np. ID z regexa)
+        $action = $actionName;
+        $object->$action(...$args);
+    }
 
-
-        // obsługa ścieżek
-        if (isset(self::$routes[$path])) {
-            $controller = self::$routes[$path]["controller"];
-            $action = self::$routes[$path]["action"];
-
-            $controllerObj = self::getControllerInstance($controller);
-            $controllerObj->$action(); 
-            return;
-        }
-
+    private function handleNotFound() {
+        http_response_code(404);
         include 'public/views/404.html';
+        exit;
+    }
+
+    // Konfiguracja wszystkich tras
+    private function registerRoutes() {
+        $this->routes = [
+            // SECURITY
+            "" => ["controller" => "SecurityController", "action" => "start"],
+            "login" => ["controller" => "SecurityController", "action" => "login"],
+            "logout" => ["controller" => "SecurityController", "action" => "logout"],
+            "registration" => ["controller" => "SecurityController", "action" => "registration"],
+            "401" => ["controller" => "SecurityController", "action" => "error401"],
+            "403" => ["controller" => "SecurityController", "action" => "error403"],
+
+            // USER
+            "profile" => ["controller" => "UserController", "action" => "profile"],
+            "welcome" => ["controller" => "UserController", "action" => "welcome"],
+            "privacy-policy" => ["controller" => "UserController", "action" => "privacyPolicy"],
+            "^user/(\d+)$" => ["controller" => "UserController", "action" => "details"],
+
+            // ADMIN
+            "admin" => ["controller" => "AdminController", "action" => "index"],
+            "editUser" => ["controller" => "AdminController", "action" => "editUser"],
+            "deleteUser" => ["controller" => "AdminController", "action" => "deleteUser"],
+
+            // PETS
+            "pets" => ["controller" => "PetController", "action" => "pets"],
+            "features" => ["controller" => "PetController", "action" => "features"],
+            "addPet" => ["controller" => "PetController", "action" => "addPet"],
+            "editPet" => ["controller" => "PetController", "action" => "editPet"],
+            "deletePet" => ["controller" => "PetController", "action" => "deletePet"],
+
+            // PET CARE
+            "care" => ["controller" => "PetCareController", "action" => "care"],
+            "weight" => ["controller" => "PetCareController", "action" => "weight"],
+            "addWeight" => ["controller" => "PetCareController", "action" => "addWeight"],
+            "deleteWeight" => ["controller" => "PetCareController", "action" => "deleteWeight"],
+            "groom" => ["controller" => "PetCareController", "action" => "groom"],
+            "addGroom" => ["controller" => "PetCareController", "action" => "addGroom"],
+            "deleteGroom" => ["controller" => "PetCareController", "action" => "deleteGroom"],
+            "shearing" => ["controller" => "PetCareController", "action" => "shearing"],
+            "addShearing" => ["controller" => "PetCareController", "action" => "addShearing"],
+            "deleteShearing" => ["controller" => "PetCareController", "action" => "deleteShearing"],
+            "trimming" => ["controller" => "PetCareController", "action" => "trimming"],
+            "addTrimming" => ["controller" => "PetCareController", "action" => "addTrimming"],
+            "deleteTrimming" => ["controller" => "PetCareController", "action" => "deleteTrimming"],
+
+            // PET HEALTH
+            "healthBook" => ["controller" => "PetHealthController", "action" => "healthBook"],
+            "vaccinations" => ["controller" => "PetHealthController", "action" => "vaccinations"],
+            "addVaccination" => ["controller" => "PetHealthController", "action" => "addVaccination"],
+            "deleteVaccination" => ["controller" => "PetHealthController", "action" => "deleteVaccination"],
+            "treatments" => ["controller" => "PetHealthController", "action" => "treatments"],
+            "addTreatment" => ["controller" => "PetHealthController", "action" => "addTreatment"],
+            "deleteTreatment" => ["controller" => "PetHealthController", "action" => "deleteTreatment"],
+            "deworming" => ["controller" => "PetHealthController", "action" => "deworming"],
+            "addDeworming" => ["controller" => "PetHealthController", "action" => "addDeworming"],
+            "deleteDeworming" => ["controller" => "PetHealthController", "action" => "deleteDeworming"],
+            "visits" => ["controller" => "PetHealthController", "action" => "visits"],
+            "addVisit" => ["controller" => "PetHealthController", "action" => "addVisit"],
+            "deleteVisit" => ["controller" => "PetHealthController", "action" => "deleteVisit"],
+
+            // PET NUTRITION
+            "nutrition" => ["controller" => "PetNutritionController", "action" => "nutrition"],
+            "addSensitivities" => ["controller" => "PetNutritionController", "action" => "addSensitivities"],
+            "deleteSensitivities" => ["controller" => "PetNutritionController", "action" => "deleteSensitivities"],
+            "addFavorite" => ["controller" => "PetNutritionController", "action" => "addFavorite"],
+            "deleteFavorite" => ["controller" => "PetNutritionController", "action" => "deleteFavorite"],
+            "addSupplements" => ["controller" => "PetNutritionController", "action" => "addSupplements"],
+            "deleteSupplements" => ["controller" => "PetNutritionController", "action" => "deleteSupplements"],
+            "editSchedule" => ["controller" => "PetNutritionController", "action" => "editSchedule"],
+            "deleteSchedule" => ["controller" => "PetNutritionController", "action" => "deleteSchedule"],
+
+            // EVENTS
+            "calendar" => ["controller" => "PetEventController", "action" => "calendar"],
+            "addEvent" => ["controller" => "PetEventController", "action" => "addEvent"],
+            "deleteEvent" => ["controller" => "PetEventController", "action" => "deleteEvent"],
+        ];
     }
 }

@@ -1,75 +1,68 @@
 <?php
 
 class AppController {
-    public function __construct(){
-        // start sesji raz dla wszystkich kontrolerów
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
-    }
+    public function __construct() {}
 
     protected function checkAuthentication() {
-        // blokada cache przeglądarki
+        // Blokada cache przeglądarki
         header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
         header("Cache-Control: post-check=0, pre-check=0", false);
         header("Pragma: no-cache");
 
-        $timeout_duration = 1800; // 30 minut
+        $timeout_duration = 900; // 15 minut
 
-        // sprawdzenie timeoutu (tylko jeśli sesja istnieje)
+        // Sprawdzenie timeoutu (tylko jeśli sesja istnieje)
         if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) > $timeout_duration) {
-            $this->logoutAndRedirectTo401();
+            $this->logoutAndRedirect('401');
         }
 
-        // sprawdzenie czy użytkownik jest zalogowany
+        // Sprawdzenie czy użytkownik jest zalogowany
         if (!isset($_SESSION['user_id'])) {
-            // jeśli nie ma sesji -> idź do logowania
+            // Jeśli nie ma sesji -> idź do logowania
             $url = "http://$_SERVER[HTTP_HOST]";
             header("Location: {$url}/login");
             exit();
         }
 
-        // odświeżenie czasu ostatniej aktywności
+        // Odświeżenie czasu ostatniej aktywności
         $_SESSION['last_activity'] = time();
     }
 
-    // metoda pomocnicza: czyści sesję i kieruje na błąd 401
-    private function logoutAndRedirectTo401() {
+    // Metoda pomocnicza: czyści sesję i kieruje na błąd 401
+    private function logoutAndRedirect(string $errorCode) {
         if (session_status() === PHP_SESSION_ACTIVE) {
             session_unset();
             session_destroy();
         }
         
         $url = "http://$_SERVER[HTTP_HOST]";
-        header("Location: {$url}/401");
+        header("Location: {$url}/{$errorCode}");
         exit();
     }
 
-    // tylko dla Admina (User -> 403)
+    // Tylko dla Admina (User -> 403)
     protected function checkAdmin() {
         $this->checkAuthentication();
         
         if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
-            $url = "http://$_SERVER[HTTP_HOST]";
-            header("Location: {$url}/403"); 
-            exit();
+            // Brak uprawnień -> wyloguj i błąd 403
+            $this->logoutAndRedirect('403');
         }
     }
 
-    // tylko dla Usera (Admin -> 403)
+    // Tylko dla Usera (Admin -> 403)
     protected function checkUser() {
-        // sprawdzenie czy zalogowany (i czy sesja nie wygasła)
+        // Sprawdzenie czy zalogowany (i czy sesja nie wygasła)
         $this->checkAuthentication();
 
-        // jeśli rola to 'admin' -> błąd 403
+        // Jeśli rola to 'admin' -> błąd 403
         if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin') {
-            $url = "http://$_SERVER[HTTP_HOST]";
-            header("Location: {$url}/403");
-            exit();
+            // Zła rola -> wyloguj i błąd 403
+            $this->logoutAndRedirect('403');
         }
     }
 
-    // zmiana przecinka na kropkę
+    // Zmiana przecinka na kropkę
     protected function validateAndSanitizeFloat(string $input): ?string {
         $cleanInput = str_replace(',', '.', $input);
         
@@ -80,12 +73,12 @@ class AppController {
         return $cleanInput;
     }
 
-    // metoda sprawdzająca, czy żądanie to GET
+    // Metoda sprawdzająca, czy żądanie to GET
     protected function isGet(): bool{
         return $_SERVER["REQUEST_METHOD"] === 'GET';
     }
 
-    // metoda sprawdzająca, czy żądanie to POST (pod bazę danych i sprawdzanie błędów)
+    // Metoda sprawdzająca, czy żądanie to POST (pod bazę danych i sprawdzanie błędów)
     protected function isPost(): bool {
         return ($_SERVER['REQUEST_METHOD'] ?? '') === 'POST';
     }
