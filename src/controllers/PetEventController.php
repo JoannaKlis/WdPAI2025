@@ -58,14 +58,25 @@ class PetEventController extends PetController {
             exit;
         }
 
-        $id = $_POST['id'] ?? null;
+        $eventId = $_POST['id'] ?? null;
         
-        $event = $this->petEventRepository->getEventById((int)$id);
-        
-        if ($event) {
-            $this->getPetOr404($event['pet_id']);
-            $this->petEventRepository->deleteEvent((int)$id);
+        // Sprawdzenie czy wydarzenie istnieje
+        $event = $this->petEventRepository->getEventById((int)$eventId);
+        if (!$event) {
+            header("Location: /calendar");
+            exit;
         }
+
+        // Sprawdzenie, czy wydarzenie należy do zwierzaka, który należy do zalogowanego użytkownika
+        $ownerId = $this->petEventRepository->getEventOwnerId((int)$eventId);
+
+        if ($ownerId !== $_SESSION['user_id']) {
+            http_response_code(403);
+            die("Unauthorized access");
+        }
+
+        // Usunięcie wydarzenie
+        $this->petEventRepository->deleteEvent((int)$eventId);
 
         header("Location: /calendar");
         exit;

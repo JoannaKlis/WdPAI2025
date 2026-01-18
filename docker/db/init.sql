@@ -138,15 +138,6 @@ CREATE TABLE pet_feeding_schedule (
 );
 
 
-CREATE TABLE pet_events (
-    id SERIAL PRIMARY KEY,
-    pet_id INT NOT NULL REFERENCES pets(id) ON DELETE CASCADE,
-    event_name VARCHAR(200) NOT NULL,
-    event_date DATE NOT NULL,
-    event_time TIME,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
 CREATE TABLE audit_logs (
     id SERIAL PRIMARY KEY,
     table_name VARCHAR(50) NOT NULL,
@@ -158,19 +149,45 @@ CREATE TABLE audit_logs (
 );
 
 
+CREATE TABLE global_events (
+    id SERIAL PRIMARY KEY,
+    event_name VARCHAR(200) NOT NULL,
+    event_date DATE NOT NULL,
+    event_time TIME,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+CREATE TABLE event_participants (
+    event_id INT NOT NULL REFERENCES global_events(id) ON DELETE CASCADE,
+    pet_id INT NOT NULL REFERENCES pets(id) ON DELETE CASCADE,
+    PRIMARY KEY (event_id, pet_id)
+);
+
+
+
+CREATE TABLE user_bans (
+    user_id INT PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+    banned_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+
+
 -- WIDOK DLA KALENDARZA
 CREATE OR REPLACE VIEW v_pet_events_calendar AS
 SELECT 
     e.id AS event_id,
-    e.pet_id,
+    ep.pet_id,
     p.user_id,
     p.name AS pet_name,
     p.picture_url,
     e.event_name AS title,
     e.event_date AS date,
     e.event_time AS time
-FROM pet_events e 
-JOIN pets p ON e.pet_id = p.id;
+FROM global_events e
+JOIN event_participants ep ON e.id = ep.event_id
+JOIN pets p ON ep.pet_id = p.id;
 
 -- WIDOK DLA HEALTHBOOK
 CREATE OR REPLACE VIEW v_pet_medical_history AS
@@ -182,6 +199,8 @@ SELECT id, pet_id, 'Deworming' as type, deworming_name as name, deworming_date a
 UNION ALL
 SELECT id, pet_id, 'Visit' as type, visit_name as name, visit_date as date, visit_time as time, created_at FROM pet_visits
 ORDER BY date DESC, time ASC;
+
+
 
 
 -- FUNKCJA OBLICZAJĄCA WIEK ZWIERZAKA
@@ -266,6 +285,8 @@ CREATE TRIGGER trigger_audit_user_changes
 AFTER UPDATE OR DELETE ON users
 FOR EACH ROW
 EXECUTE FUNCTION log_sensitive_user_changes();
+
+
 
 
 -- PRZYKŁADOWE DANE

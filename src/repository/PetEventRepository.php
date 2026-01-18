@@ -4,7 +4,6 @@ require_once 'Repository.php';
 
 class PetEventRepository extends Repository {
 
-    // SINGLETON
     private static $instance = null;
 
     private function __construct()
@@ -38,19 +37,53 @@ class PetEventRepository extends Repository {
     }
 
     public function addPetEvent(int $petId, array $data): void {
-        $this->insert('pet_events', [
-            'pet_id' => $petId,
-            'event_name' => $data['name'],
-            'event_date' => $data['date'],
-            'event_time' => $data['time']
-        ]);
+        // Używamy transakcji (metoda z klasy Repository), aby zapewnić spójność
+        $this->executeTransaction(function() use ($petId, $data) {
+            $pdo = $this->database->connect();
+
+            // 1. Dodaj wydarzenie do tabeli globalnej
+            $stmt = $pdo->prepare('
+                INSERT INTO global_events (event_name, event_date, event_time)
+                VALUES (:name, :date, :time)
+            ');
+            $stmt->bindValue(':name', $data['name']);
+            $stmt->bindValue(':date', $data['date']);
+            $stmt->bindValue(':time', $data['time']);
+            $stmt->execute();
+
+            // Pobierz ID nowo utworzonego wydarzenia
+            $eventId = $pdo->lastInsertId();
+
+            // 2. Przypisz wydarzenie do zwierzaka (tabela łącząca M:N)
+            $stmt = $pdo->prepare('
+                INSERT INTO event_participants (event_id, pet_id)
+                VALUES (:eventId, :petId)
+            ');
+            $stmt->bindValue(':eventId', $eventId, PDO::PARAM_INT);
+            $stmt->bindValue(':petId', $petId, PDO::PARAM_INT);
+            $stmt->execute();
+        });
     }
 
     public function getEventById(int $id): ?array {
-        return $this->fetchById('pet_events', $id);
+        return $this->fetchById('global_events', $id);
     }
 
     public function deleteEvent(int $id): void {
-        $this->deleteRow('pet_events', $id);
+        $this->deleteRow('global_events', $id);
+    }
+    
+    public function getEventOwnerId(int $eventId): ?int {
+        $stmt = $this->database->connect()->prepare('
+            SELECT p.user_id 
+            FROM event_participants ep
+            JOIN pets p ON ep.pet_id = p.id
+            WHERE ep.event_id = :eventId
+            LIMIT 1
+        ');
+        $stmt->bindParam(':eventId', $eventId, PDO::PARAM_INT);
+        $stmt->execute();
+        
+        return $stmt->fetchColumn() ?: null;
     }
 }
