@@ -10,6 +10,36 @@ class Repository {
         $this->database = Database::getInstance();
     }
 
+    // Metoda do obsługi transakcji
+    protected function executeTransaction(callable $callback) {
+        $pdo = $this->database->connect();
+        
+        try {
+            // Sprawdzenie czy transakcja już nie trwa (np. zagnieżdżona)
+            if (!$pdo->inTransaction()) {
+                // Ustawienie poziomu izolacji READ COMMITTED
+                $pdo->exec("SET TRANSACTION ISOLATION LEVEL READ COMMITTED");
+                $pdo->beginTransaction();
+            }
+
+            $result = $callback();
+
+            // Zatwierdzenie
+            if ($pdo->inTransaction()) {
+                $pdo->commit();
+            }
+
+            return $result;
+
+        } catch (Exception $e) {
+            // Wycofanie zmian w przypadku błędu
+            if ($pdo->inTransaction()) {
+                $pdo->rollBack();
+            }
+            throw $e;
+        }
+    }
+
     // Metoda do pobierania pojedynczego wiersza po ID
     protected function fetchById(string $table, int $id): ?array {
         $stmt = $this->database->connect()->prepare("SELECT * FROM $table WHERE id = :id");

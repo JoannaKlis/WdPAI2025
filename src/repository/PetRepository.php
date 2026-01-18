@@ -22,17 +22,19 @@ class PetRepository extends Repository {
     }
 
     public function addPet(array $data, int $userId, ?string $pictureUrl = null): void {
-        $this->insert('pets', [
-            'user_id' => $userId,
-            'pet_type' => $data['type'],
-            'name' => $data['name'],
-            'birth_date' => $data['birthDate'],
-            'sex' => $data['sex'],
-            'breed' => $data['breed'],
-            'color' => $data['color'],
-            'microchip_number' => $data['microchip'],
-            'picture_url' => $pictureUrl
-        ]);
+        $this->executeTransaction(function() use ($data, $userId, $pictureUrl) {
+            $this->insert('pets', [
+                'user_id' => $userId,
+                'pet_type' => $data['type'],
+                'name' => $data['name'],
+                'birth_date' => $data['birthDate'],
+                'sex' => $data['sex'],
+                'breed' => $data['breed'],
+                'color' => $data['color'],
+                'microchip_number' => $data['microchip'],
+                'picture_url' => $pictureUrl
+            ]);
+        });
     }
 
     public function countUserPets(int $userId): int {
@@ -65,35 +67,37 @@ class PetRepository extends Repository {
     }
 
     public function updatePet(int $id, array $data, ?string $pictureUrl = null): void {
-        $sql = "UPDATE pets SET 
-                name = :name, 
-                pet_type = :type, 
-                birth_date = :birthDate, 
-                sex = :sex, 
-                breed = :breed, 
-                color = :color, 
-                microchip_number = :microchip";
-        
-        $params = [
-            ':name' => $data['name'],
-            ':type' => $data['type'],
-            ':birthDate' => $data['birthDate'],
-            ':sex' => $data['sex'],
-            ':breed' => $data['breed'],
-            ':color' => $data['color'],
-            ':microchip' => $data['microchip'],
-            ':id' => $id
-        ];
+        $this->executeTransaction(function() use ($id, $data, $pictureUrl) {
+            $sql = "UPDATE pets SET 
+                    name = :name, 
+                    pet_type = :type, 
+                    birth_date = :birthDate, 
+                    sex = :sex, 
+                    breed = :breed, 
+                    color = :color, 
+                    microchip_number = :microchip";
+            
+            $params = [
+                ':name' => $data['name'],
+                ':type' => $data['type'],
+                ':birthDate' => $data['birthDate'],
+                ':sex' => $data['sex'],
+                ':breed' => $data['breed'],
+                ':color' => $data['color'],
+                ':microchip' => $data['microchip'],
+                ':id' => $id
+            ];
 
-        if ($pictureUrl) {
-            $sql .= ", picture_url = :pictureUrl";
-            $params[':pictureUrl'] = $pictureUrl;
-        }
+            if ($pictureUrl) {
+                $sql .= ", picture_url = :pictureUrl";
+                $params[':pictureUrl'] = $pictureUrl;
+            }
 
-        $sql .= " WHERE id = :id";
+            $sql .= " WHERE id = :id";
 
-        $stmt = $this->database->connect()->prepare($sql);
-        $stmt->execute($params);
+            $stmt = $this->database->connect()->prepare($sql);
+            $stmt->execute($params);
+        });
     }
 
     public function deletePet(int $id): void {
