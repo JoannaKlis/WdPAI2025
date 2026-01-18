@@ -165,9 +165,9 @@ CREATE TABLE event_participants (
 );
 
 
-
 CREATE TABLE user_bans (
     user_id INT PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+    reason TEXT, 
     banned_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -305,8 +305,18 @@ VALUES (
     'Anna',
     'Nowak',
     'anna.nowak@example.com',
-    '$2y$10$ejsy0sJ6.EbvvDCVD1rjpu82Xjo1H2JDfjHuMF6jdCB5ymNguYLoq',
-    TRUE
+    '$2y$10$ejsy0sJ6.EbvvDCVD1rjpu82Xjo1H2JDfjHuMF6jdCB5ymNguYLoq', -- hasło "test"
+    FALSE
+);
+
+INSERT INTO users (firstname, lastname, email, password, enabled, role)
+VALUES (
+    'Admin',
+    'System',
+    'admin@example.com',
+    '$2y$10$w0gGIGNcRnviQgjKC31xh.wy2FoCX9E3IyQ110lweE7tS.i9FIMfC', -- hasło "admin"
+    TRUE,
+    'admin'
 );
 
 -- Zwierzaki użytkownika Jana (id=1)
@@ -315,33 +325,25 @@ VALUES
     (1, 'public/img/simba.png', 'Cat', 'Simba', '2022-06-15', 'Male', 'Maine Coon', 'Orange and White', '616093901234567'),
     (1, 'public/img/dog.png', 'Dog', 'Pumpkin', '2024-12-05', 'Male', 'Welsh Corgi Pembroke', 'Red and White', '9002147294610283');
 
--- Zwierzak użytkownika Anny (id=2)
+-- Zwierzaki użytkownika Anny (id=2)
 INSERT INTO pets (user_id, picture_url, pet_type, name, birth_date, sex, breed, color, microchip_number)
 VALUES 
-    (2, 'public/img/luna.png', 'Cat', 'Luna', '2021-03-20', 'Female', 'Siamese', 'Cream and Brown', '616093905678901');
+    (2, 'public/img/luna.png', 'Cat', 'Luna', '2021-03-20', 'Female', 'Siamese', 'Cream and Brown', '616093905678901'),
+    (2, 'public/img/dog2.png', 'Dog', 'Max', '2023-01-01', 'Male', 'Golden Retriever', 'Golden', '999888777666555');
 
--- CARE dla Simby (pet_id=1)
-INSERT INTO pet_weights (pet_id, weight, unit, recorded_date, recorded_time)
-VALUES 
-    (1, 5.2, 'kg', '2025-08-15', '10:00'),
-    (1, 4.9, 'kg', '2025-05-03', '14:30');
+-- DANE dla Simby (pet_id=1)
+INSERT INTO pet_weights (pet_id, weight, unit, recorded_date)
+VALUES (1, 5.2, 'kg', '2025-08-15'), (1, 4.9, 'kg', '2025-05-03');
 
-INSERT INTO pet_grooming (pet_id, name, groom_date, groom_time)
-VALUES 
-    (1, 'Combing out knots', '2025-08-12', '15:00'),
-    (1, 'Comprehensive care', '2025-07-20', '10:30');
+INSERT INTO pet_grooming (pet_id, name, groom_date)
+VALUES (1, 'Combing out knots', '2025-08-12'), (1, 'Comprehensive care', '2025-07-20');
 
-INSERT INTO pet_shearing (pet_id, name, shearing_date, shearing_time)
-VALUES 
-    (1, 'Preparation for a dog show', '2025-06-10', '14:00'),
-    (1, 'Classic shearing', '2025-05-29', '11:00');
+INSERT INTO pet_shearing (pet_id, name, shearing_date)
+VALUES (1, 'Preparation for a dog show', '2025-06-10'), (1, 'Classic shearing', '2025-05-29');
 
-INSERT INTO pet_trimming (pet_id, name, trimming_date, trimming_time)
-VALUES 
-    (1, 'Trimming claws 2', '2025-08-18', '16:00'),
-    (1, 'Trimming claws 1', '2025-07-01', '09:00');
+INSERT INTO pet_trimming (pet_id, name, trimming_date)
+VALUES (1, 'Trimming claws 2', '2025-08-18'), (1, 'Trimming claws 1', '2025-07-01');
 
--- HEALTH BOOK dla Simby (pet_id=1)
 INSERT INTO pet_vaccinations (pet_id, vaccination_name, vaccination_date, dose, unit)
 VALUES 
     (1, 'Rabies', '2024-08-24', 0.4, 'ml'),
@@ -349,12 +351,10 @@ VALUES
     (1, 'Feline typhus', '2023-10-02', 0.3, 'ml');
 
 INSERT INTO pet_treatments (pet_id, treatment_name, treatment_date, treatment_time)
-VALUES 
-    (1, 'Castration', '2024-08-24', '14:00');
+VALUES (1, 'Castration', '2024-08-24', '14:00');
 
 INSERT INTO pet_deworming (pet_id, deworming_name, deworming_date, dose, unit)
-VALUES 
-    (1, 'Internal deworming', '2025-05-15', 230, 'mg');
+VALUES (1, 'Internal deworming', '2025-05-15', 230, 'mg');
 
 INSERT INTO pet_visits (pet_id, visit_name, visit_date, visit_time)
 VALUES 
@@ -362,39 +362,35 @@ VALUES
     (1, 'Deworming', '2025-05-15', '14:00'),
     (1, 'Rabies vaccination', '2024-08-24', '09:00');
 
--- NUTRITION dla Simby (pet_id=1)
-INSERT INTO pet_sensitivities (pet_id, food)
-VALUES 
-    (1, 'Chicken'),
-    (1, 'Beef');
-
-INSERT INTO pet_favorite_food (pet_id, food)
-VALUES 
-    (1, 'PURINA PRO PLAN');
-
-INSERT INTO pet_supplements (pet_id, supplement_name)
-VALUES 
-    (1, 'Omega-3'),
-    (1, 'Probiotics');
-
+INSERT INTO pet_sensitivities (pet_id, food) VALUES (1, 'Chicken'), (1, 'Beef');
+INSERT INTO pet_favorite_food (pet_id, food) VALUES (1, 'PURINA PRO PLAN');
+INSERT INTO pet_supplements (pet_id, supplement_name) VALUES (1, 'Omega-3'), (1, 'Probiotics');
 INSERT INTO pet_feeding_schedule (pet_id, name, feeding_time)
-VALUES 
-    (1, 'Canned cat food', '08:00'),
-    (1, 'Cat kibble', '13:00'),
-    (1, 'Canned cat food', '18:00');
+VALUES (1, 'Canned cat food', '08:00'), (1, 'Cat kibble', '13:00'), (1, 'Canned cat food', '18:00');
 
--- EVENTS dla Simby (pet_id=1)
-INSERT INTO pet_events (pet_id, event_name, event_date, event_time)
-VALUES 
-    (1, 'Trimming claws', '2026-02-05', '14:00'),
-    (1, 'Vet checkup', '2026-01-30', '10:00'),
-    (1, 'Grooming appointment', '2026-02-12', '15:00');
 
 -- DANE dla Pumpkin (pet_id=2)
-INSERT INTO pet_weights (pet_id, weight, unit, recorded_date, recorded_time)
-VALUES 
-    (2, 12.5, 'kg', '2025-08-20', '11:00');
+INSERT INTO pet_weights (pet_id, weight, unit, recorded_date) VALUES (2, 12.5, 'kg', '2025-08-20');
+INSERT INTO pet_vaccinations (pet_id, vaccination_name, vaccination_date, dose, unit) VALUES (2, 'Rabies', '2025-01-10', 1.0, 'ml');
 
-INSERT INTO pet_vaccinations (pet_id, vaccination_name, vaccination_date, dose, unit)
+
+-- EVENTS (Wydarzenia)
+INSERT INTO global_events (id, event_name, event_date, event_time)
 VALUES 
-    (2, 'Rabies', '2025-01-10', 1.0, 'ml');
+    (1, 'Trimming claws', '2026-02-05', '14:00'),
+    (2, 'Vet checkup', '2026-01-30', '10:00'),
+    (3, 'Grooming appointment', '2026-02-12', '15:00');
+
+INSERT INTO event_participants (event_id, pet_id)
+VALUES 
+    (1, 1),
+    (2, 1),
+    (3, 1);
+
+-- Aktualizacja sekwencji dla events
+SELECT setval('global_events_id_seq', (SELECT MAX(id) FROM global_events));
+
+
+-- BANY
+INSERT INTO user_bans (user_id, reason)
+VALUES (2, 'Spamming unrelated events in the community calendar.');

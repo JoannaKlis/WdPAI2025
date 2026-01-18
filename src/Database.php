@@ -29,11 +29,6 @@ class Database {
 
     public function connect()
     {
-        // Jeśli połączenie już istnieje
-        if ($this->conn !== null) {
-            return $this->conn;
-        }
-
         try {
             $this->conn = new PDO(
                 "pgsql:host=$this->host;port=5432;dbname=$this->database",
