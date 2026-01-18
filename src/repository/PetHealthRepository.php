@@ -20,6 +20,15 @@ class PetHealthRepository extends Repository {
         return self::$instance;
     }
 
+    // Metoda do korzystania z widoku
+    public function getAllMedicalHistory(int $petId): array {
+        // Pobiera szczepienia, wizyty, zabiegi w jednym zapytaniu posortowane datą
+        $stmt = $this->database->connect()->prepare('SELECT * FROM v_pet_medical_history WHERE pet_id = :petId');
+        $stmt->bindParam(':petId', $petId, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     // VACCINATIONS
     public function getPetVaccinations(int $petId): array {
         return $this->fetchAllByPetId('pet_vaccinations', $petId, 'vaccination_date');

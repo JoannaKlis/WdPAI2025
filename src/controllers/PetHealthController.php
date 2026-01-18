@@ -16,12 +16,22 @@ class PetHealthController extends PetController {
         $pet = $this->getPetOr404($_GET['id'] ?? null);
         $petId = (int)$pet['id'];
 
+        // Pobranie całej historii medycznej z widoku
+        $fullHistory = $this->petHealthRepository->getAllMedicalHistory($petId);
+
+        // Filtrowanie danych
+        $vaccinations = array_filter($fullHistory, fn($item) => $item['type'] === 'Vaccination');
+        $treatments   = array_filter($fullHistory, fn($item) => $item['type'] === 'Treatment');
+        $deworming    = array_filter($fullHistory, fn($item) => $item['type'] === 'Deworming');
+        $visits       = array_filter($fullHistory, fn($item) => $item['type'] === 'Visit');
+
+        // Przekazanie gotowych tablic do widoku
         return $this->render('healthbook/healthBook', [
             'pet' => $pet,
-            'vaccinations' => $this->petHealthRepository->getPetVaccinations($petId),
-            'treatments' => $this->petHealthRepository->getPetTreatments($petId),
-            'deworming' => $this->petHealthRepository->getPetDeworming($petId),
-            'visits' => $this->petHealthRepository->getPetVisits($petId)
+            'vaccinations' => $vaccinations,
+            'treatments' => $treatments,
+            'deworming' => $deworming,
+            'visits' => $visits
         ]);
     }
 

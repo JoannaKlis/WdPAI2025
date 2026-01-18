@@ -1,19 +1,14 @@
 <?php
 
 require_once 'PetController.php';
-require_once __DIR__.'/../repository/PetRepository.php';
-require_once __DIR__.'/../repository/UserRepository.php';
 require_once __DIR__.'/../repository/PetEventRepository.php';
 
 class PetEventController extends PetController {
-    private $petRepository;
-    private $userRepository;
     private $petEventRepository;
+
     public function __construct() {
         parent::__construct();
 
-        $this->petRepository = PetRepository::getInstance();
-        $this->userRepository = UserRepository::getInstance();
         $this->petEventRepository = PetEventRepository::getInstance();
     }
 
@@ -41,7 +36,7 @@ class PetEventController extends PetController {
         if ($this->isPost()) {
             $petId = $_POST['pet_id'] ?? null;
             
-            // weryfikacja czy user jest właścicielem tego peta
+            // Weryfikacja czy user jest właścicielem tego peta
             $pet = $this->getPetOr404($petId);
 
             $this->petEventRepository->addPetEvent((int)$pet['id'], [

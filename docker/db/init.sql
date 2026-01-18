@@ -19,8 +19,8 @@ CREATE TABLE pets (
     name VARCHAR(100) NOT NULL,
     birth_date DATE,
     sex VARCHAR(10) CHECK (sex IN ('Male', 'Female')),
-    breed VARCHAR(100),
-    color VARCHAR(100),
+    breed VARCHAR(100) NOT NULL,
+    color VARCHAR(100) NOT NULL,
     microchip_number VARCHAR(50),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -146,6 +146,32 @@ CREATE TABLE pet_events (
     event_time TIME,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+
+--- WIDOK DLA KALENDARZA
+CREATE OR REPLACE VIEW v_pet_events_calendar AS
+SELECT 
+    e.id AS event_id,
+    e.pet_id,
+    p.user_id,
+    p.name AS pet_name,
+    p.picture_url,
+    e.event_name AS title,
+    e.event_date AS date,
+    e.event_time AS time
+FROM pet_events e 
+JOIN pets p ON e.pet_id = p.id;
+
+--- WIDOK DLA HEALTHBOOK
+CREATE OR REPLACE VIEW v_pet_medical_history AS
+SELECT id, pet_id, 'Vaccination' as type, vaccination_name as name, vaccination_date as date, NULL::TIME as time, created_at FROM pet_vaccinations
+UNION ALL
+SELECT id, pet_id, 'Treatment' as type, treatment_name as name, treatment_date as date, treatment_time as time, created_at FROM pet_treatments
+UNION ALL
+SELECT id, pet_id, 'Deworming' as type, deworming_name as name, deworming_date as date, NULL::TIME as time, created_at FROM pet_deworming
+UNION ALL
+SELECT id, pet_id, 'Visit' as type, visit_name as name, visit_date as date, visit_time as time, created_at FROM pet_visits
+ORDER BY date DESC, time ASC;
 
 
 -- PRZYKŁADOWE DANE

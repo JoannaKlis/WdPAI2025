@@ -1,4 +1,14 @@
 <?php include '/app/public/views/partials/header.php'; ?>
+
+<?php
+    // Funkcja pobrania ostatnich wpisów
+    function getLastDate($array) {
+        if (empty($array)) return '-';
+        $firstItem = reset($array); 
+        return date('d.m.Y', strtotime($firstItem['date']));
+    }
+?>
+
 <link rel="stylesheet" type= "text/css" href="public/styles/profile.css">
 <link rel="stylesheet" type= "text/css" href="public/styles/welcome.css">
 <link rel="stylesheet" type= "text/css" href="public/styles/features.css">
@@ -9,7 +19,7 @@
 </head>
 
 <body>
-    <form class="wrapper" method="POST" action="/healthBook">
+    <div class="wrapper">
         
         <div class="top-bar top-bar-clear">
             <a href="/features?id=<?= $pet['id'] ?>" class="back-arrow">&lt;</a> 
@@ -32,7 +42,7 @@
                 <div class="feature-text-container">
                     <span class="feature-text book-text">Vaccinations</span>
                     <span class="subtext">
-                        <?= count($vaccinations) ?> entry(s)
+                        Last: <?= getLastDate($vaccinations) ?>
                     </span>
                 </div>
                 <span class="feature-arrow">&gt;</span>
@@ -45,7 +55,7 @@
                 <div class="feature-text-container">
                     <span class="feature-text book-text">Treatments and surgeries</span>
                     <span class="subtext">
-                        <?= count($treatments) ?> entry(s)
+                        Last: <?= getLastDate($treatments) ?>
                     </span>
                 </div>
                 <span class="feature-arrow">&gt;</span>
@@ -58,7 +68,7 @@
                 <div class="feature-text-container">
                     <span class="feature-text book-text">Deworming</span>
                     <span class="subtext">
-                        Last: <?= !empty($deworming) ? date('d.m.Y', strtotime($deworming[0]['deworming_date'])) : '-' ?>
+                        Last: <?= getLastDate($deworming) ?>
                     </span>
                 </div>
                 <span class="feature-arrow">&gt;</span>
@@ -71,7 +81,7 @@
                 <div class="feature-text-container">
                     <span class="feature-text book-text">Visits to the vet</span>
                     <span class="subtext">
-                        Last: <?= !empty($visits) ? date('d.m.Y', strtotime($visits[0]['visit_date'])) : '-' ?>
+                        Last: <?= getLastDate($visits) ?>
                     </span>
                 </div>
                 <span class="feature-arrow">&gt;</span>
@@ -79,6 +89,6 @@
 
         </div>
 
-    </form>
+    </div>
 </body>
 </html>

@@ -56,7 +56,10 @@
                     <?php 
                         $hasUpcoming = false;
                         $today = date('Y-m-d');
+                        
+                        // Iterowanie po eventach pobranych z widoku
                         foreach ($events as $event) {
+                            // Tylko nadchodzące wydarzenia (filtr)
                             if ($event['date'] >= $today) { 
                                 $hasUpcoming = true;
                                 ?>
@@ -76,7 +79,7 @@
 
                                     <img src="public/img/delete_calendar.png" 
                                      class="bin-icon"
-                                     data-id="<?= $event['id'] ?>"
+                                     data-id="<?= $event['id'] ?>" 
                                      data-action="/deleteEvent"
                                      onclick="prepareDelete(this.dataset.id, this.dataset.action)">
                                 </div>

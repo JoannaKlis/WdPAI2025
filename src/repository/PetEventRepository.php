@@ -22,9 +22,11 @@ class PetEventRepository extends Repository {
     }
 
     public function getEvents(int $userId): array {
+        // Użycie widoku v_pet_events_calendar
         $sql = "
-            SELECT 'event' as type, e.id, p.name as pet_name, p.picture_url, e.event_name as title, e.event_date as date, e.event_time as time
-            FROM pet_events e JOIN pets p ON e.pet_id = p.id WHERE p.user_id = :userId
+            SELECT 'event' as type, event_id as id, pet_name, picture_url, title, date, time
+            FROM v_pet_events_calendar 
+            WHERE user_id = :userId
             ORDER BY date ASC, time ASC
         ";
 
@@ -36,15 +38,11 @@ class PetEventRepository extends Repository {
     }
 
     public function addPetEvent(int $petId, array $data): void {
-        $stmt = $this->database->connect()->prepare('
-            INSERT INTO pet_events (pet_id, event_name, event_date, event_time)
-            VALUES (?, ?, ?, ?)
-        ');
-        $stmt->execute([
-            $petId,
-            $data['name'],
-            $data['date'],
-            $data['time']
+        $this->insert('pet_events', [
+            'pet_id' => $petId,
+            'event_name' => $data['name'],
+            'event_date' => $data['date'],
+            'event_time' => $data['time']
         ]);
     }
 
