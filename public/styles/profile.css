@@ -1,9 +1,8 @@
+/* górny pasek nawigacji */
 .top-bar {
     position: fixed;
     top: 0;
-    left: 0;
     width: 100%;
-    height: 10vh;
     background-color: white;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     display: flex;
@@ -13,7 +12,6 @@
 }
 
 .top-bar h1 {
-    font-size: clamp(1.2em, 10vh, 3em);
     margin: 0.1em 0 0.2em 0;
 }
 
@@ -24,19 +22,17 @@
     color: #934CBE;
     cursor: pointer;
     text-decoration: none;
-    line-height: 1; 
-    margin: 0.2em 0 0.2em 0;
 }
 
+/* zdjęcie profilowe */
 .profile-pic-container {
     position: relative; 
     width: clamp(9em, 9rem + 0.5vw, 10em);
     aspect-ratio: 1 / 1;
     margin-top: 15vh;
-    margin-bottom: 5vh;
+    margin-bottom: 4vh;
     cursor: pointer;
-    margin-left: auto;
-    margin-right: auto;
+    margin-inline: auto;
 }
 
 .profile-pic {
@@ -70,7 +66,6 @@
     bottom: 0; 
     right: 0;
     background-color: #8F769E;
-    width: clamp(2rem, 2rem + 0.5vw, 3em);
     aspect-ratio: 1 / 1;
     border-radius: 50%;
     display: flex;
@@ -82,21 +77,19 @@
     width: 60%; 
 }
 
+.none {
+    display: none;
+}
+
+/* przycisk zatwierdź zmiany */
 .button-save {
-    margin-top: min(2em, 3%);
     width: clamp(8em, 8rem + 2vw, 10em);
     font-size: clamp(2em, 2rem + 0.5vw, 3em);
-    margin-top: 4vh;
-    margin-bottom: 4vh;
+    margin: 4vh 0 4vh 0;
 }
 
 @media (max-width: 480px) {
     .profile-pic-container {
-        margin-top: 8vh;
-        margin-bottom: 8vh;
-    }
-
-    .top-bar h1 {
-        font-size: clamp(1.2em, 5vh, 3em);
+        margin-top: 0;
     }
 }

@@ -10,7 +10,7 @@
 </head>
 <body>
     <div class="wrapper">
-        <div class="top-bar top-bar-clear">
+        <div class="top-bar">
             <a href="/welcome" class="back-arrow">&lt;</a> 
             <h1>My pets</h1>
             <div class="profile-pic-container profile">
@@ -26,7 +26,7 @@
 
         <div class="pets-list">
             <?php if (empty($pets)): ?>
-                <div class="card-name" style="text-align:center;">You don't have any pets added!</div>
+                <div class="card-name empty">You don't have any pets added!</div>
             <?php else: ?>
                 <?php foreach ($pets as $pet): ?>
                     <a href="/features?id=<?= $pet['id'] ?>" class="card">
@@ -72,7 +72,9 @@
                         <div class="edit-icon"> 
                             <img src="public/img/edit.png" alt="Edit Icon" class="edit-icon-img">
                         </div>
-                        <input type="file" name="picture" id="file-input" style="display:none" accept="image/*" onchange="previewImage(this)">
+                        <dive class="none">
+                            <input type="file" name="picture" id="file-input" accept="image/*" onchange="previewImage(this)">
+                        </dive>
                     </div>
 
                     <div class="input-group">

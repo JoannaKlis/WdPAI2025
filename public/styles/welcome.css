@@ -3,9 +3,9 @@
 }
 
 .logo img {
-    width: clamp(2em, 2rem + 0.5vw, 3em);
+    width: clamp(4em, 4rem + 1vw, 5em);
     margin-right: 0.5vw;
-    margin-left: 6vw;
+    margin-left: 8vw;
 }
 
 .logo h2 {
@@ -141,6 +141,11 @@
 }
 
 @media (max-width: 480px) {
+    .logo img {
+        width: clamp(2.5em, 2.5rem + 0.5vw, 3em);
+        margin: 2vw 1vw 2vw 15vw;
+    }
+
     .top-bar-welcome {
         height: 8vh;
         padding: 0 4vw;

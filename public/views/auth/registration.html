@@ -15,17 +15,17 @@
         <?php include '/app/public/views/partials/status-messages.php'; ?>
 
         <div class="container">
-            <img src="public/img/profile.png" class="email-icon">
+            <img src="public/img/profile.png" class="icon email">
             <input type="text" name="firstName" placeholder="First name" maxlength="50" required>
         </div>
 
         <div class="container">
-            <img src="public/img/profile.png" class="email-icon">
+            <img src="public/img/profile.png" class="icon email">
             <input type="text" name="lastName" placeholder="Last name" maxlength="50" required>
         </div>
 
         <div class="container">
-            <img src="public/img/email.png" class="email-icon">
+            <img src="public/img/email.png" class="icon email">
             <input type="email" name="email" placeholder="Email" maxlength="255" required>
         </div>
 
@@ -41,10 +41,10 @@
             <img src="public/img/invisible.png" id="toggle-confirm-password" class="icon-switch">
         </div>
 
-        <div style="margin-top: 15px; display: flex; align-items: center; gap: 10px; width: clamp(20em, 20rem + 2vw, 25em);">
-            <input type="checkbox" name="privacyPolicy" id="privacyPolicy" required style="width: 20px; height: 20px; accent-color: #934CBE; cursor: pointer;">
-            <label for="privacyPolicy" style="color: #8F769E; font-size: 0.9em;">
-                I accept the <a href="/privacy-policy" target="_blank" style="color: #934CBE; text-decoration: underline;">Privacy Policy</a>
+        <div class="check-box-container">
+            <input type="checkbox" name="privacyPolicy" id="privacyPolicy" required class="check-box">
+            <label for="privacyPolicy" class="small-text">
+                I accept the <a href="/privacy-policy" target="_blank" class="privacy-link">Privacy Policy</a>
             </label>
         </div>
 

@@ -19,18 +19,6 @@
     width: 100%;
 }
 
-.action-btn {
-    width: clamp(2.5rem, 4vw, 3.5rem);
-    aspect-ratio: 1 / 1;
-    background-color: #A191AB;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: none;
-    cursor: pointer;
-}
-
 .right-actions {
     display: flex;
     gap: 0.75vw;

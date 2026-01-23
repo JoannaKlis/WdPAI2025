@@ -1,10 +1,10 @@
 <?php include '/app/public/views/partials/header.php'; ?>
-<link rel="stylesheet" type= "text/css" href="public/styles/profile.css">
-<link rel="stylesheet" type= "text/css" href="public/styles/welcome.css">
-<link rel="stylesheet" type= "text/css" href="public/styles/features.css">
-<link rel="stylesheet" type= "text/css" href="public/styles/pets.css">
-<link rel="stylesheet" type= "text/css" href="public/styles/vaccinations.css">
-<link rel="stylesheet" type= "text/css" href="public/styles/addingScreens/delete.css">
+<link rel="stylesheet" type="text/css" href="public/styles/profile.css">
+<link rel="stylesheet" type="text/css" href="public/styles/welcome.css">
+<link rel="stylesheet" type="text/css" href="public/styles/features.css">
+<link rel="stylesheet" type="text/css" href="public/styles/pets.css">
+<link rel="stylesheet" type="text/css" href="public/styles/vaccinations.css">
+<link rel="stylesheet" type="text/css" href="public/styles/addingScreens/delete.css">
 <link rel="stylesheet" type="text/css" href="public/styles/editPet.css">
 <link rel="stylesheet" type="text/css" href="public/styles/addingScreens/addPetModal.css">
 <link rel="stylesheet" type="text/css" href="public/styles/addingScreens/addVaccination.css">
@@ -31,7 +31,7 @@
 
         <div class="vaccinations-list">
             <?php if(empty($trimmingList)): ?>
-                <div class="card-name" style="text-align: center; margin-top: 20px;">No trimming history yet.</div>
+                <div class="card-name empty">No trimming history yet.</div>
             <?php else: ?>
                 <?php foreach ($trimmingList as $item): ?>
                     <div class="card-welcome vaccination-item">
@@ -48,8 +48,7 @@
                         <button type="button" 
                             class="action-btn delete-btn" 
                             data-id="<?= $item['id'] ?>" 
-                            onclick="openDeleteModal(this.dataset.id)" 
-                            style="margin-left: auto;">
+                            onclick="openDeleteModal(this.dataset.id)">
                             <img src="public/img/delete.png" alt="Delete">
                         </button>
                     </div>
@@ -101,7 +100,7 @@
                 <div class="modal-buttons">
                     <button type="button" class="btn-cancel" onclick="closeModal('deleteModal')">Cancel</button>
                 
-                    <form action="/deleteTrimming" method="POST" style="margin:0;">
+                    <form action="/deleteTrimming" method="POST">
                         <input type="hidden" name="trimming_id" id="modalWeightId" value="">
                         <button type="submit" class="btn-delete">Delete</button>
                     </form>

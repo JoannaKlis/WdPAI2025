@@ -34,7 +34,7 @@
 }
 
 .time {
-    width: clamp(4rem, 6vw, 6rem);
+    width: clamp(4.2rem, 6vw, 6rem);
 }
 
 .dose-input-small input::-webkit-calendar-picker-indicator {

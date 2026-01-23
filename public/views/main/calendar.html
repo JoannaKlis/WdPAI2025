@@ -1,12 +1,12 @@
 <?php include '/app/public/views/partials/header.php'; ?>
-<link rel="stylesheet" type= "text/css" href="public/styles/profile.css">
-<link rel="stylesheet" type= "text/css" href="public/styles/calendar.css">
-<link rel="stylesheet" type= "text/css" href="public/styles/pets.css">
-<link rel="stylesheet" type= "text/css" href="public/styles/welcome.css">
-<link rel="stylesheet" type= "text/css" href="public/styles/editPet.css">
-<link rel="stylesheet" type= "text/css" href="public/styles/addingScreens/addPetModal.css">
-<link rel="stylesheet" type= "text/css" href="public/styles/addingScreens/addVaccination.css">
-<link rel="stylesheet" type= "text/css" href="public/styles/addingScreens/delete.css">
+<link rel="stylesheet" type="text/css" href="public/styles/profile.css">
+<link rel="stylesheet" type="text/css" href="public/styles/calendar.css">
+<link rel="stylesheet" type="text/css" href="public/styles/pets.css">
+<link rel="stylesheet" type="text/css" href="public/styles/welcome.css">
+<link rel="stylesheet" type="text/css" href="public/styles/editPet.css">
+<link rel="stylesheet" type="text/css" href="public/styles/addingScreens/addPetModal.css">
+<link rel="stylesheet" type="text/css" href="public/styles/addingScreens/addVaccination.css">
+<link rel="stylesheet" type="text/css" href="public/styles/addingScreens/delete.css">
 
     <title>Calendar</title>
 </head>
@@ -52,7 +52,7 @@
                     <div class="days-grid-preview" id="days-grid"></div>
                 </div>
 
-                <div class="list-view-container" id="list-view-container" style="display: none;">
+                <div class="list-view-container" id="list-view-container">
                     <?php 
                         $hasUpcoming = false;
                         $today = date('Y-m-d');
@@ -63,7 +63,7 @@
                             if ($event['date'] >= $today) { 
                                 $hasUpcoming = true;
                                 ?>
-                                <div class="event-card" style="margin-bottom: 10px;">
+                                <div class="event-card">
                                     <div class="event-image-container">
                                         <img src="<?= !empty($event['picture_url']) ? $event['picture_url'] : 'public/img/default_pet.png' ?>" class="event-image">
                                     </div>
@@ -124,7 +124,7 @@
 
                     if (!$hasToday):
                 ?>
-                    <div style="text-align: center; color: #8F769E; padding: 10px;">No events for today.</div>
+                    <div class="noevents">No events for today.</div>
                 <?php endif; ?>
             </div>
         </div>
@@ -152,7 +152,7 @@
                         <label class="input-label">Pet</label>
                         <div class="row-layout">
                             <div class="unit-selector-container">
-                                <select name="pet_id" class="unit-dropdown" style="width: 100%;" required>
+                                <select name="pet_id" class="unit-dropdown" required>
                                     <?php foreach ($pets as $p): ?>
                                         <option value="<?= $p['id'] ?>"><?= $p['name'] ?></option>
                                     <?php endforeach; ?>
@@ -195,7 +195,7 @@
                 <p>Do you really want to delete this event?</p>
                 <div class="modal-buttons">
                     <button type="button" class="btn-cancel" onclick="closeModal('deleteModal')">Cancel</button>
-                    <form id="deleteForm" method="POST" style="margin:0;">
+                    <form id="deleteForm" method="POST">
                         <input type="hidden" name="id" id="modalItemId" value="">
                         <button type="submit" class="btn-delete">Delete</button>
                     </form>

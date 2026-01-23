@@ -1,3 +1,8 @@
+.top-bar-clear {
+    background-color: transparent;
+    box-shadow: none;
+}
+
 .pet-header-container {
     display: flex;
     flex-direction: column;
