@@ -1,6 +1,10 @@
 body {
     background-color: #E6E6E6;
     font-family: "Jua";
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
 }
 
 /* tytuł */
@@ -35,7 +39,7 @@ h1 {
     align-items: center;
     padding: min(0.6em, 1%);
     margin-top: min(1.4vw, 2%);
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 0.3vw rgba(0, 0, 0, 0.2);
     position: relative;
 }
 
@@ -65,7 +69,7 @@ h1 {
     color: white;
     font-size: clamp(2.5em, 2.5rem + 0.75vw, 4em);
     margin-top:  min(3vw, 7%);
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 0.3vw rgba(0, 0, 0, 0.2);
     cursor: pointer;
 }
 
@@ -152,7 +156,7 @@ h1 {
     width: clamp(1.25em, 1.25rem + 0.25vw, 1.5em);
     aspect-ratio: 1/1;
     accent-color: #934CBE;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 0.3vw rgba(0, 0, 0, 0.2);
     cursor: pointer;
 }
 
@@ -162,17 +166,14 @@ h1 {
 
 /* wersja mobilna */
 @media (max-width: 480px) {
-    body {
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
-
     .container {
         width: clamp(17em, 17rem + 2vw, 20em);
         border-radius: 3vw;
         margin-top: min(3vw, 4%);
+    }
+
+    .tagline {
+        font-size: 1.3em;
     }
 
     .container input {

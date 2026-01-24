@@ -3,11 +3,9 @@
 <link rel="stylesheet" type="text/css" href="public/styles/welcome.css">
 <link rel="stylesheet" type="text/css" href="public/styles/features.css">
 <link rel="stylesheet" type="text/css" href="public/styles/pets.css">
-<link rel="stylesheet" type="text/css" href="public/styles/vaccinations.css">
-<link rel="stylesheet" type="text/css" href="public/styles/addingScreens/delete.css">
+<link rel="stylesheet" type="text/css" href="public/styles/items.css">
 <link rel="stylesheet" type="text/css" href="public/styles/editPet.css">
-<link rel="stylesheet" type="text/css" href="public/styles/addingScreens/addPetModal.css">
-<link rel="stylesheet" type="text/css" href="public/styles/addingScreens/addVaccination.css">
+<link rel="stylesheet" type="text/css" href="public/styles/modal.css">
 
     <title>Visits</title>
 </head>
@@ -18,7 +16,7 @@
             <a href="/healthBook?id=<?= $pet['id'] ?>" class="back-arrow">&lt;</a> 
             <h1>Visits to the vet</h1>
             
-            <div class="profile-pic-container profile-mini">
+            <div class="profile-pic-container profile">
                 <a href="/features?id=<?= $pet['id'] ?>">
                     <div class="profile-pic"> 
                         <img src="<?= $pet['picture_url'] ? $pet['picture_url'] : 'public/img/default_pet.png' ?>" class="pet-mini-fix">
@@ -27,12 +25,12 @@
             </div>
         </div>
 
-        <div class="vaccinations-list">
+        <div class="pets-list items">
             <?php if(empty($list)): ?>
                 <div class="card-name empty">No visits recorded yet.</div>
             <?php else: ?>
                 <?php foreach ($list as $item): ?>
-                    <div class="card-welcome vaccination-item">
+                    <div class="card-welcome entry">
                         <div class="feature-icon-box health-box">
                             <img src="public/img/visits.png" class="feature-icon">
                         </div>

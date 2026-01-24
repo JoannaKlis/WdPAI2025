@@ -1,19 +1,15 @@
-.pet-header-container {
-    margin-top: 2.5vw;
-}
-
 .care-grid {
     display: flex;
     flex-wrap: wrap;
     gap: 1.8vh;
     justify-content: right;
     flex: 1;
-    min-width: clamp(20em, 20rem + 5vw, 30em);
+    max-width: clamp(20em, 20rem + 5vw, 30em);
 }
 
 .card-welcome {
-    width: clamp(8em, 8rem + 2vw, 10em); 
-    height: clamp(5em, 5rem + 2vw, 7em);
+    width: clamp(7em, 7rem + 2vw, 9em); 
+    height: clamp(4em, 4rem + 2vw, 6em);
     padding: 1.35vw;
     display: flex;
     flex-direction: column;
@@ -38,16 +34,16 @@
 .care-label-sub {
     color: #8F769E;
     font-size: clamp(0.8em, 0.8rem + 0.1vw, 1em);
-    margin-top: 2px;
+    margin-top: 0.1vw;
 }
 
 .card-weight {
-    flex: 1;
-    width: clamp(10em, 10rem + 2vw, 15em); 
+    width: clamp(20em, 20rem + 2vw, 22em);
     background-color: #F6F6F6;
     border-radius: 1vw;
     padding: 1.8vw;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 0.3vw rgba(0, 0, 0, 0.2);
+    right: 0.5vw;
 }
 
 .history-title {
@@ -78,22 +74,29 @@
         justify-content: center;
     }
 
-    .care-icon-box {
-        width: clamp(2em, 2rem + 0.5vw, 3em); 
-        border-radius: 3vw;
+    .card-welcome {
+        width: 9em; 
+        height: 6em;
+        padding: 1vw;
     }
     
-    .care-label-main {
-        font-size: clamp(0.8em, 0.8rem + 0.1vw, 1em); 
-    }
-
-    .care-label-sub {
-        font-size: clamp(0.6em, 0.6rem + 0.1vw, 1em);
+    .feature-icon-box {
+        border-radius: 2vw;
+        margin: 2vw;
     }
 
     .card-weight {
+        width: 18em;
         border-radius: 3vw;
         padding: 5vw;
+    }
+
+    .care-label-main {
+        margin-left: 2vw;
+    }
+
+    .care-label-sub {
+        margin-left: 2vw;
     }
 
     .history-item {

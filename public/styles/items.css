@@ -9,27 +9,17 @@
     color: white;
 }
 
-.profile-mini {
-    position: absolute;
-    right: 1.75vw;
-    width: clamp(2.5em, 2.5rem + 0.5vw, 3.5em);
-    margin: 0;
-}
-
 .pet-mini-fix {
-    filter: none;
     width: 100%;
-    aspect-ratio: 1/1;
 }
 
-.vaccinations-list {
-    display: flex;
-    flex-direction: column;
-    gap: 2vh;
-    width: clamp(30em, 30rem + 20vw, 60em);
+.items {
+    gap: 3vh;
+    width: 60vw;
+    margin: 12vh auto 5vh;
 }
 
-.vaccination-item {
+.entry {
     display: flex;
     align-items: center;
     width: 100%;
@@ -58,7 +48,7 @@
 .feature-subtext {
     color: #8F769E;
     font-size: clamp(0.8em, 0.8rem + 0.1vw, 1em);
-    margin-top: 1px;
+    margin-top: 0.5vw;
 }
 
 .add-button {
@@ -66,15 +56,15 @@
 }
 
 @media (max-width: 480px) {
-    .vaccinations-list {
-        width: 90vw;
+    .vaccinations {
+        width: 72vw;
     }
 
     .vaccination-item {
         padding: 3vw 4vw;
     }
 
-    .feature-text-container {
-        padding-left: 4vw;
+    .add-button {
+        right: 1.5vw;
     }
 }

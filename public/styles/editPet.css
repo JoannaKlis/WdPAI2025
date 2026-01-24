@@ -8,7 +8,6 @@
     margin-top: 1vh;
 }
 
-/* zastanowic sie czy usunac */
 .container input {
     font-family: "Jua";
 }
@@ -39,7 +38,7 @@
     justify-content: center;
     gap: 0.5vw;
     cursor: pointer;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 0.3vw rgba(0, 0, 0, 0.1);
 }
 
 .sex-button.active {
@@ -62,11 +61,15 @@
         margin-bottom: 5vw;
     }
 
+    .input-group {
+        width: 18em;
+    }
+
     .sex-selection {
         gap: 4vw;
     }
 
     .sex-button {
-    border-radius: 2.5vw;
+        border-radius: 2.5vw;
    }
 }

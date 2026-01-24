@@ -4,7 +4,7 @@
     top: 0;
     width: 100%;
     background-color: white;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0.1vw 0.3vw rgba(0, 0, 0, 0.1);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -86,10 +86,4 @@
     width: clamp(8em, 8rem + 2vw, 10em);
     font-size: clamp(2em, 2rem + 0.5vw, 3em);
     margin: 4vh 0 4vh 0;
-}
-
-@media (max-width: 480px) {
-    .profile-pic-container {
-        margin-top: 0;
-    }
 }
