@@ -1,104 +1,4 @@
-/* .profile-pic-container {
-    margin-top: 0.5vw;
-} */
-
-.modal-content {
-    background-color: #ECECEC;
-    width: clamp(18rem, 85vw, 26rem);
-    border-radius: 3vw;
-    padding: clamp(1vw, 2vw, 3vw);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    margin: auto;
-    margin-top: 2vw;
-    margin-bottom: 2vw;
-}
-
-.modal-header-actions {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-}
-
-.right-actions {
-    display: flex;
-    gap: 0.75vw;
-}
-
-.modal-pic {
-    margin-top: 2vw;
-}
-
-/* .input-label {
-    font-family: 'Jua';
-    color: #934CBE;
-    margin-top: 0.5vw;
-} */
-
-.vaccination-name-group {
-    margin-top: clamp(1rem, 4vw, 2rem);
-}
-
-.row-layout {
-    display: flex;
-    align-items: center;
-    gap: 1.5vw;
-}
-
-.date-input-container {
-    background-color: #8F769E;
-    width: fit-content;
-    padding: 0.5vw 1.5vw;
-    border-radius: 1.25vw;
-}
-
-.date-input-container input {
-    color: white;
-    font-family: 'Jua';
-    font-size: clamp(1rem, 1.2vw, 1.4rem);
-}
-
-.date-input-container input::-webkit-calendar-picker-indicator {
-    filter: brightness(0) invert(1);
-    cursor: pointer;
-}
-
-.dose-input-small {
-    width: clamp(5rem, 10vw, 8rem);
-    height: clamp(1rem, 2vw, 2rem);
-    padding: 0.5vw 1vw;
-    border-radius: 1.25vw;
-}
-
-.time {
-    width: clamp(4.2rem, 6vw, 6rem);
-}
-
-.dose-input-small input::-webkit-calendar-picker-indicator {
-    filter: invert(53%) sepia(26%) saturate(632%) hue-rotate(234deg) brightness(70%) contrast(90%);
-    cursor: pointer;
-}
-
-.unit-selector-container {
-    background-color: #8F769E;
-    height: clamp(1rem, 2vw, 2rem);
-    border-radius: 1.25vw;
-    padding: 0.5vw 1vw;
-    display: flex;
-    align-items: center;
-}
-
-.unit-dropdown {
-    background: #8F769E;
-    border: none;
-    color: white;
-    font-family: 'Jua';
-    font-size: clamp(1rem, 1.2vw, 1.4rem);
-    cursor: pointer;
-    outline: none;
-    padding-right: 0.5vw;
-}
-
-
+/* tło za modalem */
 .modal-overlay {
     display: none;
     position: fixed;
@@ -109,49 +9,36 @@
     z-index: 1000;
 }
 
-body {
-    color: #934CBE;
-    font-family: "Jua";
+/* wygląd okienka/modala */
+.modal-content {
+    background-color: #ECECEC;
+    width: clamp(18rem, 85vw, 26rem);
+    border-radius: 3vw;
+    padding: clamp(1vw, 2vw, 3vw);
+    max-height: 90vh;
+    overflow-y: auto;
+    box-sizing: border-box;
+    margin: 0; 
+    scrollbar-width: thin;
+    scrollbar-color: #A191AB transparent;
 }
 
-.modal-box {
-    background: white;
-    padding: 20px;
-    border-radius: 12px;
-    text-align: center;
-    width: 80%;
-    max-width: 300px;
+.modal-content .profile-pic-container {
+    margin-top: 1.5rem;
+    margin-bottom: 2rem;
 }
 
-.modal-buttons {
+/* przyciski akcji */
+.modal-header-actions {
     display: flex;
-    justify-content: space-around;
-    margin-top: 20px;
+    justify-content: space-between;
 }
 
-.btn-cancel {
-    background: #E7E7E7;
-    color: #8F769E;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 20px;
-    cursor: pointer;
-    font-family: "Jua";
-}
-
-.btn-delete {
-    background: #934CBE;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 20px;
-    cursor: pointer;
-    font-family: "Jua";
-}
+.right-actions { gap: 0.75vw; }
 
 .delete-icon-container {
     position: absolute;
-    right: 20px;
+    right: 2vw;
     cursor: pointer;
 }
 
@@ -167,8 +54,109 @@ body {
     cursor: pointer;
 }
 
+.action-btn:hover { transform: scale(1.05); }
+
+/* styl wprowadzanych danych */
+.name-group { margin-top: clamp(0.5rem, 2vw, 1rem); }
+
+.row-layout {
+    display: flex;
+    align-items: center;
+    gap: 1.5vw;
+}
+
+.date-input-container {
+    background-color: #8F769E;
+    width: fit-content;
+    padding: 0.5vw 1.5vw;
+    border-radius: 1.25vw;
+}
+
+.number-input-small {
+    width: clamp(5rem, 10vw, 8rem);
+    height: clamp(1rem, 2vw, 2rem);
+    padding: 0.5vw 1vw;
+    border-radius: 1.25vw;
+}
+
+.date-input-container input {
+    color: white;
+    font-size: clamp(1rem, 1.2vw, 1.4rem);
+}
+
+.date-input-container input::-webkit-calendar-picker-indicator {
+    filter: brightness(0) invert(1);
+    cursor: pointer;
+}
+
+.time { width: clamp(5.5rem, 6.5vw, 6.5rem); }
+
+/* fioletowa ikonka zegara/kalendarza */
+.number-input-small input::-webkit-calendar-picker-indicator {
+    filter: invert(53%) sepia(26%) saturate(632%) hue-rotate(234deg) brightness(70%) contrast(90%);
+    cursor: pointer;
+}
+
+/* lista wboru jednostki */
+.unit-selector-container {
+    background-color: #8F769E;
+    height: clamp(1rem, 2vw, 2rem);
+    border-radius: 1.25vw;
+    padding: 0.5vw 1vw;
+    display: flex;
+    align-items: center;
+    margin-top: 1.5vh;
+}
+
+.unit-dropdown {
+    background: #8F769E;
+    border: none;
+    color: white;
+    font-size: clamp(1rem, 1.2vw, 1.4rem);
+    cursor: pointer;
+    outline: none;
+    padding-right: 0.5vw;
+}
+
+/* okno potwierdzenia usunięcia elementu */
+h3, p { color: #934CBE; }
+
+.modal-box {
+    background: white;
+    padding: 2vw;
+    border-radius: 1vw;
+    text-align: center;
+    width: 80%;
+    max-width: 20vw;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 1vw;
+}
+
+/* wspólny styl przycisków w oknie */
+.btn-cancel, .btn-delete {
+    font-family: "Jua";
+    padding: 0.5vw 1vw;
+    border-radius: 1vw;
+    cursor: pointer;
+    border: none;
+    font-size: 1em;
+}
+
+.btn-cancel {
+    background: #E7E7E7;
+    color: #8F769E;
+}
+
+.btn-delete {
+    background: #934CBE;
+    color: white;
+}
+
 @media (max-width: 480px) {
-    .date-input-container {
-        border-radius: 2.5vw;
-   }
+    .container.date-input-container { border-radius: 2.5vw; }
+    .modal-content { border-radius: 5vw; padding: clamp(2vw, 4vw, 6vw); }
 }
