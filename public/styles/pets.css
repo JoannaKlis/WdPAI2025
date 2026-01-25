@@ -76,10 +76,13 @@
 }
 
 @media (max-width: 480px) {
-    .profile-pic-container {
-        position: relative;
-        right: 0.1vw;
-        
+    .profile-pic-container.profile {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        right: 3vw;
+        margin: 0;
+        width: 10vw;
     }
 
     .add-button {

@@ -77,62 +77,14 @@
     align-items: center;
 }
 
-/* karta Calendar */
-.calendar-preview {
-    background-color: white;
-    padding: 1vw;
-    border-radius: 0.5vw;
-    width: 100%;
-    box-sizing: border-box;
-}
-
-.month-nav-preview {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: #934CBE;
-    font-size: clamp(0.8em, 0.8rem + 0.2vw, 1.2em);
-    font-weight: bold;
-    margin-bottom: 0.5vw;
-    padding: 0 0.5vw;
-}
-
-.nav-arrow-preview {
-    font-weight: normal;
-    cursor: pointer;
-}
-
-.weekdays-preview {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    text-align: center;
-    color: #8F769E;
-    font-size: clamp(0.7em, 0.7rem + 0.1vw, 1em);
-    margin-bottom: 0.5vw;
-}
-
-.days-grid-preview {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    text-align: center;
-    gap: 0.1vw;
-}
-
-.day-preview {
-    font-size: clamp(0.8em, 0.8rem + 0.1vw, 1.1em);
-    color: #8F769E;
-    padding: 0.2vw 0;
-}
-
-.dimmed-preview {
-    color: #C0C0C0;
-}
-
 .logout-container {
-    width: 5.5rem;
+    width: 6rem;
     display: flex;
     gap: 1.5vw;
     align-items: center;
+    position: fixed;
+    right: 1.75vw;
+    margin: 0;
 }
 
 .logout-icon {
@@ -173,5 +125,11 @@
     .card-label {
         font-size: 2em;
         margin-top: 4vw;
+    }
+
+    .logout-container {
+        width: 4.5rem;
+        gap: 3vw;
+        margin-right: 2vw;
     }
 }
