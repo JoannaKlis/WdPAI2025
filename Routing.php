@@ -92,7 +92,6 @@ class Routing {
             // USER
             "profile" => ["controller" => "UserController", "action" => "profile"],
             "welcome" => ["controller" => "UserController", "action" => "welcome"],
-            "privacy-policy" => ["controller" => "UserController", "action" => "privacyPolicy"],
             "^user/(\d+)$" => ["controller" => "UserController", "action" => "details"],
 
             // ADMIN

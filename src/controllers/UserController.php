@@ -45,8 +45,4 @@ class UserController extends AppController {
         $user = $this->userRepository->getUserByEmail($_SESSION['user_email']);
         return $this->render("main/welcome", ['user' => $user]);
     }
-
-    public function privacyPolicy() {
-        return $this->render("main/privacy");
-    }
 }

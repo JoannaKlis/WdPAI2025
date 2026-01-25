@@ -1,4 +1,5 @@
 <?php include '/app/public/views/partials/header.php'; ?>
+<link rel="stylesheet" type="text/css" href="public/styles/components/modal.css">
     <title>Registration</title>
 </head>
 
@@ -44,7 +45,8 @@
         <div class="check-box-container">
             <input type="checkbox" name="privacyPolicy" id="privacyPolicy" required class="check-box">
             <label for="privacyPolicy" class="small-text">
-                I accept the <a href="/privacy-policy" target="_blank" class="privacy-link">Privacy Policy</a>
+                I accept the 
+                <a href="#" onclick="openModal('privacyModal'); return false;" class="privacy-link">Privacy Policy</a>
             </label>
         </div>
 
@@ -54,5 +56,25 @@
             <span class="small-text">Already have an account?</span>
             <a href="/login" class="link">Log in</a>
         </div>
+    </form> 
+
+    <div id="privacyModal" class="modal-overlay">
+        <div class="modal-content">
+            <div>
+                <h3>Privacy Policy</h3>
+                <p class="small-text"><strong>Last updated: 05.01.2026</strong></p>
+                
+                <h3>1. Introduction</h3>
+                <p class="small-text">Welcome to PetNotes. We respect your privacy and are committed to protecting your personal data.</p>
+
+                <h3>2. Data We Collect</h3>
+                <p class="small-text">We may collect personal identification information (Name, email address) and information about your pets.</p>
+
+                <h3>3. How We Use Your Data</h3>
+                <p class="small-text">We use your data to provide and improve the Service, manage your account, and send you related information.</p>
+        </div>
+    </div>
+
+    <script src="public/scripts/deleteAddWindow.js" defer></script>
 
 <?php include '/app/public/views/partials/footer.php'; ?>
