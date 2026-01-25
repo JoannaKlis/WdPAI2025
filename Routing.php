@@ -30,11 +30,16 @@ class Routing {
         return self::$instance;
     }
 
-    public static function run(string $path) {
-        self::getInstance()->dispatch($path);
+    public static function run(?string $path) {
+        self::getInstance()->dispatch($path ?? '');
     }
 
     private function dispatch(string $path) {
+        // jeśli ścieżka jest pusta to przenieś do login (ekran startowy)
+        if ($path === '') {
+            $path = 'login';
+        }
+
         // Sprawdzenie dokładnych dopasowań
         if (array_key_exists($path, $this->routes)) {
             $this->invoke($this->routes[$path]);
@@ -43,11 +48,8 @@ class Routing {
 
         // Sprawdzenie tras Regex
         foreach ($this->routes as $route => $config) {
-            // Jeśli trasa zaczyna się od ^ -> regex
             if (str_starts_with($route, '^')) {
-                // Dodanie delimitera '/' do regexa
-                if (preg_match("/$route/", $path, $matches)) {
-                    // Usuwanie pełnych dopasowań, zostaje tylko grupy przechwycone (argumenty)
+                if (preg_match("#$route#", $path, $matches)) {
                     array_shift($matches);
                     $this->invoke($config, $matches);
                     return;
@@ -73,7 +75,7 @@ class Routing {
 
     private function handleNotFound() {
         http_response_code(404);
-        include 'public/views/404.html';
+        include 'public/views/errors/404.html';
         exit;
     }
 
@@ -81,7 +83,6 @@ class Routing {
     private function registerRoutes() {
         $this->routes = [
             // SECURITY
-            "" => ["controller" => "SecurityController", "action" => "start"],
             "login" => ["controller" => "SecurityController", "action" => "login"],
             "logout" => ["controller" => "SecurityController", "action" => "logout"],
             "registration" => ["controller" => "SecurityController", "action" => "registration"],

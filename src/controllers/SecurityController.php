@@ -13,17 +13,17 @@ class SecurityController extends AppController {
     }
 
     public function start() {
-        return $this->render("main/start");
+        return $this->login();
     }
 
     public function error401() {
         http_response_code(401);
-        return $this->render("401");
+        return $this->render("errors/401");
     }
 
     public function error403() {
         http_response_code(403);
-        return $this->render("403");
+        return $this->render("errors/403");
     }
 
     public function login() {

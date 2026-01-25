@@ -13,7 +13,7 @@ class AppController {
 
         // Sprawdzenie timeoutu (tylko jeśli sesja istnieje)
         if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) > $timeout_duration) {
-            $this->logoutAndRedirect('401');
+            $this->redirect('401');
         }
 
         // Sprawdzenie czy użytkownik jest zalogowany
@@ -28,13 +28,8 @@ class AppController {
         $_SESSION['last_activity'] = time();
     }
 
-    // Metoda pomocnicza: czyści sesję i kieruje na błąd 401
-    private function logoutAndRedirect(string $errorCode) {
-        if (session_status() === PHP_SESSION_ACTIVE) {
-            session_unset();
-            session_destroy();
-        }
-        
+    // Metoda pomocnicza: kieruje na błąd 401
+    private function redirect(string $errorCode) {
         $url = "http://$_SERVER[HTTP_HOST]";
         header("Location: {$url}/{$errorCode}");
         exit();
@@ -46,7 +41,7 @@ class AppController {
         
         if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
             // Brak uprawnień -> wyloguj i błąd 403
-            $this->logoutAndRedirect('403');
+            $this->redirect('403');
         }
     }
 
@@ -58,7 +53,7 @@ class AppController {
         // Jeśli rola to 'admin' -> błąd 403
         if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin') {
             // Zła rola -> wyloguj i błąd 403
-            $this->logoutAndRedirect('403');
+            $this->redirect('403');
         }
     }
 
@@ -87,7 +82,7 @@ class AppController {
         if ($template === null) return;
 
         $templatePath = 'public/views/' . $template . '.html';
-        $templatePath404 = 'public/views/404.html';
+        $templatePath404 = 'public/views/errors/404.html';
 
         if (!empty($variables)) {
             extract($variables); 

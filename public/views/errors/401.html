@@ -1,0 +1,25 @@
+<?php include '/app/public/views/partials/header.php'; ?>
+<link rel="stylesheet" type="text/css" href="public/styles/pets.css">
+
+    <title>Unauthorized</title>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="logo">
+            <img src="public/img/petnotes_logo.png" class="logo">
+            <h1>PetNotes</h1>
+        </div>
+        
+        <div class="card-name">401</div>
+        
+        <div class="tagline empty">
+            Authorization Required.<br>
+            Your session has expired or you lack permission.
+        </div>
+        
+        <form action="/login">
+            <button class="button">Log in</button>
+        </form>
+    </div>
+</body>
+</html>
