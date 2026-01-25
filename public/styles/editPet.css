@@ -1,8 +1,10 @@
+/* profilowe zwierzaka */
 .pet-img {
     filter: none;
     width: 100%;
 }
 
+/* dane o zwierzaku */
 .input-group {
     width: clamp(20em, 20rem + 2vw, 25em);
     margin-top: 1vh;
@@ -18,6 +20,7 @@
     margin-left: 0.5vw;
 }
 
+/* przycisk wyboru płci zwierzaka */
 .sex-selection {
     display: flex;
     gap: 1vw;
@@ -56,20 +59,8 @@
 }
 
 @media (max-width: 480px) {
-    .profile-pic-container {
-        margin-top: 22vw;
-        margin-bottom: 5vw;
-    }
-
-    .input-group {
-        width: 18em;
-    }
-
-    .sex-selection {
-        gap: 4vw;
-    }
-
-    .sex-button {
-        border-radius: 2.5vw;
-   }
+    .profile-pic-container { margin-top: 22vw; margin-bottom: 5vw; }
+    .input-group { width: 18em; }
+    .sex-selection { gap: 4vw; }
+    .sex-button { border-radius: 2.5vw; }
 }

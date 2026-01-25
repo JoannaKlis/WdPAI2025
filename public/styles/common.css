@@ -97,13 +97,8 @@ h1 {
     text-align: center;
 }
 
-.error-messages {
-    color: #B00020;
-}
-
-.success-messages {
-    color: #17b000;
-}
+.error-messages { color: #B00020;}
+.success-messages { color: #17b000;}
 
 /* linki "Log in" i "Create one" */
 .link {
@@ -121,9 +116,7 @@ h1 {
     flex-direction: column;
 }
 
-.small-text {
-    color: #8F769E;
-}
+.small-text { color: #8F769E; }
 
 /* rozmiar ikon */
 .icon {
@@ -132,9 +125,7 @@ h1 {
     margin-right: 0.4vw;
 }
 
-.email {
-    height: clamp(1.5em, 1.5rem + 0.25vw, 2em);
-}
+.email { height: clamp(1.5em, 1.5rem + 0.25vw, 2em); }
 
 .icon-switch {
     height: clamp(2em, 2rem + 0.5vw, 3em);
@@ -160,40 +151,15 @@ h1 {
     cursor: pointer;
 }
 
-.privacy-link {
-    color: #934CBE;
-}
+.privacy-link { color: #934CBE; }
 
 /* wersja mobilna */
 @media (max-width: 480px) {
-    .container {
-        width: clamp(17em, 17rem + 2vw, 20em);
-        border-radius: 3vw;
-        margin-top: min(3vw, 4%);
-    }
-
-    .tagline {
-        font-size: 1.3em;
-    }
-
-    .container input {
-        font-size: 0.9em;
-    }
-
-    .icon {
-        margin: 0 1vw 0 2vw;
-    }
-
-    .icon-switch {
-        right: 3vw;
-    }
-
-    .button {
-        margin: 5vw 0 2vw 0;
-        border-radius: 5vw;
-    }
-
-    .check-box-container {
-        margin-left: 14vw;
-    }
+    .container { width: clamp(17em, 17rem + 2vw, 20em); border-radius: 3vw; margin-top: min(3vw, 4%); }
+    .tagline { font-size: 1.3em; }
+    .container input { font-size: 0.9em; }
+    .icon { margin: 0 1vw 0 2vw; }
+    .icon-switch { right: 3vw; }
+    .button { margin: 5vw 0 2vw 0; border-radius: 5vw; }
+    .check-box-container { margin-left: 14vw; }
 }

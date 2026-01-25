@@ -1,3 +1,4 @@
+/* przerobiony wygląd karty na alergie, harmonogram karmienia, itp.  */
 .card-container-welcome {
     align-items: center;
     gap: clamp(1vw, 2vw, 3vw); 
@@ -69,13 +70,6 @@
 }
 
 @media (max-width: 480px) {
-    .card-container-welcome {
-        gap: 4vw;
-    }
-
-    .nutrition-card {
-        width: 85vw;
-        padding: 4vw;
-        border-radius: 3vw;
-    }
+    .card-container-welcome { gap: 4vw; }
+    .nutrition-card { width: 85vw; padding: 4vw; border-radius: 3vw; }
 }

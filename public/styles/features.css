@@ -1,8 +1,4 @@
-.top-bar-clear {
-    background-color: transparent;
-    box-shadow: none;
-}
-
+/* wyświetlenie aktualnie wybranego zwierzaka  */
 .pet-header-container {
     display: flex;
     flex-direction: column;
@@ -11,6 +7,7 @@
     margin-bottom: 3vh;
 }
 
+/* profilowe zwierzaka */
 .pet-photo-circle {
     width: clamp(9em, 9rem + 0.5vw, 10em);
     border-radius: 50%;
@@ -24,6 +21,7 @@
     aspect-ratio: 1/1;
 }
 
+/* imię zwierzaka */
 .pet-name-display {
     margin-top: 0.2vw;
     color: #934CBE;
@@ -32,9 +30,8 @@
     font-family: 'Jua';
 }
 
-.features-grid {
-    gap: 2.5vw;
-}
+/* zawartość funkcji */
+.features-grid { gap: 2.5vw; }
 
 .feature-tile {
     display: flex;
@@ -54,7 +51,7 @@
 
 .feature-icon {
     width: 55%;
-    filter: brightness(0) invert(100%); /* pod ikonę profile */
+    filter: brightness(0) invert(100%);
 }
 
 .feature-text {
@@ -71,22 +68,9 @@
     font-weight: bold;
 }
 
-
 @media (max-width: 480px) {
-    .features-grid {
-        gap: 4vw;
-    }
-
-    .feature-tile {
-        padding: 4vw;
-    }
-
-    .feature-text {
-        padding-left: 3vw;
-    }
-
-    .feature-icon-box {
-        width: 15vw;
-        border-radius: 2.5vw;
-    }
+    .features-grid { gap: 4vw; }
+    .feature-tile { padding: 4vw; }
+    .feature-text { padding-left: 3vw; }
+    .feature-icon-box { width: 15vw; border-radius: 2.5vw; }
 }

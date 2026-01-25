@@ -1,6 +1,5 @@
-.health-box {
-    background-color: #8F769E;
-}
+/* rozszwerzony styl features na potrzeby healthBook */
+.health-box { background-color: #8F769E; }
 
 .feature-text-container {
     display: flex;
@@ -11,19 +10,13 @@
 }
 
 .book-text {
-    
     padding-left: 0;
     font-size: clamp(1.2em, 1.2rem + 0.3vw, 1.6em);
     font-weight: normal;
 }
 
-.subtext {
-    color: #8F769E;
-}
-
+.subtext { color: #8F769E; }
 
 @media (max-width: 480px) {
-    .feature-text-container {
-        padding-left: 4vw;
-    }
+    .feature-text-container { padding-left: 4vw; }
 }

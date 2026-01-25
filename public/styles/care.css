@@ -1,3 +1,4 @@
+/* specyficzny wygląd kart */
 .care-grid {
     display: flex;
     flex-wrap: wrap;
@@ -21,9 +22,7 @@
     margin-bottom: 0.9vh;
 }
 
-.feature-icon {
-    width: 60%;
-}
+.feature-icon { width: 60%; }
 
 .care-label-main {
     color: #934CBE;
@@ -46,6 +45,7 @@
     right: 0.5vw;
 }
 
+/* historia wpisów wagi zwierzaka */
 .history-title {
     color: #934CBE;
     text-align: center;
@@ -70,36 +70,11 @@
 }
 
 @media (max-width: 480px) {
-    .care-grid {
-        justify-content: center;
-    }
-
-    .card-welcome {
-        width: 9em; 
-        height: 6em;
-        padding: 1vw;
-    }
-    
-    .feature-icon-box {
-        border-radius: 2vw;
-        margin: 2vw;
-    }
-
-    .card-weight {
-        width: 18em;
-        border-radius: 3vw;
-        padding: 5vw;
-    }
-
-    .care-label-main {
-        margin-left: 2vw;
-    }
-
-    .care-label-sub {
-        margin-left: 2vw;
-    }
-
-    .history-item {
-        border-radius: 2vw;
-    }
+    .care-grid { justify-content: center; }
+    .card-welcome { width: 9em;  height: 6em; padding: 1vw; }
+    .feature-icon-box { border-radius: 2vw; margin: 2vw; }
+    .card-weight { width: 18em; border-radius: 3vw; padding: 5vw; }
+    .care-label-main { margin-left: 2vw; }
+    .care-label-sub { margin-left: 2vw; }
+    .history-item { border-radius: 2vw; }
 }

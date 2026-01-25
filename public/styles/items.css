@@ -1,18 +1,11 @@
-.top-bar {
-    background-color: #8F769E;
-}
-.top-bar h1 {
-    color: white;
-}
+/* zmiana koloru paska dla items */
+.top-bar { background-color: #8F769E; }
+.top-bar h1, .back-arrow { color: white; }
 
-.back-arrow {
-    color: white;
-}
+/* mini logo zwierzaka */
+.pet-mini-fix { width: 100%; }
 
-.pet-mini-fix {
-    width: 100%;
-}
-
+/* wpisy nowych szczepień, wizyt, itp. */
 .items {
     gap: 3vh;
     width: 60vw;
@@ -25,10 +18,6 @@
     width: 100%;
     padding: 1vw 2vw;
     box-sizing: border-box;
-}
-
-.health-box {
-    background-color: #8F769E;
 }
 
 .feature-text-container {
@@ -51,20 +40,10 @@
     margin-top: 0.5vw;
 }
 
-.add-button {
-   background-color: #8F769E;
-}
+.health-box { background-color: #8F769E; }
+.add-button { background-color: #8F769E; }
 
 @media (max-width: 480px) {
-    .vaccinations {
-        width: 72vw;
-    }
-
-    .vaccination-item {
-        padding: 3vw 4vw;
-    }
-
-    .add-button {
-        right: 1.5vw;
-    }
+    .items { width: 92vw; }
+    .entry { padding: 3vw 4vw; }
 }
