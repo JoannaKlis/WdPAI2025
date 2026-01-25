@@ -18,7 +18,7 @@
 
         <div class="pet-header-container">
             <div class="pet-photo-circle">
-                <img src="<?= $pet['picture_url'] ? $pet['picture_url'] : 'public/img/default_pet.png' ?>" alt="<?= $pet['name'] ?>">
+                <img src="<?= $pet['picture_url'] ? $pet['picture_url'] : 'public/img/others/default_pet.png' ?>" alt="<?= $pet['name'] ?>">
             </div>
             <div class="pet-name-display"><?= $pet['name'] ?></div>
         </div>
@@ -29,7 +29,7 @@
                 
                 <a href="/weight?id=<?= $pet['id'] ?>" class="card-welcome">
                     <div class="feature-icon-box">
-                            <img src="public/img/weight.png" class="feature-icon">
+                            <img src="public/img/care/weight.png" class="feature-icon">
                     </div>
                     <span class="care-label-main">Weight</span>
                     <span class="care-label-sub">
@@ -39,7 +39,7 @@
 
                 <a href="/groom?id=<?= $pet['id'] ?>" class="card-welcome">
                     <div class="feature-icon-box">
-                        <img src="public/img/shower.png" class="feature-icon">
+                        <img src="public/img/care/shower.png" class="feature-icon">
                     </div>
                     <span class="care-label-main">Groom</span>
                     <span class="care-label-sub">
@@ -49,7 +49,7 @@
 
                 <a href="/shearing?id=<?= $pet['id'] ?>" class="card-welcome">
                     <div class="feature-icon-box">
-                        <img src="public/img/scissors.png" class="feature-icon">
+                        <img src="public/img/care/scissors.png" class="feature-icon">
                     </div>
                     <span class="care-label-main">Shearing</span>
                     <span class="care-label-sub">
@@ -59,7 +59,7 @@
 
                 <a href="/trimming?id=<?= $pet['id'] ?>" class="card-welcome">
                     <div class="feature-icon-box">
-                        <img src="public/img/paw.png" class="feature-icon">
+                        <img src="public/img/care/paw.png" class="feature-icon">
                     </div>
                     <span class="care-label-main">Trimming claws</span>
                     <span class="care-label-sub">

@@ -14,7 +14,7 @@
             <div class="profile-pic-container profile">
                 <a href="/profile">
                     <div class="profile-pic">
-                        <img src="<?= $user['picture_url'] ? $user['picture_url'] : 'public/img/profile.png' ?>" 
+                        <img src="<?= $user['picture_url'] ? $user['picture_url'] : 'public/img/profile/profile.png' ?>" 
                         alt="Profile Picture" 
                         class="profile-icon-main <?= $user['picture_url'] ? 'user-photo' : '' ?>">
                     </div>
@@ -29,7 +29,7 @@
                 <?php foreach ($pets as $pet): ?>
                     <a href="/features?id=<?= $pet['id'] ?>" class="card">
                         <div class="card-image-container">
-                            <img src="<?= $pet['picture_url'] ?? 'public/img/default_pet.png' ?>" class="card-image">
+                            <img src="<?= $pet['picture_url'] ?? 'public/img/others/default_pet.png' ?>" class="card-image">
                         </div>
                         <div class="card-text">
                             <div class="card-name"><?= htmlspecialchars($pet['name']) ?></div>
@@ -50,25 +50,25 @@
                     
                     <div class="modal-header-actions">
                         <button type="button" class="action-btn close-btn" onclick="closeModal('addModal')">
-                            <img src="public/img/cancel.png" alt="Close">
+                            <img src="public/img/others/cancel.png" alt="Close">
                         </button>
                         <div class="right-actions">
                             <button type="submit" class="action-btn save-btn">
-                                <img src="public/img/confirm.png" alt="Save">
+                                <img src="public/img/others/confirm.png" alt="Save">
                             </button>
                         </div>
                     </div>
 
                     <div class="profile-pic-container" onclick="document.getElementById('file-input').click()">
                         <div class="profile-pic"> 
-                            <img src="public/img/default_pet.png" 
+                            <img src="public/img/others/default_pet.png" 
                                 alt="Pet Picture" 
                                 class="profile-icon-main pet-img" 
                                 id="petImagePreview">
                         </div>
     
                         <div class="edit-icon"> 
-                            <img src="public/img/edit.png" alt="Edit Icon" class="edit-icon-img">
+                            <img src="public/img/others/edit.png" alt="Edit Icon" class="edit-icon-img">
                         </div>
                         <dive class="none">
                             <input type="file" name="picture" id="file-input" accept="image/*" onchange="previewImage(this)">
@@ -101,10 +101,10 @@
                         <input type="hidden" name="sex" id="sexInput" value="Male">
                         <div class="sex-selection">
                             <button type="button" class="sex-button male active" onclick="setSex('Male', this)">
-                                <img src="public/img/male.png" class="sex-icon"> Male
+                                <img src="public/img/others/male.png" class="sex-icon"> Male
                             </button>
                             <button type="button" class="sex-button female" onclick="setSex('Female', this)">
-                                <img src="public/img/female.png" class="sex-icon"> Female
+                                <img src="public/img/others/female.png" class="sex-icon"> Female
                             </button>
                         </div>
                     </div>
@@ -135,8 +135,8 @@
         </div>
     </div>
 
-    <script src="public/scripts/picture.js" defer></script>
-    <script src="public/scripts/sexSelection.js" defer></script>
-    <script src="public/scripts/deleteAddWindow.js" defer></script>
+    <script src="public/scripts/UIHandler.js" defer></script>
+    <script src="public/scripts/ModalHandler.js" defer></script>
+    <script src="public/scripts/utils.js" defer></script>
 </body>
 </html>

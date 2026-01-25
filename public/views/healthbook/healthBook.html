@@ -13,7 +13,6 @@
 <link rel="stylesheet" type="text/css" href="public/styles/pages/welcome.css">
 <link rel="stylesheet" type="text/css" href="public/styles/pages/features.css">
 <link rel="stylesheet" type="text/css" href="public/styles/pages/pets.css">
-<link rel="stylesheet" type="text/css" href="public/styles/components/items.css">
 <link rel="stylesheet" type="text/css" href="public/styles/pages/healthBook.css">
 
     <title>Health Book</title>
@@ -29,7 +28,7 @@
 
         <div class="pet-header-container">
             <div class="pet-photo-circle">
-                <img src="<?= $pet['picture_url'] ? $pet['picture_url'] : 'public/img/default_pet.png' ?>" alt="<?= $pet['name'] ?>">
+                <img src="<?= $pet['picture_url'] ? $pet['picture_url'] : 'public/img/others/default_pet.png' ?>" alt="<?= $pet['name'] ?>">
             </div>
             <div class="pet-name-display"><?= $pet['name'] ?></div>
         </div>
@@ -38,7 +37,7 @@
 
             <a href="/vaccinations?id=<?= $pet['id'] ?>" class="card-welcome feature-tile">
                 <div class="feature-icon-box health-box">
-                    <img src="public/img/vaccinations.png" class="feature-icon">
+                    <img src="public/img/healthBook/vaccinations.png" class="feature-icon">
                 </div>
                 <div class="feature-text-container">
                     <span class="feature-text book-text">Vaccinations</span>
@@ -51,7 +50,7 @@
 
             <a href="/treatments?id=<?= $pet['id'] ?>" class="card-welcome feature-tile">
                 <div class="feature-icon-box health-box">
-                    <img src="public/img/treatments.png" class="feature-icon">
+                    <img src="public/img/healthBook/treatments.png" class="feature-icon">
                 </div>
                 <div class="feature-text-container">
                     <span class="feature-text book-text">Treatments and surgeries</span>
@@ -64,7 +63,7 @@
 
             <a href="/deworming?id=<?= $pet['id'] ?>" class="card-welcome feature-tile">
                 <div class="feature-icon-box health-box">
-                    <img src="public/img/deworming.png" class="feature-icon">
+                    <img src="public/img/healthBook/deworming.png" class="feature-icon">
                 </div>
                 <div class="feature-text-container">
                     <span class="feature-text book-text">Deworming</span>
@@ -77,7 +76,7 @@
 
             <a href="/visits?id=<?= $pet['id'] ?>" class="card-welcome feature-tile">
                 <div class="feature-icon-box health-box">
-                    <img src="public/img/visits.png" class="feature-icon">
+                    <img src="public/img/healthBook/visits.png" class="feature-icon">
                 </div>
                 <div class="feature-text-container">
                     <span class="feature-text book-text">Visits to the vet</span>

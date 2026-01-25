@@ -19,7 +19,7 @@
             <div class="profile-pic-container profile">
                 <a href="/profile">
                     <div class="profile-pic"> 
-                        <img src="<?= $user['picture_url'] ? $user['picture_url'] : 'public/img/profile.png' ?>" 
+                        <img src="<?= $user['picture_url'] ? $user['picture_url'] : 'public/img/profile/profile.png' ?>" 
                         alt="Profile Picture" 
                         class="profile-icon-main <?= $user['picture_url'] ? 'user-photo' : '' ?>">
                     </div>
@@ -63,7 +63,7 @@
                                 ?>
                                 <div class="event-card">
                                     <div class="event-image-container">
-                                        <img src="<?= !empty($event['picture_url']) ? $event['picture_url'] : 'public/img/default_pet.png' ?>" class="event-image">
+                                        <img src="<?= !empty($event['picture_url']) ? $event['picture_url'] : 'public/img/others/default_pet.png' ?>" class="event-image">
                                     </div>
                                     <div class="event-details">
                                         <div class="event-title"><?= htmlspecialchars($event['title']) ?></div>
@@ -75,7 +75,7 @@
                                         <?= $event['time'] ? date('H:i', strtotime($event['time'])) : '' ?>
                                     </div>
 
-                                    <img src="public/img/delete_calendar.png" 
+                                    <img src="public/img/others/delete_calendar.png" 
                                      class="bin-icon"
                                      data-id="<?= $event['id'] ?>" 
                                      data-action="/deleteEvent"
@@ -104,7 +104,7 @@
                 ?>
                     <div class="event-card">
                         <div class="event-image-container">
-                            <img src="<?= !empty($event['picture_url']) ? $event['picture_url'] : 'public/img/default_pet.png' ?>" alt="<?= $event['pet_name'] ?>" class="event-image">
+                            <img src="<?= !empty($event['picture_url']) ? $event['picture_url'] : 'public/img/others/default_pet.png' ?>" alt="<?= $event['pet_name'] ?>" class="event-image">
                         </div>
                         <div class="event-details">
                             <div class="event-title"><?= htmlspecialchars($event['title']) ?></div>
@@ -137,11 +137,11 @@
                 <form method="POST" action="/addEvent">
                     <div class="modal-header-actions">
                         <button type="button" class="action-btn close-btn" onclick="closeModal('addModal')">
-                            <img src="public/img/cancel.png" alt="Close">
+                            <img src="public/img/others/cancel.png" alt="Close">
                         </button>
                         <div class="right-actions">
                             <button type="submit" class="action-btn save-btn">
-                                <img src="public/img/confirm.png" alt="Save">
+                                <img src="public/img/others/confirm.png" alt="Save">
                             </button>
                         </div>
                     </div>
@@ -206,10 +206,8 @@
     <script id="calendar-data" type="application/json">
         <?= json_encode($events) ?>
     </script>
-    <script src="public/scripts/calendar.js" defer></script>
-    <script src="public/scripts/calendar-view-switcher.js" defer></script>
-    <script src="public/scripts/deleteAddWindow.js" defer></script>
-    <script src="public/scripts/deleteNutrition.js" defer></script>
-
+    <script src="public/scripts/CalendarManager.js" defer></script>
+    <script src="public/scripts/ModalHandler.js" defer></script>
+    <script src="public/scripts/utils.js" defer></script>
 </body>
 </html>

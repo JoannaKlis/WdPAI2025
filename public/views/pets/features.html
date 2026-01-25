@@ -16,7 +16,7 @@
 
         <div class="pet-header-container">
             <div class="pet-photo-circle">
-                <img src="<?= htmlspecialchars($pet['picture_url'] ?? 'public/img/default_pet.png') ?>" alt="<?= htmlspecialchars($pet['name']) ?>">
+                <img src="<?= htmlspecialchars($pet['picture_url'] ?? 'public/img/others/default_pet.png') ?>" alt="<?= htmlspecialchars($pet['name']) ?>">
             </div>
             <div class="pet-name-display"><?= htmlspecialchars($pet['name']) ?></div>
         </div>
@@ -25,7 +25,7 @@
 
             <a href="/editPet?id=<?= $pet['id'] ?>" class="card-welcome feature-tile">
                 <div class="feature-icon-box">
-                    <img src="public/img/profile.png" class="feature-icon">
+                    <img src="public/img/profile/profile.png" class="feature-icon">
                 </div>
                 <span class="feature-text">Profile</span>
                 <span class="feature-arrow">&gt;</span>
@@ -33,7 +33,7 @@
 
             <a href="/care?id=<?= $pet['id'] ?>" class="card-welcome feature-tile">
                 <div class="feature-icon-box">
-                    <img src="public/img/care.png" class="feature-icon">
+                    <img src="public/img/pet/care.png" class="feature-icon">
                 </div>
                 <span class="feature-text">Care</span>
                 <span class="feature-arrow">&gt;</span>
@@ -41,7 +41,7 @@
 
             <a href="/healthBook?id=<?= $pet['id'] ?>" class="card-welcome feature-tile">
                 <div class="feature-icon-box">
-                    <img src="public/img/book.png" class="feature-icon">
+                    <img src="public/img/pet/book.png" class="feature-icon">
                 </div>
                 <span class="feature-text">Health book</span>
                 <span class="feature-arrow">&gt;</span>
@@ -49,7 +49,7 @@
 
             <a href="/nutrition?id=<?= $pet['id'] ?>" class="card-welcome feature-tile">
                 <div class="feature-icon-box">
-                    <img src="public/img/nutrition.png" class="feature-icon">
+                    <img src="public/img/pet/nutrition.png" class="feature-icon">
                 </div>
                 <span class="feature-text">Nutrition</span>
                 <span class="feature-arrow">&gt;</span>

@@ -296,7 +296,7 @@ VALUES (
     'Kowalski',
     'jan.kowalski@example.com',
     '$2y$10$ejsy0sJ6.EbvvDCVD1rjpu82Xjo1H2JDfjHuMF6jdCB5ymNguYLoq', -- hasło: "test"
-    'public/img/profile.png',
+    'public/img/profile/profile.png',
     TRUE
 );
 
@@ -322,14 +322,14 @@ VALUES (
 -- Zwierzaki użytkownika Jana (id=1)
 INSERT INTO pets (user_id, picture_url, pet_type, name, birth_date, sex, breed, color, microchip_number)
 VALUES 
-    (1, 'public/img/simba.png', 'Cat', 'Simba', '2022-06-15', 'Male', 'Maine Coon', 'Orange and White', '616093901234567'),
-    (1, 'public/img/dog.png', 'Dog', 'Pumpkin', '2024-12-05', 'Male', 'Welsh Corgi Pembroke', 'Red and White', '9002147294610283');
+    (1, 'public/img/others/simba.png', 'Cat', 'Simba', '2022-06-15', 'Male', 'Maine Coon', 'Orange and White', '616093901234567'),
+    (1, 'public/img/others/dog.png', 'Dog', 'Pumpkin', '2024-12-05', 'Male', 'Welsh Corgi Pembroke', 'Red and White', '9002147294610283');
 
 -- Zwierzaki użytkownika Anny (id=2)
 INSERT INTO pets (user_id, picture_url, pet_type, name, birth_date, sex, breed, color, microchip_number)
 VALUES 
-    (2, 'public/img/luna.png', 'Cat', 'Luna', '2021-03-20', 'Female', 'Siamese', 'Cream and Brown', '616093905678901'),
-    (2, 'public/img/dog2.png', 'Dog', 'Max', '2023-01-01', 'Male', 'Golden Retriever', 'Golden', '999888777666555');
+    (2, 'public/img/others/default_pet.png', 'Cat', 'Luna', '2021-03-20', 'Female', 'Siamese', 'Cream and Brown', '616093905678901'),
+    (2, 'public/img/others/default_pet.png', 'Dog', 'Max', '2023-01-01', 'Male', 'Golden Retriever', 'Golden', '999888777666555');
 
 -- DANE dla Simby (pet_id=1)
 INSERT INTO pet_weights (pet_id, weight, unit, recorded_date)

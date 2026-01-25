@@ -15,14 +15,14 @@
 
         <div class="profile-pic-container" onclick="document.getElementById('file-input').click()">
             <div class="profile-pic"> 
-                <img src="<?= $user['picture_url'] ? $user['picture_url'] : 'public/img/profile.png' ?>" 
+                <img src="<?= $user['picture_url'] ? $user['picture_url'] : 'public/img/profile/profile.png' ?>" 
                  alt="Profile" 
                  class="profile-icon-main <?= $user['picture_url'] ? 'user-photo' : '' ?>" 
                  id="profile-preview">
             </div>
     
             <div class="edit-icon"> 
-                <img src="public/img/edit.png" alt="Edit Icon" class="edit-icon-img">
+                <img src="public/img/others/edit.png" alt="Edit Icon" class="edit-icon-img">
             </div>
             <div class="none">
                 <input type="file" name="picture" id="file-input" accept="image/*" onchange="previewImage(this)">
@@ -30,27 +30,25 @@
         </div>
 
         <div class="container">
-            <img src="public/img/profile.png" class="icon email">
+            <img src="public/img/profile/profile.png" class="icon email">
             <input type="text" name="firstName" value="<?= $user['firstname'] ?>" placeholder="First name">
         </div>
 
         <div class="container">
-            <img src="public/img/profile.png" class="icon email">
+            <img src="public/img/profile/profile.png" class="icon email">
             <input type="text" name="lastName" value="<?= $user['lastname'] ?>" placeholder="Last name">
         </div>
 
         <div class="container">
-            <img src="public/img/email.png" class="icon email">
+            <img src="public/img/profile/email.png" class="icon email">
             <input type="email" name="email" value="<?= $user['email'] ?>" placeholder="Email">
         </div>
 
         <div class="container">
-            <img src="public/img/padlock.png" class="icon">
+            <img src="public/img/profile/padlock.png" class="icon">
             <input type="password" name="password" id="password-field" placeholder="New Password">
-            <img src="public/img/invisible.png" id="toggle-password" class="icon-switch">
+            <img src="public/img/profile/invisible.png" id="toggle-password" class="icon-switch">
         </div>
 
         <button type="submit" class="button button-save" id="save-button">Save changes</button>
-
-        <script src="public/scripts/picture.js" defer></script>
 <?php include '/app/public/views/partials/footer.php'; ?>

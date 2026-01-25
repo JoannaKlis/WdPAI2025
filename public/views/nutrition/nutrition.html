@@ -20,7 +20,7 @@
 
         <div class="pet-header-container">
             <div class="pet-photo-circle">
-                <img src="<?= $pet['picture_url'] ? $pet['picture_url'] : 'public/img/default_pet.png' ?>" alt="<?= $pet['name'] ?>">
+                <img src="<?= $pet['picture_url'] ? $pet['picture_url'] : 'public/img/others/default_pet.png' ?>" alt="<?= $pet['name'] ?>">
             </div>
             <div class="pet-name-display"><?= $pet['name'] ?></div>
         </div>
@@ -29,7 +29,7 @@
             
             <div class="card-welcome nutrition-card">
                 <div class="card-header">
-                    <img src="public/img/alert.png" class="status-icon">
+                    <img src="public/img/nutrition/alert.png" class="status-icon">
                     <span class="card-title alert-text">Sensitivities</span>
                 </div>
                 <div class="tag-container">
@@ -47,7 +47,7 @@
 
             <div class="card-welcome nutrition-card">
                 <div class="card-header">
-                    <img src="public/img/check.png" class="status-icon">
+                    <img src="public/img/nutrition/check.png" class="status-icon">
                     <span class="card-title success-text">Favorite food</span>
                 </div>
                 <div class="tag-container">
@@ -65,7 +65,7 @@
 
             <div class="card-welcome nutrition-card">
                 <div class="card-header">
-                    <img src="public/img/pill.png" class="status-icon">
+                    <img src="public/img/nutrition/pill.png" class="status-icon">
                     <span class="card-title purple-text">Supplements</span>
                 </div>
                 <div class="tag-container">
@@ -83,7 +83,7 @@
 
             <div class="card-welcome nutrition-card schedule-card">
                 <div class="card-header">
-                    <img src="public/img/clock.png" class="status-icon">
+                    <img src="public/img/nutrition/clock.png" class="status-icon">
                     <span class="card-title blue-text">Feeding schedule</span>
                     <button onclick="openModal('scheduleModal')" class="tag blue-tag pointer">+</button>
                 </div>
@@ -94,14 +94,14 @@
                             <div class="schedule-actions">
                                 <span class="time"><?= date('H:i', strtotime($sch['feeding_time'])) ?></span>
                                 
-                                <img src="public/img/edit_blue.png" 
+                                <img src="public/img/nutrition/edit_blue.png" 
                                      class="edit-schedule-icon"
                                      data-id="<?= $sch['id'] ?>"
                                      data-name="<?= $sch['name'] ?>"
                                      data-time="<?= date('H:i', strtotime($sch['feeding_time'])) ?>"
                                      onclick="openEditScheduleModal(this.dataset.id, this.dataset.name, this.dataset.time)">
                                 
-                                <img src="public/img/delete_nutrition.png" 
+                                <img src="public/img/nutrition/delete_nutrition.png" 
                                      class="edit-schedule-icon"
                                      data-id="<?= $sch['id'] ?>"
                                      data-action="/deleteSchedule"
@@ -118,11 +118,11 @@
                 <form method="POST" action="/addSensitivities?id=<?= $pet['id'] ?>">
                     <div class="modal-header-actions">
                         <button type="button" class="action-btn close-btn" onclick="closeModal('sensitivitiesModal')">
-                            <img src="public/img/cancel.png" alt="Close">
+                            <img src="public/img/others/cancel.png" alt="Close">
                         </button>
                         <div class="right-actions">
                             <button type="submit" class="action-btn save-btn">
-                                <img src="public/img/confirm.png" alt="Save">
+                                <img src="public/img/others/confirm.png" alt="Save">
                             </button>
                         </div>
                     </div>
@@ -141,11 +141,11 @@
                 <form method="POST" action="/addFavorite?id=<?= $pet['id'] ?>">
                     <div class="modal-header-actions">
                         <button type="button" class="action-btn close-btn" onclick="closeModal('favoriteModal')">
-                            <img src="public/img/cancel.png" alt="Close">
+                            <img src="public/img/others/cancel.png" alt="Close">
                         </button>
                         <div class="right-actions">
                             <button type="submit" class="action-btn save-btn">
-                                <img src="public/img/confirm.png" alt="Save">
+                                <img src="public/img/others/confirm.png" alt="Save">
                             </button>
                         </div>
                     </div>
@@ -164,11 +164,11 @@
                 <form method="POST" action="/addSupplements?id=<?= $pet['id'] ?>">
                     <div class="modal-header-actions">
                         <button type="button" class="action-btn close-btn" onclick="closeModal('supplementsModal')">
-                            <img src="public/img/cancel.png" alt="Close">
+                            <img src="public/img/others/cancel.png" alt="Close">
                         </button>
                         <div class="right-actions">
                             <button type="submit" class="action-btn save-btn">
-                                <img src="public/img/confirm.png" alt="Save">
+                                <img src="public/img/others/confirm.png" alt="Save">
                             </button>
                         </div>
                     </div>
@@ -189,11 +189,11 @@
 
                     <div class="modal-header-actions">
                         <button type="button" class="action-btn close-btn" onclick="closeModal('scheduleModal')">
-                            <img src="public/img/cancel.png" alt="Close">
+                            <img src="public/img/others/cancel.png" alt="Close">
                         </button>
                         <div class="right-actions">
                             <button type="submit" class="action-btn save-btn">
-                                <img src="public/img/confirm.png" alt="Save">
+                                <img src="public/img/others/confirm.png" alt="Save">
                             </button>
                         </div>
                     </div>
@@ -230,8 +230,7 @@
         </div>
     </div>
     
-    <script src="public/scripts/deleteAddWindow.js" defer></script>
-    <script src="public/scripts/deleteNutrition.js" defer></script>
-    
+    <script src="public/scripts/ModalHandler.js" defer></script>
+    <script src="public/scripts/utils.js" defer></script>
 </body>
 </html>

@@ -66,7 +66,7 @@
     width: 100%;
     aspect-ratio: 1 / 1;
     border-radius: 0.5vw;
-    background-color: #934CBE;
+    background-color: #8F769E;
     color: white;
     font-size: clamp(4em, 4rem + 1vw, 6em);
     display: flex;
@@ -98,4 +98,5 @@
     .grid-image, .add-tile { border-radius: 2vw; }
     .card-label { font-size: 2em; margin-top: 4vw; }
     .logout-container { width: 4.5rem; gap: 3vw; margin-right: 2vw; }
+    .welcome-heading { margin-top: 8vh; }
 }

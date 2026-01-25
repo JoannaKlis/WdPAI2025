@@ -13,7 +13,7 @@ class AppController {
 
         // Sprawdzenie timeoutu (tylko jeśli sesja istnieje)
         if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) > $timeout_duration) {
-            $this->redirect('401');
+            $this->logoutAndRedirect('401');
         }
 
         // Sprawdzenie czy użytkownik jest zalogowany
@@ -28,7 +28,19 @@ class AppController {
         $_SESSION['last_activity'] = time();
     }
 
-    // Metoda pomocnicza: kieruje na błąd 401
+    // Metoda pomocnicza: czyści sesję i kieruje na błąd 401
+    private function logoutAndRedirect(string $errorCode) {
+        if (session_status() === PHP_SESSION_ACTIVE) {
+            session_unset();
+            session_destroy();
+        }
+        
+        $url = "http://$_SERVER[HTTP_HOST]";
+        header("Location: {$url}/{$errorCode}");
+        exit();
+    }
+
+    // Metoda pomocnicza do zwykłych przekierowań (np. wewnątrz logiki admina)
     private function redirect(string $errorCode) {
         $url = "http://$_SERVER[HTTP_HOST]";
         header("Location: {$url}/{$errorCode}");

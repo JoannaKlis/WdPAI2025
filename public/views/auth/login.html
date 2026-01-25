@@ -6,7 +6,7 @@
     <form class="wrapper" method="POST" action="/login">
 
         <div class="logo">
-            <img src="public/img/petnotes_logo.png" class="logo">
+            <img src="public/img/others/petnotes_logo.png" class="logo">
             <h1>PetNotes</h1>
         </div>
 
@@ -15,14 +15,14 @@
         <?php include '/app/public/views/partials/status-messages.php'; ?>
 
         <div class="container">
-            <img src="public/img/email.png" class="icon email">
-            <input type="email" name="email" placeholder="Email">
+            <img src="public/img/profile/email.png" class="icon email">
+            <input type="email" name="email" placeholder="Email" required>
         </div>
 
         <div class="container">
-            <img src="public/img/padlock.png" class="icon">
-            <input type="password" name="password" id="password-field" placeholder="Password">
-            <img src="public/img/invisible.png" id="toggle-password" class="icon-switch">
+            <img src="public/img/profile/padlock.png" class="icon">
+            <input type="password" name="password" id="password-field" placeholder="Password" required>
+            <img src="public/img/profile/invisible.png" id="toggle-password" class="icon-switch">
         </div>
 
         <button type="submit" class="button">Log in</button>

@@ -19,7 +19,7 @@
             <div class="profile-pic-container profile">
                 <a href="/features?id=<?= $pet['id'] ?>">
                     <div class="profile-pic"> 
-                        <img src="<?= $pet['picture_url'] ? $pet['picture_url'] : 'public/img/default_pet.png' ?>" class="pet-mini-fix">
+                        <img src="<?= $pet['picture_url'] ? $pet['picture_url'] : 'public/img/others/default_pet.png' ?>" class="pet-mini-fix">
                     </div>
                 </a>
             </div>
@@ -32,7 +32,7 @@
                 <?php foreach ($list as $item): ?>
                     <div class="card-welcome entry">
                         <div class="feature-icon-box health-box">
-                            <img src="public/img/visits.png" class="feature-icon">
+                            <img src="public/img/healthBook/visits.png" class="feature-icon">
                         </div>
                         <div class="feature-text-container">
                             <span class="feature-text"><?= $item['visit_name'] ?></span>
@@ -40,7 +40,7 @@
                             <span class="feature-subtext"><?= $item['visit_time'] ? date('H:i', strtotime($item['visit_time'])) : '' ?></span>
                         </div>
                         <button type="button" class="action-btn delete-btn" data-id="<?= $item['id'] ?>" onclick="openDeleteModal(this.dataset.id)">
-                            <img src="public/img/delete.png" alt="Delete">
+                            <img src="public/img/others/delete.png" alt="Delete">
                         </button>
                     </div>
                 <?php endforeach; ?>
@@ -55,11 +55,11 @@
                     
                     <div class="modal-header-actions">
                         <button type="button" class="action-btn close-btn" onclick="closeModal('addModal')">
-                            <img src="public/img/cancel.png" alt="Close">
+                            <img src="public/img/others/cancel.png" alt="Close">
                         </button>
                         <div class="right-actions">
                             <button type="submit" class="action-btn save-btn">
-                                <img src="public/img/confirm.png" alt="Save">
+                                <img src="public/img/others/confirm.png" alt="Save">
                             </button>
                         </div>
                     </div>
@@ -106,6 +106,7 @@
             </div>
         </div>
     </div>
-    <script src="public/scripts/deleteAddWindow.js" defer></script>
+    <script src="public/scripts/ModalHandler.js" defer></script>
+    <script src="public/scripts/utils.js" defer></script>
 </body>
 </html>
