@@ -5,6 +5,8 @@ require_once 'AppController.php';
 class SecurityController extends AppController {
 
     private $userRepository;
+    private const MAX_LOGIN_ATTEMPTS = 5; // 5 prób
+    private const LOCKOUT_TIME = 300; // 5 minut
 
     public function __construct()
     {
@@ -27,48 +29,58 @@ class SecurityController extends AppController {
     }
 
     public function login() {
-        // jeśli GET to wyświetl stronę logowania
         if (!$this->isPost()) {
-            if(isset($_SESSION['user_id'])) {
-                $url = "http://$_SERVER[HTTP_HOST]";
-                if(isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin') {
-                    header("Location: {$url}/admin");
-                } else {
-                    header("Location: {$url}/pets");
-                }
-                exit();
-            }
             return $this->render("auth/login");
         }
 
-        // pobranie danych z formularza
+        header('Content-Type: application/json');
+
+        // Sprawdzenie blokady czasowej
+        if (isset($_SESSION['lockout_until']) && $_SESSION['lockout_until'] > time()) {
+            $remaining = $_SESSION['lockout_until'] - time();
+            $minutes = ceil($remaining / 60);
+            echo json_encode([
+                'success' => false, 
+                'message' => "Too many failed attempts. Try again in $minutes minute(s)."
+            ]);
+            exit();
+        }
+
         $email = $_POST['email'] ?? '';
         $password = $_POST['password'] ?? '';
         $user = $this->userRepository->getUserByEmail($email);
 
-        header('Content-Type: application/json');
-
-        // walidacja maila i hasła
+        // Walidacja logowania
         if (!$user || !password_verify($password, $user['password'])) {
+            $this->registerFailedAttempt();
             echo json_encode(['success' => false, 'message' => 'Incorrect email or password!']);
             exit();
         }
 
-        // regeneracja ID dla bezpieczeństwa
-        session_regenerate_id(true);
+        // Sukces logowania - reset prób i sesja
+        unset($_SESSION['login_attempts']);
+        unset($_SESSION['lockout_until']);
 
-        // zapisanie danych użytkownika w sesji
+        session_regenerate_id(true);
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['user_email'] = $user['email'];
         $_SESSION['user_role'] = $user['role'];
 
-        $url = "http://$_SERVER[HTTP_HOST]";
-
-        //TODO: cookie etc.
-        // logika przekierowania po zalogowaniu
         $url = ($user['role'] === 'admin') ? '/admin' : '/welcome';
         echo json_encode(['success' => true, 'redirect' => $url]);
         exit();
+    }
+
+    private function registerFailedAttempt() {
+        if (!isset($_SESSION['login_attempts'])) {
+            $_SESSION['login_attempts'] = 0;
+        }
+
+        $_SESSION['login_attempts']++;
+
+        if ($_SESSION['login_attempts'] >= self::MAX_LOGIN_ATTEMPTS) {
+            $_SESSION['lockout_until'] = time() + self::LOCKOUT_TIME;
+        }
     }
 
     public function logout() {
@@ -120,9 +132,34 @@ class SecurityController extends AppController {
             exit();
         }
 
+        $genericErrorMessage = 'Email address is incorrect!';
+
         // walidacja formatu email (musi zawierać @ i domenę po .)
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            echo json_encode(['success' => false, 'message' => 'Email address is incorrect!']);
+            echo json_encode(['success' => false, 'message' => $genericErrorMessage]);
+            exit();
+        }
+
+        // Sprawdzenie unikalności emaila
+        if ($this->userRepository->getUserByEmail($email)) {
+            echo json_encode(['success' => false, 'message' => $genericErrorMessage]);
+            exit();
+        }
+
+        // walidacja długości hasła
+        $isValidPassword = function (string $password): bool {
+            if (strlen($password) < 13) return false; // min. 13 znaków
+            if (!preg_match('/[A-Z]/', $password)) return false; // min. 1 duża litera
+            if (!preg_match('/[0-9]/', $password)) return false; // min. 1 cyfra
+            if (!preg_match('/[^A-Za-z0-9]/', $password)) return false; // min. 1 znak specjalny
+            return true;
+        };
+
+        if (!$isValidPassword($password)) {
+            echo json_encode([
+                'success' => false, 
+                'message' => 'Password must be at least 13 characters long, contain 1 uppercase letter, 1 number and 1 special character.'
+            ]);
             exit();
         }
 
@@ -132,30 +169,15 @@ class SecurityController extends AppController {
             exit();
         }
 
-        // funkcja pomocnicza do walidacji hasła
-        // $isValidPassword = function (string $password): bool {
-        //     if (strlen($password) < 6) return false; // min. 6 znaków
-        //     if (!preg_match('/[A-Z]/', $password)) return false; // min. 1 duża litera
-        //     if (!preg_match('/[0-9]/', $password)) return false; // min. 1 cyfra
-        //     if (!preg_match('/[^A-Za-z0-9]/', $password)) return false; // min. 1 znak specjalny
-        //     return true;
-        // };
+        $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
-        // walidacja siły hasła i unikalności emaila (do poprawy w przyszłości)
-        // if (!$isValidPassword($password || $this->userRepository->getUserByEmail($email))) {
-        //     return $this->render('auth/registration', ['messages' => 'Inccorect email or
-        //     Password must be at least 6 characters long, 1 uppercase letter, 1 number and 1 special character.']);
-        // }   
+        $this->userRepository->createUser(
+            $firstname,
+            $lastname,
+            $email,
+            $hashedPassword
+        );
 
-    $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-
-    // dodanie użytkownika do bazy
-    $this->userRepository->createUser(
-        $firstname,
-        $lastname,
-        $email,
-        $hashedPassword
-    );
         echo json_encode(['success' => true, 'redirect' => '/login?registered=true']);
         exit();
     }
