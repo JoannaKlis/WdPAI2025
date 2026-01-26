@@ -1,131 +1,28 @@
 <?php include '/app/public/views/partials/header.php'; ?>
-<link rel="stylesheet" type="text/css" href="public/styles/profile.css">
-<link rel="stylesheet" type="text/css" href="public/styles/welcome.css">
-<link rel="stylesheet" type="text/css" href="public/styles/addingScreens/addPetModal.css">
-<link rel="stylesheet" type="text/css" href="public/styles/addingScreens/delete.css">
-
-<style>
-    /* Poprawa układu strony */
-    .wrapper {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 100%;
-        margin-top: 20px;
-    }
-
-    /* Nagłówek admina */
-    .admin-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 90%;
-        max-width: 1200px;
-        margin-bottom: 30px; /* Odstęp od tabeli */
-    }
-
-    .admin-header h1 {
-        margin: 0;
-        font-size: 2.5em;
-        color: #934CBE;
-    }
-
-    /* Przycisk wylogowania (jak w welcome) */
-    .logout-icon {
-        width: 35px;
-        height: 35px;
-        cursor: pointer;
-        transition: transform 0.2s;
-    }
-
-    .logout-icon:hover {
-        transform: scale(1.1);
-    }
-
-    /* Kontener tabeli - naprawa "rozjeżdżania" i wysokości */
-    .admin-container {
-        width: 90%;
-        max-width: 1200px;
-        background-color: #F6F6F6;
-        border-radius: 20px;
-        padding: 30px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        overflow-x: auto;
-    }
-
-    .users-table {
-        width: 100%;
-        border-collapse: collapse;
-        min-width: 600px;
-    }
-
-    .users-table th, .users-table td {
-        padding: 15px;
-        text-align: left;
-        border-bottom: 1px solid #e0e0e0;
-        font-size: 1rem;
-        color: #8F769E;
-    }
-
-    .users-table th {
-        background-color: #934CBE;
-        color: white;
-        font-family: 'Jua';
-        font-weight: normal;
-        border-radius: 5px;
-    }
-
-    .users-table tr:last-child td {
-        border-bottom: none;
-    }
-
-    /* Przyciski akcji */
-    .btn-action {
-        border: none;
-        padding: 8px 15px;
-        border-radius: 8px;
-        cursor: pointer;
-        font-family: 'Jua';
-        color: white;
-        margin-right: 5px;
-        font-size: 0.9em;
-        transition: opacity 0.2s;
-    }
-
-    .btn-action:hover {
-        opacity: 0.9;
-    }
-
-    .btn-edit { background-color: #1E90FF; }
-    .btn-delete { background-color: #B00020; }
-
-    /* Kolory ról */
-    .role-admin { color: #B00020; font-weight: bold; }
-    .role-user { color: #8F769E; font-weight: bold; }
-
-    h2 {
-        color: #934CBE;
-        text-align: center;
-        margin-top: 0;
-        margin-bottom: 20px;
-    }
-</style>
+<link rel="stylesheet" type="text/css" href="public/styles/components/profile.css">
+<link rel="stylesheet" type="text/css" href="public/styles/pages/welcome.css">
+<link rel="stylesheet" type="text/css" href="public/styles/pages/editPet.css">
+<link rel="stylesheet" type="text/css" href="public/styles/components/modal.css">
+<link rel="stylesheet" type="text/css" href="public/styles/pages/nutrition.css">
+<link rel="stylesheet" type="text/css" href="public/styles/pages/admin.css">
 
     <title>Admin Dashboard</title>
 </head>
+
 <body>
     <div class="wrapper">
-        
-        <div class="admin-header">
+        <div class="top-bar">
+            <a href="/welcome" class="back-arrow">&lt;</a> 
             <h1>Admin Panel</h1>
-            <a href="/logout">
-                <img src="public/img/exit.png" alt="Log out" class="logout-icon">
-            </a>
-        </div>
 
-        <div class="admin-container">
-            <h2>User Management</h2>
-            
+            <div class="profile-pic-container profile">
+                <a href="/logout">
+                    <img src="public/img/welcome/exit.png" alt="Log out" class="logout-icon">
+                </a>
+            </div>
+        </div>
+    
+        <div class="card-welcome admin-table-container">
             <table class="users-table">
                 <thead>
                     <tr>
@@ -140,35 +37,29 @@
                     <?php foreach ($users as $u): ?>
                     <tr>
                         <td><?= $u['id'] ?></td>
-                        <td><?= htmlspecialchars($u['firstname']) ?> <?= htmlspecialchars($u['lastname']) ?></td>
+                        <td><?= htmlspecialchars($u['firstname'] . ' ' . $u['lastname']) ?></td>
                         <td><?= htmlspecialchars($u['email']) ?></td>
-                        
-                        <td class="<?= $u['role'] === 'admin' ? 'role-admin' : 'role-user' ?>">
-                            <?= strtoupper($u['role']) ?>
+                        <td>
+                            <span class="tag <?= $u['role'] === 'admin' ? 'purple-tag' : 'blue-tag' ?>">
+                                <?= strtoupper($u['role']) ?>
+                            </span>
                         </td>
-                        
                         <td>
                             <?php if($u['id'] !== $_SESSION['user_id']): ?>
-                                
-                                <button type="button" class="btn-action btn-edit"
+                                <button type="button" class="tag purple-tag pointer"
                                     data-id="<?= $u['id'] ?>"
                                     data-firstname="<?= htmlspecialchars($u['firstname']) ?>"
                                     data-lastname="<?= htmlspecialchars($u['lastname']) ?>"
                                     data-email="<?= htmlspecialchars($u['email']) ?>"
                                     data-role="<?= $u['role'] ?>"
-                                    onclick="openEditUserModal(this)">
-                                    Edit
-                                </button>
+                                    onclick="openEditUserModal(this)">Edit</button>
 
-                                <button type="button" class="btn-action btn-delete"
+                                <button type="button" class="tag alert-tag pointer"
                                     data-id="<?= $u['id'] ?>"
                                     data-action="/deleteUser"
-                                    onclick="prepareDelete(this.dataset.id, this.dataset.action)">
-                                    Delete
-                                </button>
-
+                                    onclick="prepareDelete(this.dataset.id, this.dataset.action)">Delete</button>
                             <?php else: ?>
-                                <span style="color: #8F769E; font-style: italic; font-size: 0.9em;">(Current User)</span>
+                                <span class="small-text">(You)</span>
                             <?php endif; ?>
                         </td>
                     </tr>
@@ -176,78 +67,75 @@
                 </tbody>
             </table>
         </div>
+    </div>
 
-        <div id="editUserModal" class="modal-overlay">
-            <div class="modal-content wrapper">
-                <form method="POST" action="/editUser">
-                    <input type="hidden" name="id" id="editId">
+    <div id="editUserModal" class="modal-overlay">
+        <div class="modal-content">
+            <form method="POST" action="/editUser">
+                <input type="hidden" name="id" id="editId">
 
-                    <div class="modal-header-actions">
-                        <button type="button" class="action-btn close-btn" onclick="closeModal('editUserModal')">
-                            <img src="public/img/cancel.png" alt="Close">
+                <div class="modal-header-actions">
+                    <button type="button" class="action-btn close-btn" onclick="closeModal('editUserModal')">
+                        <img src="public/img/others/cancel.png" alt="Close">
+                    </button>
+                    <div class="right-actions">
+                        <button type="submit" class="action-btn save-btn">
+                            <img src="public/img/others/confirm.png" alt="Save">
                         </button>
-                        <div class="right-actions">
-                            <button type="submit" class="action-btn save-btn">
-                                <img src="public/img/confirm.png" alt="Save">
-                            </button>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">First Name</label>
+                    <div class="container">
+                        <input type="text" name="firstname" id="editFirstname" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">Last Name</label>
+                    <div class="container">
+                        <input type="text" name="lastname" id="editLastname" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">Email</label>
+                    <div class="container">
+                        <input type="email" name="email" id="editEmail" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">Role</label>
+                    <div class="row-layout">
+                        <div class="unit-selector-container">
+                            <select name="role" id="editRole" class="unit-dropdown">
+                                <option value="user">User</option>
+                                <option value="admin">Admin</option>
+                            </select>
                         </div>
                     </div>
+                </div>
+            </form>
+        </div>
+    </div>
 
-                    <h2 style="margin-top: 0;">Edit User</h2>
+   <div id="deleteModal" class="modal-overlay">
+        <div class="modal-box">
+            <h3>Are you sure?</h3>
+            <p>Do you really want to delete this user?</p>
+            <div class="modal-buttons">
+                <button class="btn-cancel" onclick="closeModal('deleteModal')">Cancel</button>
 
-                    <div class="input-group">
-                        <label class="input-label">First Name</label>
-                        <div class="container">
-                            <input type="text" name="firstname" id="editFirstname" required>
-                        </div>
-                    </div>
-
-                    <div class="input-group">
-                        <label class="input-label">Last Name</label>
-                        <div class="container">
-                            <input type="text" name="lastname" id="editLastname" required>
-                        </div>
-                    </div>
-
-                    <div class="input-group">
-                        <label class="input-label">Email</label>
-                        <div class="container">
-                            <input type="email" name="email" id="editEmail" required>
-                        </div>
-                    </div>
-
-                    <div class="input-group">
-                        <label class="input-label">Role</label>
-                        <div class="row-layout">
-                            <div class="unit-selector-container" style="width: 100%;">
-                                <select name="role" id="editRole" class="unit-dropdown" style="width: 100%;">
-                                    <option value="user">User</option>
-                                    <option value="admin">Admin</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
+                <form id="/deleteUser" method="POST">
+                    <input type="hidden" name="id" id="modalItemId">
+                    <button type="submit" class="btn-delete">Delete</button>
                 </form>
             </div>
         </div>
-
-        <div id="deleteModal" class="modal-overlay">
-            <div class="modal-box">
-                <h3>Are you sure?</h3>
-                <p>Do you really want to delete this user?</p>
-                <div class="modal-buttons">
-                    <button type="button" class="btn-cancel" onclick="closeModal('deleteModal')">Cancel</button>
-                    <form id="deleteForm" method="POST" style="margin:0;">
-                        <input type="hidden" name="id" id="modalItemId" value="">
-                        <button type="submit" class="btn-delete-confirm" style="background-color: #B00020; color: white; border: none; padding: 10px; border-radius: 10px; cursor: pointer;">Delete</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-
     </div>
 
-    <script src="public/scripts/deleteAddWindow.js"></script>
-    <script src="public/scripts/deleteNutrition.js"></script>
+    <script src="public/scripts/ModalHandler.js"></script>
 </body>
 </html>

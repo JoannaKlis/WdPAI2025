@@ -159,4 +159,6 @@ h3, p { color: #934CBE; }
 @media (max-width: 480px) {
     .container.date-input-container { border-radius: 2.5vw; }
     .modal-content { border-radius: 5vw; padding: clamp(2vw, 4vw, 6vw); }
+    .modal-box { border-radius: 3vw; width: 60%; max-width: none; }
+    .modal-buttons { margin-top: 3vw; }
 }

@@ -1,0 +1,40 @@
+/* Kontener tabeli */
+.admin-table-container {
+    width: 90vw;
+    margin-top: 6vw;
+    box-sizing: border-box;
+}
+
+/* Tabela */
+.users-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.users-table thead tr {
+    color: #934CBE;
+    border-bottom: 0.2vw solid #8F769E;
+}
+
+.users-table th, 
+.users-table td {
+    padding: 1vw;
+    text-align: center;
+    word-wrap: break-word;
+    vertical-align: middle;
+}
+
+.users-table tbody {
+    color: #8F769E;
+}
+
+@media (max-width: 480px) {
+    .users-table { font-size: 0.65rem; }
+    .users-table th, .users-table td { padding: 0.2vw 0.1vw; }
+    .users-table th:nth-child(1), .users-table td:nth-child(1) { width: 8%; }
+    .users-table th:nth-child(2), .users-table td:nth-child(2) { width: 25%; }
+    .users-table th:nth-child(3), .users-table td:nth-child(3) { width: 42%; line-height: 1.1; }
+    .users-table th:nth-child(4), .users-table td:nth-child(4) { width: 15%; }
+    .users-table th:nth-child(5), .users-table td:nth-child(5) { width: 10%; }
+}
