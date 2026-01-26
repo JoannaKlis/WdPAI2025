@@ -39,22 +39,26 @@ class PetEventController extends PetController {
             // Weryfikacja czy user jest właścicielem tego peta
             $pet = $this->getPetOr404($petId);
 
-            $this->petEventRepository->addPetEvent((int)$pet['id'], [
+            // Pobranie ID nowo wstawionego rekordu z repozytorium
+            $newId = (int)$this->petEventRepository->addPetEvent((int)$pet['id'], [
                 'name' => $_POST['name'],
                 'date' => $_POST['date'],
                 'time' => $_POST['time'] ?? null
             ]);
-            
-            header("Location: /calendar");
+
+            header('Content-Type: application/json');
+            echo json_encode([
+                'success' => true, 
+                'id' => $newId,
+                'picture_url' => $pet['picture_url']
+            ]);
             exit;
         }
-        
-        header("Location: /calendar");
     }
 
     public function deleteEvent() {
         if (!$this->isPost()) {
-            header("Location: /calendar");
+            echo json_encode(['success' => false, 'message' => 'Invalid request']);
             exit;
         }
 
@@ -62,23 +66,17 @@ class PetEventController extends PetController {
         
         // Sprawdzenie czy wydarzenie istnieje
         $event = $this->petEventRepository->getEventById((int)$eventId);
-        if (!$event) {
-            header("Location: /calendar");
+
+        if (!$event || $this->petEventRepository->getEventOwnerId((int)$eventId) !== $_SESSION['user_id']) {
+            http_response_code(403);
+            echo json_encode(['success' => false, 'message' => 'Unauthorized']);
             exit;
         }
 
-        // Sprawdzenie, czy wydarzenie należy do zwierzaka, który należy do zalogowanego użytkownika
-        $ownerId = $this->petEventRepository->getEventOwnerId((int)$eventId);
-
-        if ($ownerId !== $_SESSION['user_id']) {
-            http_response_code(403);
-            die("Unauthorized access");
-        }
-
-        // Usunięcie wydarzenie
         $this->petEventRepository->deleteEvent((int)$eventId);
 
-        header("Location: /calendar");
+        header('Content-Type: application/json');
+        echo json_encode(['success' => true]);
         exit;
     }
 }

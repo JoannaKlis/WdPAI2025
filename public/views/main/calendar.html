@@ -11,7 +11,6 @@
 
 <body>
     <div class="wrapper">
-        
         <div class="top-bar top-bar-clear">
             <a href="/welcome" class="back-arrow">&lt;</a> 
             <h1>Calendar</h1>
@@ -28,9 +27,7 @@
         </div>
 
         <div class="card-container-welcome">
-
             <div class="card-welcome calendar-container">
-                
                 <div class="tab-switch">
                     <button class="tab-button active" id="calendar-tab">Calendar</button>
                     <button class="tab-button" id="list-tab">List</button>
@@ -55,13 +52,11 @@
                         $hasUpcoming = false;
                         $today = date('Y-m-d');
                         
-                        // Iterowanie po eventach pobranych z widoku
                         foreach ($events as $event) {
-                            // Tylko nadchodzące wydarzenia (filtr)
                             if ($event['date'] >= $today) { 
                                 $hasUpcoming = true;
                                 ?>
-                                <div class="event-card">
+                                <div class="event-card" id="event-<?= $event['id'] ?>">
                                     <div class="event-image-container">
                                         <img src="<?= !empty($event['picture_url']) ? $event['picture_url'] : 'public/img/others/default_pet.png' ?>" class="event-image">
                                     </div>
@@ -89,41 +84,41 @@
                         }
                     ?>
                 </div>
-
             </div>
 
             <div class="card-welcome calendar-container">
                 <div class="today-events-header">Today's Events (<?= date('d.m') ?>)</div>
-                
-                <?php 
-                    $hasToday = false;
-                    $todayDate = date('Y-m-d');
-                    foreach ($events as $event): 
-                        if ($event['date'] === $todayDate):
-                            $hasToday = true;
-                ?>
-                    <div class="event-card">
-                        <div class="event-image-container">
-                            <img src="<?= !empty($event['picture_url']) ? $event['picture_url'] : 'public/img/others/default_pet.png' ?>" alt="<?= $event['pet_name'] ?>" class="event-image">
-                        </div>
-                        <div class="event-details">
-                            <div class="event-title"><?= htmlspecialchars($event['title']) ?></div>
-                            <div class="event-pet-name">
-                                <?= htmlspecialchars($event['pet_name']) ?>
+                <div id="today-events-list">
+                    <?php 
+                        $hasToday = false;
+                        $todayDate = date('Y-m-d');
+                        foreach ($events as $event): 
+                            if ($event['date'] === $todayDate):
+                                $hasToday = true;
+                    ?>
+                        <div class="event-card" id="today-event-<?= $event['id'] ?>">
+                            <div class="event-image-container">
+                                <img src="<?= !empty($event['picture_url']) ? $event['picture_url'] : 'public/img/others/default_pet.png' ?>" alt="<?= $event['pet_name'] ?>" class="event-image">
+                            </div>
+                            <div class="event-details">
+                                <div class="event-title"><?= htmlspecialchars($event['title']) ?></div>
+                                <div class="event-pet-name">
+                                    <?= htmlspecialchars($event['pet_name']) ?>
+                                </div>
+                            </div>
+                            <div class="event-time">
+                                <?= $event['time'] ? date('H:i', strtotime($event['time'])) : '' ?>
                             </div>
                         </div>
-                        <div class="event-time">
-                            <?= $event['time'] ? date('H:i', strtotime($event['time'])) : '' ?>
-                        </div>
-                    </div>
-                <?php 
-                        endif;
-                    endforeach; 
+                    <?php 
+                            endif;
+                        endforeach; 
 
-                    if (!$hasToday):
-                ?>
-                    <div class="noevents">No events for today.</div>
-                <?php endif; ?>
+                        if (!$hasToday):
+                    ?>
+                        <div class="noevents">No events for today.</div>
+                    <?php endif; ?>
+                </div>
             </div>
         </div>
 
@@ -134,13 +129,13 @@
 
         <div id="addModal" class="modal-overlay">
             <div class="modal-content wrapper">
-                <form method="POST" action="/addEvent">
+                <form id="addEventForm">
                     <div class="modal-header-actions">
                         <button type="button" class="action-btn close-btn" onclick="closeModal('addModal')">
                             <img src="public/img/others/cancel.png" alt="Close">
                         </button>
                         <div class="right-actions">
-                            <button type="submit" class="action-btn save-btn">
+                            <button type="button" class="action-btn save-btn" onclick="calendarManager.addEventAsync()">
                                 <img src="public/img/others/confirm.png" alt="Save">
                             </button>
                         </div>
@@ -193,14 +188,13 @@
                 <p>Do you really want to delete this event?</p>
                 <div class="modal-buttons">
                     <button type="button" class="btn-cancel" onclick="closeModal('deleteModal')">Cancel</button>
-                    <form id="deleteForm" method="POST">
+                    <div id="deleteFormReplacement">
                         <input type="hidden" name="id" id="modalItemId" value="">
-                        <button type="submit" class="btn-delete">Delete</button>
-                    </form>
+                        <button type="button" class="btn-delete" onclick="calendarManager.deleteEventAsync()">Delete</button>
+                    </div>
                 </div>
             </div>
         </div>
-
     </div>
     
     <script id="calendar-data" type="application/json">

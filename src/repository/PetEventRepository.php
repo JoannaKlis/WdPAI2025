@@ -36,12 +36,12 @@ class PetEventRepository extends Repository {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function addPetEvent(int $petId, array $data): void {
-        // Używamy transakcji (metoda z klasy Repository), aby zapewnić spójność
-        $this->executeTransaction(function() use ($petId, $data) {
+    public function addPetEvent(int $petId, array $data): ?int {
+        $newId = null; // Zmienna pomocnicza do przechwycenia ID
+
+        $this->executeTransaction(function() use ($petId, $data, &$newId) {
             $pdo = $this->database->connect();
 
-            // 1. Dodaj wydarzenie do tabeli globalnej
             $stmt = $pdo->prepare('
                 INSERT INTO global_events (event_name, event_date, event_time)
                 VALUES (:name, :date, :time)
@@ -51,18 +51,18 @@ class PetEventRepository extends Repository {
             $stmt->bindValue(':time', $data['time']);
             $stmt->execute();
 
-            // Pobierz ID nowo utworzonego wydarzenia
-            $eventId = $pdo->lastInsertId();
+            $newId = (int)$pdo->lastInsertId(); // Pobranie ID wewnątrz transakcji
 
-            // 2. Przypisz wydarzenie do zwierzaka (tabela łącząca M:N)
             $stmt = $pdo->prepare('
                 INSERT INTO event_participants (event_id, pet_id)
                 VALUES (:eventId, :petId)
             ');
-            $stmt->bindValue(':eventId', $eventId, PDO::PARAM_INT);
+            $stmt->bindValue(':eventId', $newId, PDO::PARAM_INT);
             $stmt->bindValue(':petId', $petId, PDO::PARAM_INT);
             $stmt->execute();
         });
+
+        return $newId; // Zwrócenie ID do kontrolera
     }
 
     public function getEventById(int $id): ?array {
