@@ -100,16 +100,6 @@ class PetController extends AppController {
         }
 
         if ($this->isPost()) {
-            $name = $_POST['name'] ?? '';
-            $microchip = $_POST['microchip'] ?? '';
-
-            if (!empty($microchip)) {
-                if (!preg_match('/^\d{15}$/', $microchip)) {
-                    http_response_code(422);
-                    return $this->render('422', ['message' => 'Microchip number must consist of exactly 15 digits.']);
-                }
-            }
-
             // obsługa zdjęcia
             $pictureUrl = null;
             if (isset($_FILES['picture']) && is_uploaded_file($_FILES['picture']['tmp_name'])) {
