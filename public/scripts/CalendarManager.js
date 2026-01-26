@@ -29,6 +29,7 @@ class CalendarManager {
     async addEventAsync() {
         const form = document.querySelector('#addModal form');
         if (!form) return;
+
         const formData = new FormData(form);
         
         try {
@@ -36,9 +37,11 @@ class CalendarManager {
                 method: 'POST',
                 body: formData
             });
+
             const result = await response.json();
 
             if (result.success) {
+                // nowy obiekt eventu na podstawie odpowiedzi serwera i danych z form
                 const newEvent = {
                     id: result.id,
                     title: formData.get('name'),
@@ -49,12 +52,15 @@ class CalendarManager {
                     picture_url: result.picture_url 
                 };
 
+                // Dynamiczna aktualizacja stanu i widoku
                 this.serverEvents.push(newEvent);
                 this.renderCalendar();
                 this.injectEventIntoLists(newEvent);
 
+                // Czyszczenie UI
                 form.reset();
                 if (window.closeModal) window.closeModal('addModal');
+                
             } else {
                 alert("Error: " + (result.message || "Unknown error"));
             }
@@ -68,8 +74,7 @@ class CalendarManager {
         const todayContainer = document.getElementById('today-events-list');
         const todayDate = new Date().toLocaleDateString('sv-SE');
 
-        // Użycie zdjęcia z obiektu lub domyślnego jeśli brak
-        const imgPath = event.picture_url ? event.picture_url : 'public/img/others/default_pet.png';
+        const imgPath = event.picture_url || 'public/img/others/default_pet.png';
 
         const cardHTML = `
             <div class="event-card" id="event-${event.id}">
@@ -152,15 +157,12 @@ class CalendarManager {
     }
 
     initNavigation() {
-        const prevBtn = document.getElementById("prev-month");
-        const nextBtn = document.getElementById("next-month");
-
-        prevBtn?.addEventListener("click", () => {
+        document.getElementById("prev-month")?.addEventListener("click", () => {
             this.currentDate.setMonth(this.currentDate.getMonth() - 1);
             this.renderCalendar();
         });
 
-        nextBtn?.addEventListener("click", () => {
+        document.getElementById("next-month")?.addEventListener("click", () => {
             this.currentDate.setMonth(this.currentDate.getMonth() + 1);
             this.renderCalendar();
         });
@@ -228,20 +230,21 @@ class CalendarManager {
         // Jeśli brakuje elementów w HTML, przerywamy by nie sypać błędami w konsoli
         if (!calendarTab || !listTab || !calendarView || !listView) return;
 
+        const switchView = (activeTab, inactiveTab, showView, hideView) => {
+            activeTab.classList.add('active');
+            inactiveTab.classList.remove('active');
+            showView.style.display = 'block';
+            hideView.style.display = 'none';
+        };
+
         calendarTab.addEventListener('click', (e) => {
             e.preventDefault();
-            calendarTab.classList.add('active');
-            listTab.classList.remove('active');
-            calendarView.style.display = 'block';
-            listView.style.display = 'none';
+            switchView(calendarTab, listTab, calendarView, listView);
         });
 
         listTab.addEventListener('click', (e) => {
             e.preventDefault();
-            listTab.classList.add('active');
-            calendarTab.classList.remove('active');
-            calendarView.style.display = 'none';
-            listView.style.display = 'block';
+            switchView(listTab, calendarTab, listView, calendarView);
         });
     }
 }

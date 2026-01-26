@@ -33,14 +33,8 @@ class FormValidator {
     captureInitialValues() {
         this.initialValues = {}; // Reset
         this.inputs.forEach(input => {
-            // Ignorowanie inputy typu file, submit, itp.
-            if (input.type !== 'file' && input.type !== 'submit' && input.name) {
-                if (input.type === 'checkbox') {
-                    this.initialValues[input.name] = input.checked;
-                } else {
-                    this.initialValues[input.name] = input.value;
-                }
-            }
+            if (['file', 'submit'].includes(input.type) || !input.name) return;
+            this.initialValues[input.name] = input.type === 'checkbox' ? input.checked : input.value;
         });
     }
 
@@ -53,10 +47,7 @@ class FormValidator {
 
         // Nasłuchiwanie przycisków płci (div/button)
         this.sexButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                // setTimeout pozwala najpierw wykonać się skryptowi UIHandler
-                this.validateWithDelay();
-            });
+            btn.addEventListener('click', () => this.validateWithDelay());
         });
     }
 
@@ -73,56 +64,24 @@ class FormValidator {
 
             // Sprawdźenie czy pola wymagane są wypełnione
             if (input.hasAttribute('required')) {
-                if (input.type === 'checkbox') {
-                    if (!input.checked) allRequiredFilled = false;
-                } else if (input.type !== 'file') {
-                    if (!input.value.trim()) allRequiredFilled = false;
-                }
+                if (input.type === 'checkbox' && !input.checked) allRequiredFilled = false;
+                else if (input.type !== 'file' && !input.value.trim()) allRequiredFilled = false;
             }
 
-            // Sprawdźenie czy zaszły zmiany względem stanu początkowego
             if (input.type === 'file') {
                 // Jeśli wybrano plik, to jest zmiana
                 if (input.files.length > 0) hasChanges = true;
-            } else if (input.type === 'checkbox') {
-                if (input.checked !== this.initialValues[input.name]) hasChanges = true;
             } else {
                 // Porównanie z wartością początkową
                 const initVal = this.initialValues[input.name];
-                
-                if (initVal !== undefined) {
-                    if (input.value !== initVal) {
-                        hasChanges = true;
-                    }
-                } 
-                else if (input.value !== '') {
-                    hasChanges = true;
-                }
+                const currentVal = input.type === 'checkbox' ? input.checked : input.value;
+                if (currentVal !== initVal) hasChanges = true;
             }
         });
 
-        const isEditMode = Object.values(this.initialValues).some(val => val !== '' && val !== false);
-
-        let isEnabled = false;
-
-        if (isEditMode) {
-            // Tryb edycji: Wszystko wymagane musi być wypełnione ORAZ musi być zmiana
-            isEnabled = allRequiredFilled && hasChanges;
-        } else {
-            // Tryb dodawania/rejestracji: Wszystko wymagane musi być wypełnione
-            isEnabled = allRequiredFilled && hasChanges;
-        }
-
-        this.toggleButton(isEnabled);
-    }
-
-    toggleButton(isEnabled) {
+        const isEnabled = allRequiredFilled && hasChanges;
         this.button.disabled = !isEnabled;
-        if (isEnabled) {
-            this.button.classList.remove('button-disabled');
-        } else {
-            this.button.classList.add('button-disabled');
-        }
+        this.button.classList.toggle('button-disabled', !isEnabled);
     }
 }
 
@@ -130,29 +89,21 @@ class AuthFormHandler {
     constructor(formId, endpoint) {
         this.form = document.getElementById(formId);
         this.endpoint = endpoint;
-        // Lokalizacja kontenera na wiadomości
         this.messageContainer = document.querySelector('.status-messages-container'); 
         
-        if (this.form) {
-            this.init();
-        }
+        if (this.form) this.init();
     }
 
     init() {
         this.form.addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            // Czyszczenie poprzednich błędów przed nową próbą
-            if (this.messageContainer) {
-                this.messageContainer.innerHTML = '';
-            }
-
-            const formData = new FormData(this.form);
+            if (this.messageContainer) this.messageContainer.innerHTML = '';
 
             try {
                 const response = await fetch(this.endpoint, {
                     method: 'POST',
-                    body: formData
+                    body: new FormData(this.form)
                 });
 
                 const result = await response.json();
@@ -177,18 +128,22 @@ class AuthFormHandler {
     }
 }
 
-// Inicjalizacja przy ładowaniu DOM
+// Pojedyncza inicjalizacja po załadowaniu DOM
 document.addEventListener('DOMContentLoaded', () => {
-    if (document.getElementById('loginForm')) {
-        new AuthFormHandler('loginForm', '/login');
-    }
-    if (document.getElementById('registrationForm')) {
-        new AuthFormHandler('registrationForm', '/registration');
-    }
-});
+    // Obsługa Fetch dla Logowania i Rejestracji
+    const authForms = [
+        { id: 'loginForm', url: '/login' },
+        { id: 'registrationForm', url: '/registration' }
+    ];
 
-// Inicjalizacja dla WSZYSTKICH formularzy na stronie
-document.addEventListener('DOMContentLoaded', () => {
-    const forms = document.querySelectorAll('form.wrapper, .modal-content form');
-    forms.forEach(form => new FormValidator(form));
+    authForms.forEach(auth => {
+        if (document.getElementById(auth.id)) {
+            new AuthFormHandler(auth.id, auth.url);
+        }
+    });
+
+    // Obsługa walidacji dla wszystkich formularzy na stronie
+    document.querySelectorAll('form.wrapper, .modal-content form').forEach(form => {
+        new FormValidator(form);
+    });
 });
