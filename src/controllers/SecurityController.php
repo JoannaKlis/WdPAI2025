@@ -44,12 +44,14 @@ class SecurityController extends AppController {
         // pobranie danych z formularza
         $email = $_POST['email'] ?? '';
         $password = $_POST['password'] ?? '';
-
         $user = $this->userRepository->getUserByEmail($email);
+
+        header('Content-Type: application/json');
 
         // walidacja maila i hasła
         if (!$user || !password_verify($password, $user['password'])) {
-            return $this->render('auth/login', ['messages' => 'Incorrect email or password!']);
+            echo json_encode(['success' => false, 'message' => 'Incorrect email or password!']);
+            exit();
         }
 
         // regeneracja ID dla bezpieczeństwa
@@ -64,13 +66,9 @@ class SecurityController extends AppController {
 
         //TODO: cookie etc.
         // logika przekierowania po zalogowaniu
-        if ($user['role'] === 'admin') {
-            header("Location: {$url}/admin");
-        } else {
-            header("Location: {$url}/welcome"); 
-        }
+        $url = ($user['role'] === 'admin') ? '/admin' : '/welcome';
+        echo json_encode(['success' => true, 'redirect' => $url]);
         exit();
-
     }
 
     public function logout() {
@@ -97,8 +95,11 @@ class SecurityController extends AppController {
             return $this->render("auth/registration");
         }
 
+        header('Content-Type: application/json');
+
         if (!isset($_POST['privacyPolicy'])) {
-            return $this->render('auth/registration', ['messages' => 'You must accept the Privacy Policy!']);
+            echo json_encode(['success' => false, 'message' => 'You must accept the Privacy Policy!']);
+            exit();
         }
 
         // pobranie danych z formularza
@@ -110,21 +111,25 @@ class SecurityController extends AppController {
 
         // sprawdzenie czy imię i nazwisko zawierają tylko litery
         if (!preg_match('/^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+$/u', $firstname)) {
-            return $this->render('auth/registration', ['messages' => 'First name must contain only letters!']);
+            echo json_encode(['success' => false, 'message' => 'First name must contain only letters!']);
+            exit();
         }
 
         if (!preg_match('/^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+$/u', $lastname)) {
-            return $this->render('auth/registration', ['messages' => 'Last name must contain only letters!']);
+            echo json_encode(['success' => false, 'message' => 'Last name must contain only letters!']);
+            exit();
         }
 
         // walidacja formatu email (musi zawierać @ i domenę po .)
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            return $this->render('auth/registration', ['messages' => 'Email address is incorrect!']);
+            echo json_encode(['success' => false, 'message' => 'Email address is incorrect!']);
+            exit();
         }
 
         // walidacja zgodności haseł
         if ($password !== $confirmedPassword) {
-            return $this->render('auth/registration', ['messages' => 'Passwords should be the same!']);
+            echo json_encode(['success' => false, 'message' => 'Passwords should be the same!']);
+            exit();
         }
 
         // funkcja pomocnicza do walidacji hasła
@@ -151,7 +156,7 @@ class SecurityController extends AppController {
         $email,
         $hashedPassword
     );
-        $url = "http://$_SERVER[HTTP_HOST]";
-        header("Location: {$url}/login?registered=true");
+        echo json_encode(['success' => true, 'redirect' => '/login?registered=true']);
+        exit();
     }
 }

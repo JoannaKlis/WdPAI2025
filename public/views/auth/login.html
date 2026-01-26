@@ -3,7 +3,7 @@
 </head>
 
 <body>
-    <form class="wrapper" method="POST" action="/login">
+    <form class="wrapper" id="loginForm">
 
         <div class="logo">
             <img src="public/img/others/petnotes_logo.png" class="logo">
@@ -12,7 +12,9 @@
 
         <div class="tagline">Welcome back to your pet’s world</div>
 
-        <?php include '/app/public/views/partials/status-messages.php'; ?>
+        <div class="status-messages-container">
+            <?php include '/app/public/views/partials/status-messages.php'; ?>
+        </div>
 
         <div class="container">
             <img src="public/img/profile/email.png" class="icon email">

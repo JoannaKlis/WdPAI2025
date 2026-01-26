@@ -4,7 +4,7 @@
 </head>
 
 <body>
-    <form class="wrapper" method="POST" action="/registration">
+    <form class="wrapper" id="registrationForm">
 
         <div class="logo">
             <img src="public/img/others/petnotes_logo.png" class="logo">
@@ -13,7 +13,9 @@
 
         <div class="tagline">Create a free account</div>
 
-        <?php include '/app/public/views/partials/status-messages.php'; ?>
+        <div class="status-messages-container">
+            <?php include '/app/public/views/partials/status-messages.php'; ?>
+        </div>
 
         <div class="container">
             <img src="public/img/profile/profile.png" class="icon email">

@@ -126,6 +126,67 @@ class FormValidator {
     }
 }
 
+class AuthFormHandler {
+    constructor(formId, endpoint) {
+        this.form = document.getElementById(formId);
+        this.endpoint = endpoint;
+        // Lokalizacja kontenera na wiadomości
+        this.messageContainer = document.querySelector('.status-messages-container'); 
+        
+        if (this.form) {
+            this.init();
+        }
+    }
+
+    init() {
+        this.form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Czyszczenie poprzednich błędów przed nową próbą
+            if (this.messageContainer) {
+                this.messageContainer.innerHTML = '';
+            }
+
+            const formData = new FormData(this.form);
+
+            try {
+                const response = await fetch(this.endpoint, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    // Sukces -> przekierowanie
+                    window.location.href = result.redirect;
+                } else {
+                    // Błąd -> wyświetlenie komunikatu w kontenerze
+                    this.displayError(result.message);
+                }
+            } catch (error) {
+                this.displayError("An unexpected server error occurred.");
+            }
+        });
+    }
+
+    displayError(message) {
+        if (this.messageContainer) {
+            this.messageContainer.innerHTML = `<p class="error-messages">${message}</p>`;
+        }
+    }
+}
+
+// Inicjalizacja przy ładowaniu DOM
+document.addEventListener('DOMContentLoaded', () => {
+    if (document.getElementById('loginForm')) {
+        new AuthFormHandler('loginForm', '/login');
+    }
+    if (document.getElementById('registrationForm')) {
+        new AuthFormHandler('registrationForm', '/registration');
+    }
+});
+
 // Inicjalizacja dla WSZYSTKICH formularzy na stronie
 document.addEventListener('DOMContentLoaded', () => {
     const forms = document.querySelectorAll('form.wrapper, .modal-content form');
