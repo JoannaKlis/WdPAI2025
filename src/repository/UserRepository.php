@@ -37,10 +37,15 @@ class UserRepository extends Repository {
         $this->insert('users', ['firstname' => $firstname, 'lastname' => $lastname, 'email' => $email, 'password' => $hashedPassword]);
     }
 
-    public function updateUser(int $id, string $firstname, string $lastname, string $email, ?string $password, ?string $pictureUrl): void {
-        $data = ['firstname' => $firstname, 'lastname' => $lastname, 'email' => $email];
-        if ($password) $data['password'] = password_hash($password, PASSWORD_BCRYPT);
-        if ($pictureUrl) $data['picture_url'] = $pictureUrl;
+    public function updateUser(int $id, string $firstname, string $lastname, ?string $pictureUrl): void {
+        $data = [
+            'firstname' => $firstname, 
+            'lastname' => $lastname
+        ];
+
+        if ($pictureUrl) {
+            $data['picture_url'] = $pictureUrl;
+        }
 
         $this->update('users', $id, $data);
     }

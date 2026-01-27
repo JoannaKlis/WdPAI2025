@@ -8,20 +8,14 @@ class PetEventController extends PetController {
 
     public function __construct() {
         parent::__construct();
-
         $this->petEventRepository = PetEventRepository::getInstance();
     }
 
     public function calendar() {
         $this->checkUser();
-        $userId = $_SESSION['user_id'] ?? null;
-
-        if (!$userId) {
-            header("Location: /login");
-            exit;
-        }
-
-        $user = $this->userRepository->getUserByEmail($_SESSION['user_email']);
+        
+        $userId = $_SESSION['user_id'];
+        $user = $this->getCurrentUser(); 
         $events = $this->petEventRepository->getEvents($userId);
         $pets = $this->petRepository->getPetsByUserId($userId);
 
@@ -34,12 +28,8 @@ class PetEventController extends PetController {
 
     public function addEvent() {
         if ($this->isPost()) {
-            $petId = $_POST['pet_id'] ?? null;
-            
-            // Weryfikacja czy user jest właścicielem tego peta
-            $pet = $this->getPetOr404($petId);
+            $pet = $this->getPetOr404($_POST['pet_id'] ?? null);
 
-            // Pobranie ID nowo wstawionego rekordu z repozytorium
             $newId = (int)$this->petEventRepository->addPetEvent((int)$pet['id'], [
                 'name' => $_POST['name'],
                 'date' => $_POST['date'],
@@ -54,26 +44,27 @@ class PetEventController extends PetController {
             ]);
             exit;
         }
+        $this->redirect('calendar');
     }
 
     public function deleteEvent() {
         if (!$this->isPost()) {
+            header('Content-Type: application/json');
             echo json_encode(['success' => false, 'message' => 'Invalid request']);
             exit;
         }
 
-        $eventId = $_POST['id'] ?? null;
+        $eventId = (int)($_POST['id'] ?? 0);
+        $event = $this->petEventRepository->getEventById($eventId);
         
-        // Sprawdzenie czy wydarzenie istnieje
-        $event = $this->petEventRepository->getEventById((int)$eventId);
-
-        if (!$event || $this->petEventRepository->getEventOwnerId((int)$eventId) !== $_SESSION['user_id']) {
+        if (!$event || $this->petEventRepository->getEventOwnerId($eventId) !== $_SESSION['user_id']) {
             http_response_code(403);
+            header('Content-Type: application/json');
             echo json_encode(['success' => false, 'message' => 'Unauthorized']);
             exit;
         }
 
-        $this->petEventRepository->deleteEvent((int)$eventId);
+        $this->petEventRepository->deleteEvent($eventId);
 
         header('Content-Type: application/json');
         echo json_encode(['success' => true]);

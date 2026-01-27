@@ -1,19 +1,13 @@
 <?php
 
 require_once 'AppController.php';
-require_once __DIR__.'/../repository/UserRepository.php';
 
 class AdminController extends AppController {
-    private $userRepository;
 
-    public function __construct()
-    {
-        parent::__construct();
-        $this->userRepository = UserRepository::getInstance();
-    }
+    public function __construct() { parent::__construct(); }
 
     public function index() {
-        // weryfikacja czy to na pewno admin
+        // Weryfikacja czy użytkownik jest adminem
         $this->checkAdmin(); 
 
         $users = $this->userRepository->getUsers();
@@ -25,14 +19,15 @@ class AdminController extends AppController {
         $this->checkAdmin();
 
         if ($this->isPost()) {
-            $userId = $_POST['id'];
-            // Admin nie może usunąć samego siebie
-            if ($userId != $_SESSION['user_id']) {
-                $this->userRepository->deleteUser((int)$userId);
+            $userId = (int)$_POST['id'];
+            
+            // Zabezpieczenie: Admin nie może usunąć samego siebie
+            if ($userId !== (int)$_SESSION['user_id']) {
+                $this->userRepository->deleteUser($userId);
             }
         }
 
-        header("Location: /admin");
+        $this->redirect('admin');
     }
 
     public function editUser() {
@@ -40,18 +35,19 @@ class AdminController extends AppController {
 
         if ($this->isPost()) {
             $id = $_POST['id'] ?? null;
-            $firstname = $_POST['firstname'];
-            $lastname = $_POST['lastname'];
-            $email = $_POST['email'];
-            $role = $_POST['role'];
-
+            
             if ($id) {
-                $this->userRepository->updateUserByAdmin((int)$id, $firstname, $lastname, $email, $role);
+                $this->userRepository->updateUserByAdmin(
+                    (int)$id, 
+                    $_POST['firstname'], 
+                    $_POST['lastname'], 
+                    $_POST['email'], 
+                    $_POST['role']
+                );
             }
         }
 
-        header("Location: /admin");
-        exit;
+        $this->redirect('admin');
     }
 
     public function toggleBan() {
@@ -60,7 +56,8 @@ class AdminController extends AppController {
         if ($this->isPost()) {
             $userId = (int)$_POST['id'];
         
-            if ($userId != $_SESSION['user_id']) {
+            // Admin nie może zbanować samego siebie
+            if ($userId !== (int)$_SESSION['user_id']) {
                 if ($this->userRepository->isUserBanned($userId)) {
                     $this->userRepository->unbanUser($userId);
                 } else {
@@ -69,6 +66,6 @@ class AdminController extends AppController {
             }
         }
 
-        header("Location: /admin");
+        $this->redirect('admin');
     }
 }

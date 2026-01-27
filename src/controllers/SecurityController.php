@@ -4,20 +4,16 @@ require_once 'AppController.php';
 
 class SecurityController extends AppController {
 
-    private $userRepository;
-    private const MAX_LOGIN_ATTEMPTS = 5; // 5 prób
+    private const MAX_LOGIN_ATTEMPTS = 5;
     private const LOCKOUT_TIME = 300; // 5 minut
 
-    public function __construct()
-    {
-        parent::__construct();
-        $this->userRepository = UserRepository::getInstance();
-    }
+    public function __construct() { parent::__construct(); }
 
     public function start() {
         return $this->login();
     }
 
+    // BŁĘDY
     public function error401() {
         http_response_code(401);
         return $this->render("errors/401");
@@ -28,6 +24,7 @@ class SecurityController extends AppController {
         return $this->render("errors/403");
     }
 
+    // LOGOWANIE
     public function login() {
         if (!$this->isPost()) {
             return $this->render("auth/login");
@@ -37,8 +34,7 @@ class SecurityController extends AppController {
 
         // Sprawdzenie blokady czasowej
         if (isset($_SESSION['lockout_until']) && $_SESSION['lockout_until'] > time()) {
-            $remaining = $_SESSION['lockout_until'] - time();
-            $minutes = ceil($remaining / 60);
+            $minutes = ceil(($_SESSION['lockout_until'] - time()) / 60);
             echo json_encode([
                 'success' => false, 
                 'message' => "Too many failed attempts. Try again in $minutes minute(s)."
@@ -63,9 +59,8 @@ class SecurityController extends AppController {
             exit();
         }
 
-        // Sukces logowania - reset prób i sesja
-        unset($_SESSION['login_attempts']);
-        unset($_SESSION['lockout_until']);
+        // Sukces logowania - reset prób i ustawienie sesji
+        unset($_SESSION['login_attempts'], $_SESSION['lockout_until']);
 
         session_regenerate_id(true);
         $_SESSION['user_id'] = $user['id'];
@@ -78,36 +73,31 @@ class SecurityController extends AppController {
     }
 
     private function registerFailedAttempt() {
-        if (!isset($_SESSION['login_attempts'])) {
-            $_SESSION['login_attempts'] = 0;
-        }
-
-        $_SESSION['login_attempts']++;
+        $_SESSION['login_attempts'] = ($_SESSION['login_attempts'] ?? 0) + 1;
 
         if ($_SESSION['login_attempts'] >= self::MAX_LOGIN_ATTEMPTS) {
             $_SESSION['lockout_until'] = time() + self::LOCKOUT_TIME;
         }
     }
 
+    // WYLOGOWANIE
     public function logout() {
-        $_SESSION = array(); // czyszczenie danych sesji
+        $_SESSION = array();
 
-        // usuwanie ciasteczek sesyjnych z przeglądarki
         if (ini_get("session.use_cookies")) {
             $params = session_get_cookie_params();
             setcookie(session_name(), '', time() - 42000,
-            $params["path"], $params["domain"],
-            $params["secure"], $params["httponly"]
+                $params["path"], $params["domain"],
+                $params["secure"], $params["httponly"]
             );
         }
 
-        session_destroy(); // niszczenie sesji na serwerze
-
-        $url = "http://$_SERVER[HTTP_HOST]";
-        header("Location: {$url}/login");
+        session_destroy();
+        $this->redirect('login');
         exit();
     }
 
+    // REJESTRACJA
     public function registration() {
         if($this->isGet()) {
             return $this->render("auth/registration");
@@ -120,48 +110,29 @@ class SecurityController extends AppController {
             exit();
         }
 
-        // pobranie danych z formularza
         $firstname = $_POST['firstName'] ?? '';
         $lastname = $_POST['lastName'] ?? '';
         $email = $_POST['email'] ?? '';
         $password = $_POST['password'] ?? '';
         $confirmedPassword = $_POST['confirmedPassword'] ?? '';
 
-        // sprawdzenie czy imię i nazwisko zawierają tylko litery
-        if (!preg_match('/^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+$/u', $firstname)) {
-            echo json_encode(['success' => false, 'message' => 'First name must contain only letters!']);
+        // Walidacja imienia i nazwiska (Regex)
+        if (!preg_match('/^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+$/u', $firstname) || 
+            !preg_match('/^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+$/u', $lastname)) {
+            echo json_encode(['success' => false, 'message' => 'First and last name must contain only letters!']);
             exit();
         }
 
-        if (!preg_match('/^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+$/u', $lastname)) {
-            echo json_encode(['success' => false, 'message' => 'Last name must contain only letters!']);
+        $genericEmailError = 'Email address is incorrect!';
+
+        // Walidacja formatu i unikalności emaila
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL) || $this->userRepository->getUserByEmail($email)) {
+            echo json_encode(['success' => false, 'message' => $genericEmailError]);
             exit();
         }
 
-        $genericErrorMessage = 'Email address is incorrect!';
-
-        // walidacja formatu email (musi zawierać @ i domenę po .)
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            echo json_encode(['success' => false, 'message' => $genericErrorMessage]);
-            exit();
-        }
-
-        // Sprawdzenie unikalności emaila
-        if ($this->userRepository->getUserByEmail($email)) {
-            echo json_encode(['success' => false, 'message' => $genericErrorMessage]);
-            exit();
-        }
-
-        // walidacja długości hasła
-        $isValidPassword = function (string $password): bool {
-            if (strlen($password) < 13) return false; // min. 13 znaków
-            if (!preg_match('/[A-Z]/', $password)) return false; // min. 1 duża litera
-            if (!preg_match('/[0-9]/', $password)) return false; // min. 1 cyfra
-            if (!preg_match('/[^A-Za-z0-9]/', $password)) return false; // min. 1 znak specjalny
-            return true;
-        };
-
-        if (!$isValidPassword($password)) {
+        // Walidacja hasła
+        if (!$this->isValidPassword($password)) {
             echo json_encode([
                 'success' => false, 
                 'message' => 'Password must be at least 13 characters long, contain 1 uppercase letter, 1 number and 1 special character.'
@@ -169,22 +140,21 @@ class SecurityController extends AppController {
             exit();
         }
 
-        // walidacja zgodności haseł
         if ($password !== $confirmedPassword) {
             echo json_encode(['success' => false, 'message' => 'Passwords should be the same!']);
             exit();
         }
 
-        $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-
-        $this->userRepository->createUser(
-            $firstname,
-            $lastname,
-            $email,
-            $hashedPassword
-        );
+        $this->userRepository->createUser($firstname, $lastname, $email, password_hash($password, PASSWORD_BCRYPT));
 
         echo json_encode(['success' => true, 'redirect' => '/login?registered=true']);
         exit();
+    }
+
+    private function isValidPassword(string $password): bool {
+        return strlen($password) >= 13 && 
+               preg_match('/[A-Z]/', $password) && 
+               preg_match('/[0-9]/', $password) && 
+               preg_match('/[^A-Za-z0-9]/', $password);
     }
 }

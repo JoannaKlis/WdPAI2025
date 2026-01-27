@@ -2,29 +2,20 @@
 
 require_once 'AppController.php';
 require_once __DIR__.'/../repository/PetRepository.php';
-require_once __DIR__.'/../repository/UserRepository.php';
 
 class PetController extends AppController {
     protected $petRepository;
-    protected $userRepository;
 
     public function __construct() {
-        parent::__construct();
-        
+        parent::__construct(); 
         $this->petRepository = PetRepository::getInstance();
-        $this->userRepository = UserRepository::getInstance();
     }
 
     public function pets() {
-        $this->checkUser();
+        $this->checkUser(); 
         
-        $userId = $_SESSION['user_id'] ?? null;
-
-        if (!$userId) {
-            header("Location: http://$_SERVER[HTTP_HOST]/login");
-            exit;
-        }
-        $user = $this->userRepository->getUserByEmail($_SESSION['user_email']);
+        $userId = $_SESSION['user_id'];
+        $user = $this->getCurrentUser();
         $pets = $this->petRepository->getPetsByUserId($userId);
         
         return $this->render('pets/pets', ['pets' => $pets, 'user' => $user]);
@@ -32,88 +23,33 @@ class PetController extends AppController {
 
     public function addPet() {
         $this->checkUser();
-        $userId = $_SESSION['user_id'] ?? null;
+        $userId = $_SESSION['user_id'];
 
-        if (!$userId) {
-            header("Location: http://$_SERVER[HTTP_HOST]/login");
+        if ($this->petRepository->countUserPets($userId) >= 50) {
+            header("Location: /pets?error=limit_reached");
             exit;
         }
 
-        // użytkownik nie moze mieć więcej niż 50 zwierząt
-        $currentPetCount = $this->petRepository->countUserPets($userId);
-        if ($currentPetCount >= 50) {
-            // tu w przyszłości można dodać komunikat o błędzie 
-            header("Location: http://$_SERVER[HTTP_HOST]/pets?error=limit_reached");
-            exit;
+        if ($this->isPost()) {
+            $pictureUrl = $this->handleImageUpload();
+            $this->petRepository->addPet($_POST, $_SESSION['user_id'], $pictureUrl);
+            $this->redirect('pets');
         }
-
-        if (!$this->isPost()) {
-            return $this->render('pets/addPet', ['pet' => ['picture_url' => null]]);
-        }
-
-        // obsługa uploadu zdjęcia
-        $pictureUrl = null;
-        if (isset($_FILES['picture']) && is_uploaded_file($_FILES['picture']['tmp_name'])) {
-            $imageData = file_get_contents($_FILES['picture']['tmp_name']);
-            $mimeType = mime_content_type($_FILES['picture']['tmp_name']);
-            $pictureUrl = 'data:' . $mimeType . ';base64,' . base64_encode($imageData);
-        }
-
-        // przekazanie danych i URL zdjęcia do repozytorium
-        $this->petRepository->addPet($_POST, $userId, $pictureUrl);
-        header("Location: http://$_SERVER[HTTP_HOST]/pets");
+        return $this->render('pets/addPet');
     }
 
     public function features() {
-        $this->checkUser();
-        $userId = $_SESSION['user_id'] ?? null;
-        $petId = $_GET['id'] ?? null;
-
-        if (!$petId || !$userId) {
-            header("Location: http://$_SERVER[HTTP_HOST]/pets");
-            exit;
-        }
-
-        $pet = $this->petRepository->getPetById((int)$petId);
-
-        if (!$pet || $pet['user_id'] !== $userId) {
-            return $this->render('404');
-        }
-
+        $pet = $this->getPetOr404($_GET['id'] ?? null);
         return $this->render('pets/features', ['pet' => $pet]);
     }
 
     public function editPet() {
-        $this->checkUser();
-        $userId = $_SESSION['user_id'] ?? null;
-        $petId = $_REQUEST['id'] ?? null;
-
-        if (!$petId || !$userId) {
-            header("Location: http://$_SERVER[HTTP_HOST]/pets");
-            exit;
-        }
-
-        // walidacja właściciela zwierzaka
-        $pet = $this->petRepository->getPetById((int)$petId);
-        if (!$pet || $pet['user_id'] !== $userId) {
-            return $this->render('404');
-        }
+        $pet = $this->getPetOr404($_REQUEST['id'] ?? null);
 
         if ($this->isPost()) {
-            // obsługa zdjęcia
-            $pictureUrl = null;
-            if (isset($_FILES['picture']) && is_uploaded_file($_FILES['picture']['tmp_name'])) {
-                $imageData = file_get_contents($_FILES['picture']['tmp_name']);
-                $mimeType = mime_content_type($_FILES['picture']['tmp_name']);
-                $pictureUrl = 'data:' . $mimeType . ';base64,' . base64_encode($imageData);
-            }
-
-            // aktualizacja w bazie
-            $this->petRepository->updatePet((int)$petId, $_POST, $pictureUrl);
-            
-            // przekierowanie do widoku szczegółów
-            header("Location: http://$_SERVER[HTTP_HOST]/features?id=" . $petId);
-            exit;
+            $pictureUrl = $this->handleImageUpload();
+            $this->petRepository->updatePet((int)$pet['id'], $_POST, $pictureUrl);
+            $this->redirectWithId('features', $pet['id']);
         }
 
         return $this->render('pets/editPet', ['pet' => $pet]);
@@ -121,98 +57,73 @@ class PetController extends AppController {
 
     public function deletePet() {
         $this->checkUser();
-        $userId = $_SESSION['user_id'] ?? null;
-
-        // zabezpieczenie: jeśli ktoś próbuje wejść tu przez GET (wpisując url), od razu wyrzuć go do listy zwierząt.
         if (!$this->isPost()) {
-            header("Location: http://$_SERVER[HTTP_HOST]/pets");
+            $this->redirect('pets');
             exit;
         }
 
         $petId = $_POST['id'] ?? null;
-
-        // walidacja danych sesji i ID
-        if (!$petId || !$userId) {
-             header("Location: http://$_SERVER[HTTP_HOST]/pets");
-             exit;
-        }
-
-        // sprawdzenie czy użytkownik jest właścicielem (bezpieczeństwo)
         $pet = $this->petRepository->getPetById((int)$petId);
-        if ($pet && $pet['user_id'] === $userId) {
+
+        if ($pet && $pet['user_id'] === $_SESSION['user_id']) {
             $this->petRepository->deletePet((int)$petId);
         }
 
-        // przekierowanie do widoku /pets po wykonaniu akcji
-        header("Location: http://$_SERVER[HTTP_HOST]/pets");
-        exit;
+        $this->redirect('pets');
     }
 
-    // HELPERS
-    protected function getPetOr404(mixed $petId): ?array {
-        $this->checkUser(); // Sprawdza sesję
-        $userId = $_SESSION['user_id'] ?? null;
+    // HELPERY
 
-        if (!$petId || !$userId) {
-            header("Location: /pets");
-            exit;
+    protected function getPetOr404(mixed $petId): ?array {
+        $this->checkUser();
+        if (!$petId) {
+            $this->redirect('pets');
         }
 
         $pet = $this->petRepository->getPetById((int)$petId);
-
-        // Sprawdzenie czy zwierzak istnieje i należy do użytkownika
-        if (!$pet || $pet['user_id'] !== $userId) {
-            $this->render('404'); // Renderuje błąd
-            exit; // Zatrzymuje dalsze wykonywanie skryptu w miejscu wywołania
+        if (!$pet || $pet['user_id'] !== $_SESSION['user_id']) {
+            $this->render('errors/404');
+            exit;
         }
 
         return $pet;
     }
 
-    protected function handleView(object $repository, string $fetchMethod, string $viewTemplate, string $listVariableName) {
+    protected function handleView(object $repository, string $fetchMethod, string $viewTemplate, string $listVarName) {
         $pet = $this->getPetOr404($_GET['id'] ?? null);
-        
-        // Wywołanie metody na przekazanym repozytorium
         $list = $repository->$fetchMethod((int)$pet['id']);
 
         return $this->render($viewTemplate, [
             'pet' => $pet, 
-            $listVariableName => $list
+            $listVarName => $list
         ]);
     }
 
     protected function handleAdd(object $repository, string $addMethod, string $redirectRoute, string $viewTemplate) {
         $pet = $this->getPetOr404($_REQUEST['id'] ?? null);
-        $petId = (int)$pet['id'];
 
         if ($this->isPost()) {
-            $repository->$addMethod($petId, $_POST);
-            
-            header("Location: " . $redirectRoute . "?id=" . $petId);
-            exit;
+            $repository->$addMethod((int)$pet['id'], $_POST);
+            $this->redirectWithId($redirectRoute, $pet['id']);
         }
 
-        return $this->render($viewTemplate, ['petId' => $petId]);
+        return $this->render($viewTemplate, ['petId' => $pet['id']]);
     }
 
     protected function handleDelete(object $repository, string $postKeyId, string $fetchMethod, string $deleteMethod, string $redirectUrl) {
         if (!$this->isPost()) { 
-            header("Location: /pets"); 
-            exit; 
+            $this->redirect('pets');
         }
 
-        $id = $_POST[$postKeyId] ?? null;
-        
-        $entry = $repository->$fetchMethod((int)$id);
+        $id = (int)($_POST[$postKeyId] ?? 0);
+        $entry = $repository->$fetchMethod($id);
 
         if ($entry) {
             $this->getPetOr404($entry['pet_id']);
-            $repository->$deleteMethod((int)$id);
-            header("Location: " . $redirectUrl . "?id=" . $entry['pet_id']);
-            exit;
+            $repository->$deleteMethod($id);
+            $this->redirectWithId($redirectUrl, $entry['pet_id']);
         }
         
-        header("Location: /pets");
-        exit;
+        $this->redirect('pets');
     }
 }

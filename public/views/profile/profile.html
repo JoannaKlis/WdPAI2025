@@ -39,16 +39,5 @@
             <input type="text" name="lastName" value="<?= $user['lastname'] ?>" placeholder="Last name">
         </div>
 
-        <div class="container">
-            <img src="public/img/profile/email.png" class="icon email">
-            <input type="email" name="email" value="<?= $user['email'] ?>" placeholder="Email">
-        </div>
-
-        <div class="container">
-            <img src="public/img/profile/padlock.png" class="icon">
-            <input type="password" name="password" id="password-field" placeholder="New Password">
-            <img src="public/img/profile/invisible.png" id="toggle-password" class="icon-switch">
-        </div>
-
         <button type="submit" class="button button-save" id="save-button">Save changes</button>
 <?php include '/app/public/views/partials/footer.php'; ?>

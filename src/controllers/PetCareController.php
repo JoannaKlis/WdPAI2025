@@ -8,22 +8,19 @@ class PetCareController extends PetController {
 
     public function __construct() {
         parent::__construct();
-
         $this->petCareRepository = PetCareRepository::getInstance();
     }
 
     public function care() {
+        // Pobranie danych zwierzaka lub 404
         $pet = $this->getPetOr404($_GET['id'] ?? null);
         $petId = (int)$pet['id'];
 
-        // pobranie historii (Repository zwraca je posortowane datami malejąco)
-        $weights = $this->petCareRepository->getPetWeights((int)$petId);
-        $grooming = $this->petCareRepository->getPetGrooming((int)$petId);
-        $shearing = $this->petCareRepository->getPetShearing((int)$petId);
-        $trimming = $this->petCareRepository->getPetTrimming((int)$petId);
-
-        // przygotowanie danych dla widoku, pobranie 4 najnowszych wpisów wagi do sekcji summary
-        $recentWeights = array_slice($weights, 0, 4);
+        // Pobranie historii z repozytorium
+        $weights = $this->petCareRepository->getPetWeights($petId);
+        $grooming = $this->petCareRepository->getPetGrooming($petId);
+        $shearing = $this->petCareRepository->getPetShearing($petId);
+        $trimming = $this->petCareRepository->getPetTrimming($petId);
 
         return $this->render('care/care', [
             'pet' => $pet,
@@ -31,7 +28,7 @@ class PetCareController extends PetController {
             'latestGroom' => $grooming[0] ?? null,
             'latestShearing' => $shearing[0] ?? null,
             'latestTrimming' => $trimming[0] ?? null,
-            'recentWeights' => $recentWeights
+            'recentWeights' => array_slice($weights, 0, 4)
         ]);
     }
 
@@ -42,26 +39,14 @@ class PetCareController extends PetController {
 
     public function addWeight() {
         $pet = $this->getPetOr404($_REQUEST['id'] ?? null);
-        $petId = $pet['id'];
 
         if ($this->isPost()) {
-            $weightInput = $this->validateAndSanitizeFloat($_POST['weight'] ?? '');
-
-            if ($weightInput === null)  {
-                http_response_code(422);
-                return $this->render('422');
-            }
-
-            $_POST['weight'] = $weightInput;
-            $this->petCareRepository->addPetWeight((int)$petId, $_POST);
-            
-            // powrót do listy wag tego zwierzaka
-            header("Location: /weight?id=" . $petId);
-            exit;
+            $_POST['weight'] = $this->getValidatedFloat('weight', "Incorrect data format!");
+            $this->petCareRepository->addPetWeight((int)$pet['id'], $_POST);
+        
+            $this->redirectWithId('/weight', $pet['id']);
         }
-
-        // wyświetlenie formularza - przekazanie petId, żeby formularz wiedział gdzie wysłać POST
-        return $this->render('care/addWeight', ['petId' => $petId]);
+        return $this->render('care/addWeight', ['petId' => $pet['id']]);
     }
 
     public function deleteWeight() {

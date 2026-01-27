@@ -8,7 +8,6 @@ class PetHealthController extends PetController {
 
     public function __construct() {
         parent::__construct();
-
         $this->petHealthRepository = PetHealthRepository::getInstance();
     }
 
@@ -16,7 +15,6 @@ class PetHealthController extends PetController {
         $pet = $this->getPetOr404($_GET['id'] ?? null);
         $petId = (int)$pet['id'];
 
-        // Pobranie całej historii medycznej z widoku
         $fullHistory = $this->petHealthRepository->getAllMedicalHistory($petId);
 
         // Filtrowanie danych
@@ -25,7 +23,6 @@ class PetHealthController extends PetController {
         $deworming    = array_filter($fullHistory, fn($item) => $item['type'] === 'Deworming');
         $visits       = array_filter($fullHistory, fn($item) => $item['type'] === 'Visit');
 
-        // Przekazanie gotowych tablic do widoku
         return $this->render('healthbook/healthBook', [
             'pet' => $pet,
             'vaccinations' => $vaccinations,
@@ -42,20 +39,19 @@ class PetHealthController extends PetController {
 
     public function addVaccination() {
         $pet = $this->getPetOr404($_REQUEST['id'] ?? null);
+        
         if ($this->isPost()) {
-            $doseInput = $this->validateAndSanitizeFloat($_POST['dose'] ?? '');
-            if ($doseInput === null) { http_response_code(422); return $this->render('422'); }
+            // Walidacja dawki
+            $_POST['dose'] = $this->getValidatedFloat('dose', "Incorrect dose format.");
             
-            $_POST['dose'] = $doseInput;
             $this->petHealthRepository->addPetVaccination((int)$pet['id'], $_POST);
-            header("Location: /vaccinations?id=" . $pet['id']);
-            exit;
+            $this->redirectWithId('vaccinations', $pet['id']);
         }
         return $this->render('healthbook/addVaccination', ['petId' => $pet['id']]);
     }
 
     public function deleteVaccination() {
-        $this->handleDelete($this->petHealthRepository, 'id', 'getVaccinationById', 'deletePetVaccination', '/vaccinations');
+        $this->handleDelete($this->petHealthRepository, 'id', 'getVaccinationById', 'deletePetVaccination', 'vaccinations');
     }
 
     // TREATMENTS
@@ -64,11 +60,11 @@ class PetHealthController extends PetController {
     }
 
     public function addTreatment() {
-        return $this->handleAdd($this->petHealthRepository, 'addPetTreatment', '/treatments', 'healthbook/addTreatment');
+        return $this->handleAdd($this->petHealthRepository, 'addPetTreatment', 'treatments', 'healthbook/addTreatment');
     }
 
     public function deleteTreatment() {
-        $this->handleDelete($this->petHealthRepository, 'id', 'getTreatmentById', 'deletePetTreatment', '/treatments');
+        $this->handleDelete($this->petHealthRepository, 'id', 'getTreatmentById', 'deletePetTreatment', 'treatments');
     }
 
     // DEWORMING
@@ -78,20 +74,19 @@ class PetHealthController extends PetController {
 
     public function addDeworming() {
         $pet = $this->getPetOr404($_REQUEST['id'] ?? null);
+        
         if ($this->isPost()) {
-            $doseInput = $this->validateAndSanitizeFloat($_POST['dose'] ?? '');
-            if ($doseInput === null) { http_response_code(422); return $this->render('422'); }
+            // Walidacja dawki
+            $_POST['dose'] = $this->getValidatedFloat('dose', "Incorrect dose format.");
             
-            $_POST['dose'] = $doseInput;
             $this->petHealthRepository->addPetDeworming((int)$pet['id'], $_POST);
-            header("Location: /deworming?id=" . $pet['id']);
-            exit;
+            $this->redirectWithId('deworming', $pet['id']);
         }
         return $this->render('healthbook/addDeworming', ['petId' => $pet['id']]);
     }
 
     public function deleteDeworming() {
-        $this->handleDelete($this->petHealthRepository, 'id', 'getDewormingById', 'deletePetDeworming', '/deworming');
+        $this->handleDelete($this->petHealthRepository, 'id', 'getDewormingById', 'deletePetDeworming', 'deworming');
     }
 
     // VISITS
@@ -100,10 +95,10 @@ class PetHealthController extends PetController {
     }
 
     public function addVisit() {
-        return $this->handleAdd($this->petHealthRepository, 'addPetVisit', '/visits', 'healthbook/addVisit');
+        return $this->handleAdd($this->petHealthRepository, 'addPetVisit', 'visits', 'healthbook/addVisit');
     }
 
     public function deleteVisit() {
-        $this->handleDelete($this->petHealthRepository, 'id', 'getVisitById', 'deletePetVisit', '/visits');
+        $this->handleDelete($this->petHealthRepository, 'id', 'getVisitById', 'deletePetVisit', 'visits');
     }
 }
