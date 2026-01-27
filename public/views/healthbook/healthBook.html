@@ -1,14 +1,4 @@
 <?php include '/app/public/views/partials/header.php'; ?>
-
-<?php
-    // Funkcja pobrania ostatnich wpisów
-    function getLastDate($array) {
-        if (empty($array)) return '-';
-        $firstItem = reset($array); 
-        return date('d.m.Y', strtotime($firstItem['date']));
-    }
-?>
-
 <link rel="stylesheet" type="text/css" href="public/styles/components/profile.css">
 <link rel="stylesheet" type="text/css" href="public/styles/pages/welcome.css">
 <link rel="stylesheet" type="text/css" href="public/styles/pages/features.css">
@@ -42,7 +32,7 @@
                 <div class="feature-text-container">
                     <span class="feature-text book-text">Vaccinations</span>
                     <span class="subtext">
-                        Last: <?= getLastDate($vaccinations) ?>
+                        <?= $latestVaccination ? 'Last: ' . date('d.m.Y', strtotime($latestVaccination['vaccination_date'])) : 'No history' ?>
                     </span>
                 </div>
                 <span class="feature-arrow">&gt;</span>
@@ -55,7 +45,7 @@
                 <div class="feature-text-container">
                     <span class="feature-text book-text">Treatments and surgeries</span>
                     <span class="subtext">
-                        Last: <?= getLastDate($treatments) ?>
+                        <?= $latestTreatment ? 'Last: ' . date('d.m.Y', strtotime($latestTreatment['treatment_date'])) : 'No history' ?>
                     </span>
                 </div>
                 <span class="feature-arrow">&gt;</span>
@@ -68,7 +58,7 @@
                 <div class="feature-text-container">
                     <span class="feature-text book-text">Deworming</span>
                     <span class="subtext">
-                        Last: <?= getLastDate($deworming) ?>
+                        <?= $latestDeworming ? 'Last: ' . date('d.m.Y', strtotime($latestDeworming['deworming_date'])) : 'No history' ?>
                     </span>
                 </div>
                 <span class="feature-arrow">&gt;</span>
@@ -81,7 +71,7 @@
                 <div class="feature-text-container">
                     <span class="feature-text book-text">Visits to the vet</span>
                     <span class="subtext">
-                        Last: <?= getLastDate($visits) ?>
+                        <?= $latestVisit ? 'Last: ' . date('d.m.Y', strtotime($latestVisit['visit_date'])) : 'No history' ?>
                     </span>
                 </div>
                 <span class="feature-arrow">&gt;</span>

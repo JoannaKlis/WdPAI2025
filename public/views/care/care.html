@@ -33,7 +33,7 @@
                     </div>
                     <span class="care-label-main">Weight</span>
                     <span class="care-label-sub">
-                        <?= $latestWeight ? date('d.m.Y', strtotime($latestWeight['recorded_date'])) : 'No history' ?>
+                        <?= $latestWeight ? 'Last: ' . date('d.m.Y', strtotime($latestWeight['recorded_date'])) : 'No history' ?>
                     </span>
                 </a>
 
@@ -43,7 +43,7 @@
                     </div>
                     <span class="care-label-main">Grooming</span>
                     <span class="care-label-sub">
-                        <?= $latestGroom ? date('d.m.Y', strtotime($latestGroom['groom_date'])) : 'No history' ?>
+                        <?= $latestGroom ? 'Last: ' . date('d.m.Y', strtotime($latestGroom['groom_date'])) : 'No history' ?>
                     </span>
                 </a>
 
@@ -53,7 +53,7 @@
                     </div>
                     <span class="care-label-main">Shearing</span>
                     <span class="care-label-sub">
-                        <?= $latestShearing ? date('d.m.Y', strtotime($latestShearing['shearing_date'])) : 'No history' ?>
+                        <?= $latestShearing ? 'Last: ' . date('d.m.Y', strtotime($latestShearing['shearing_date'])) : 'No history' ?>
                     </span>
                 </a>
 
@@ -63,7 +63,7 @@
                     </div>
                     <span class="care-label-main">Trimming claws</span>
                     <span class="care-label-sub">
-                        <?= $latestTrimming ? date('d.m.Y', strtotime($latestTrimming['trimming_date'])) : 'No history' ?>
+                        <?= $latestTrimming ? 'Last: ' . date('d.m.Y', strtotime($latestTrimming['trimming_date'])) : 'No history' ?>
                     </span>
                 </a>
 
