@@ -28,11 +28,16 @@ class PetNutritionController extends PetController {
     // SENSITIVITIES
     public function addSensitivities() {
         $pet = $this->getPetOr404($_REQUEST['id'] ?? null);
+        $petId = (int)$pet['id'];
+
         if ($this->isPost()) {
-            $this->petNutritionRepository->addSensitivity((int)$pet['id'], $_POST['name']);
-            $this->redirectWithId('nutrition', $pet['id']); // Użycie metody pomocniczej
+            $currentCount = count($this->petNutritionRepository->getSensitivities($petId));
+            if ($currentCount < 20) {
+                $this->petNutritionRepository->addSensitivity($petId, $_POST['name']);
+            }
+            $this->redirectWithId('nutrition', $petId);
         }
-        return $this->render('nutrition/addSensitivities', ['petId' => $pet['id']]);
+        return $this->render('nutrition/addSensitivities', ['petId' => $petId]);
     }
 
     public function deleteSensitivities() {
@@ -42,11 +47,16 @@ class PetNutritionController extends PetController {
     // FAVORITE FOOD
     public function addFavorite() {
         $pet = $this->getPetOr404($_REQUEST['id'] ?? null);
+        $petId = (int)$pet['id'];
+
         if ($this->isPost()) {
-            $this->petNutritionRepository->addFavoriteFood((int)$pet['id'], $_POST['name']);
-            $this->redirectWithId('nutrition', $pet['id']);
+            $currentCount = count($this->petNutritionRepository->getFavoriteFood($petId));
+            if ($currentCount < 20) {
+                $this->petNutritionRepository->addFavoriteFood($petId, $_POST['name']);
+            }
+            $this->redirectWithId('nutrition', $petId);
         }
-        return $this->render('nutrition/addFavorite', ['petId' => $pet['id']]);
+        return $this->render('nutrition/addFavoriteFood', ['petId' => $petId]);
     }
 
     public function deleteFavorite() {
@@ -56,11 +66,16 @@ class PetNutritionController extends PetController {
     // SUPPLEMENTS
     public function addSupplements() {
         $pet = $this->getPetOr404($_REQUEST['id'] ?? null);
+        $petId = (int)$pet['id'];
+
         if ($this->isPost()) {
-            $this->petNutritionRepository->addSupplement((int)$pet['id'], $_POST['name']);
-            $this->redirectWithId('nutrition', $pet['id']);
+            $currentCount = count($this->petNutritionRepository->getSupplements($petId));
+            if ($currentCount < 20) {
+                $this->petNutritionRepository->addSupplement($petId, $_POST['name']);
+            }
+            $this->redirectWithId('nutrition', $petId);
         }
-        return $this->render('nutrition/addSupplements', ['petId' => $pet['id']]);
+        return $this->render('nutrition/addSupplements', ['petId' => $petId]);
     }
 
     public function deleteSupplements() {
@@ -78,7 +93,10 @@ class PetNutritionController extends PetController {
             if (!empty($scheduleId)) {
                 $this->petNutritionRepository->updateScheduleItem((int)$scheduleId, $_POST['name'], $_POST['time']);
             } else {
-                $this->petNutritionRepository->addScheduleItem($petId, $_POST);
+                $currentCount = count($this->petNutritionRepository->getFeedingSchedule($petId));
+                if ($currentCount < 8) {
+                    $this->petNutritionRepository->addScheduleItem($petId, $_POST);
+                }
             }
             
             $this->redirectWithId('nutrition', $petId);

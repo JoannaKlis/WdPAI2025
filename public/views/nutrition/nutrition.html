@@ -41,7 +41,9 @@
                                   onclick="prepareDelete(this.dataset.id, this.dataset.action)" class="pointer">x</span>
                         </span>
                     <?php endforeach; ?>
-                    <button class="tag alert-tag pointer" onclick="openModal('sensitivitiesModal')">+</button>
+                    <?php if (count($sensitivities) < 20): ?>
+                        <button class="tag alert-tag pointer" onclick="openModal('sensitivitiesModal')">+</button>
+                    <?php endif; ?>
                 </div>
             </div>
 
@@ -59,7 +61,9 @@
                                   onclick="prepareDelete(this.dataset.id, this.dataset.action)" class="pointer">x</span>
                         </span>
                     <?php endforeach; ?>
-                    <button class="tag success-tag pointer" onclick="openModal('favoriteModal')">+</button>
+                    <?php if (count($favorites) < 20): ?>
+                        <button class="tag success-tag pointer" onclick="openModal('favoriteModal')">+</button>
+                    <?php endif; ?>
                 </div>
             </div>
 
@@ -77,7 +81,9 @@
                                   onclick="prepareDelete(this.dataset.id, this.dataset.action)" class="pointer">x</span>
                         </span>
                     <?php endforeach; ?>
-                    <button class="tag purple-tag pointer" onclick="openModal('supplementsModal')">+</button>
+                    <?php if (count($supplements) < 20): ?>
+                        <button class="tag purple-tag pointer" onclick="openModal('supplementsModal')">+</button>
+                    <?php endif; ?>
                 </div>
             </div>
 
@@ -85,7 +91,9 @@
                 <div class="card-header">
                     <img src="public/img/nutrition/clock.png" class="status-icon">
                     <span class="card-title blue-text">Feeding schedule</span>
-                    <button onclick="openModal('scheduleModal')" class="tag blue-tag pointer">+</button>
+                    <?php if (count($schedule) < 8): ?>
+                        <button onclick="openModal('scheduleModal')" class="tag blue-tag pointer">+</button>
+                    <?php endif; ?>
                 </div>
                 <div class="schedule-list">
                     <?php foreach ($schedule as $sch): ?>
