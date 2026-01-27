@@ -17,6 +17,7 @@ class ModalHandler {
             console.error(`Modal with ID '${modalId}' not found.`);
             return;
         }
+        
         modal.style.display = 'flex';
         this._autoFillDefaults(modal);
     }
@@ -28,39 +29,33 @@ class ModalHandler {
         }
     }
 
-    // Uniwersalna funkcja do usuwania
     openDelete(id, actionUrl, modalId = 'deleteModal') {
         const modal = document.getElementById(modalId);
         if (!modal) return;
-
-        // Znajdowanie odpowiedniego inputu na ID
+        
         const idInput = modal.querySelector('input[name="id"]') || 
                         document.getElementById('modalItemId') || 
                         document.getElementById('modalWeightId');
-
         const form = modal.querySelector('form');
-
-        // Ustawienie znalezionego ID
+        
         if (idInput && id) {
             idInput.value = id;
-            // Powiadomienie formularza, że wartość się zmieniła
             idInput.dispatchEvent(new Event('input'));
         }
-
-        // Action URL, jeśli został przekazany
+        
         if (form && actionUrl) {
             form.action = actionUrl;
         }
-
+        
         this.open(modalId);
     }
 
     fillAndOpen(modalId, dataObject) {
         const modal = document.getElementById(modalId);
         if (!modal) return;
-
+        
         const form = modal.querySelector('form');
-
+        
         for (const [key, value] of Object.entries(dataObject)) {
             const input = modal.querySelector(`[name="${key}"]`) || document.getElementById(key);
             if (input) {
@@ -69,7 +64,7 @@ class ModalHandler {
         }
         
         this.open(modalId);
-
+        
         if (form) {
             form.dispatchEvent(new Event('form-data-updated'));
         }
@@ -77,11 +72,12 @@ class ModalHandler {
 
     openWithDate(modalId, dateStr) {
         const modal = document.getElementById(modalId);
-        if (modal) {
-            const dateInput = modal.querySelector('input[type="date"]');
-            if (dateInput) dateInput.value = dateStr;
-            this.open(modalId);
-        }
+        if (!modal) return;
+        
+        const dateInput = modal.querySelector('input[type="date"]');
+        if (dateInput) dateInput.value = dateStr;
+        
+        this.open(modalId);
     }
 
     _autoFillDefaults(modal) {
@@ -89,7 +85,7 @@ class ModalHandler {
         timeInputs.forEach(input => {
             if (!input.value) input.value = DateUtils.getLocalTime();
         });
-
+        
         const dateInputs = modal.querySelectorAll('input[type="date"]');
         dateInputs.forEach(input => {
             if (!input.value) input.value = DateUtils.getLocalDate();
@@ -99,25 +95,17 @@ class ModalHandler {
 
 const modalHandler = new ModalHandler();
 
-// Globalne funkcje
 window.openModal = (id) => modalHandler.open(id);
 window.closeModal = (id) => modalHandler.close(id);
 window.openModalWithDate = (id, date) => modalHandler.openWithDate(id, date);
-
-// Funkcja używana w Kalendarzu i Nutrition (przekazuje ID i URL akcji)
 window.prepareDelete = (id, action) => modalHandler.openDelete(id, action);
-
-// Funkcja używana w Care/Weight oraz EditPet
 window.openDeleteModal = (id = null) => {
     if (id) {
-        // Dla wagi/listy:ID, actionUrl zostawiamy bez zmian
         modalHandler.openDelete(id, null, 'deleteModal');
     } else {
-        // Dla editPet: otwarcie ID
         modalHandler.open('deleteModal');
     }
 };
-
 window.openEditScheduleModal = (id, name, time) => {
     modalHandler.fillAndOpen('scheduleModal', {
         schedule_id: id,
@@ -125,7 +113,6 @@ window.openEditScheduleModal = (id, name, time) => {
         time: time
     });
 };
-
 window.openEditUserModal = (btn) => {
     const data = btn.dataset;
     modalHandler.fillAndOpen('editUserModal', {
@@ -136,7 +123,6 @@ window.openEditUserModal = (btn) => {
         'editRole': data.role
     });
 };
-
 window.openAddScheduleModal = () => {
     modalHandler.fillAndOpen('scheduleModal', {
         schedule_id: '',

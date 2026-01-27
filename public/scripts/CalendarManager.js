@@ -29,7 +29,7 @@ class CalendarManager {
     async addEventAsync() {
         const form = document.querySelector('#addModal form');
         if (!form) return;
-
+        
         const formData = new FormData(form);
         
         try {
@@ -37,11 +37,9 @@ class CalendarManager {
                 method: 'POST',
                 body: formData
             });
-
             const result = await response.json();
-
+            
             if (result.success) {
-                // nowy obiekt eventu na podstawie odpowiedzi serwera i danych z form
                 const newEvent = {
                     id: result.id,
                     title: formData.get('name'),
@@ -51,16 +49,13 @@ class CalendarManager {
                     pet_name: form.querySelector('select[name="pet_id"] option:checked').text,
                     picture_url: result.picture_url 
                 };
-
-                // Dynamiczna aktualizacja stanu i widoku
+                
                 this.serverEvents.push(newEvent);
                 this.renderCalendar();
                 this.injectEventIntoLists(newEvent);
-
-                // Czyszczenie UI
+                
                 form.reset();
                 if (window.closeModal) window.closeModal('addModal');
-                
             } else {
                 alert("Error: " + (result.message || "Unknown error"));
             }
@@ -72,71 +67,67 @@ class CalendarManager {
     injectEventIntoLists(event) {
         const listContainer = document.getElementById('list-view-container');
         const todayContainer = document.getElementById('today-events-list');
-        const todayDate = new Date().toLocaleDateString('sv-SE');
-
-        const imgPath = event.picture_url || 'public/img/others/default_pet.png';
-
-        const cardHTML = `
-            <div class="event-card" id="event-${event.id}">
-                <div class="event-image-container">
-                    <img src="${imgPath}" class="event-image">
+        const todayDate = DateUtils.toISODate(new Date());
+        
+        const createEventCard = (idPrefix = 'event') => {
+            const imgPath = event.picture_url || 'public/img/others/default_pet.png';
+            const displayDate = DateUtils.formatDisplayDate(event.date);
+            
+            return `
+                <div class="event-card" id="${idPrefix}-${event.id}">
+                    <div class="event-image-container">
+                        <img src="${imgPath}" class="event-image">
+                    </div>
+                    <div class="event-details">
+                        <div class="event-title">${event.title}</div>
+                        <div class="event-pet-name">${event.pet_name} • ${displayDate}</div>
+                    </div>
+                    <div class="event-time">${event.time || ''}</div>
+                    <img src="public/img/others/delete_calendar.png" 
+                         class="bin-icon" 
+                         onclick="prepareDelete('${event.id}', '/deleteEvent')">
                 </div>
-                <div class="event-details">
-                    <div class="event-title">${event.title}</div>
-                    <div class="event-pet-name">${event.pet_name} • ${event.date}</div>
-                </div>
-                <div class="event-time">${event.time || ''}</div>
-                <img src="public/img/others/delete_calendar.png" 
-                     class="bin-icon" 
-                     onclick="prepareDelete('${event.id}', '/deleteEvent')">
-            </div>
-        `;
-
+            `;
+        };
+        
         if (event.date >= todayDate && listContainer) {
             const emptyMsg = listContainer.querySelector('.events');
             if (emptyMsg) emptyMsg.remove();
-            listContainer.insertAdjacentHTML('afterbegin', cardHTML);
+            listContainer.insertAdjacentHTML('afterbegin', createEventCard());
         }
-
+        
         if (event.date === todayDate && todayContainer) {
             const emptyToday = todayContainer.querySelector('.noevents');
             if (emptyToday) emptyToday.remove();
-            // Kopia dla listy today's events z innym ID, by nie duplikować ID w DOM
-            const todayCardHTML = cardHTML.replace(`id="event-${event.id}"`, `id="today-event-${event.id}"`);
-            todayContainer.insertAdjacentHTML('afterbegin', todayCardHTML);
+            todayContainer.insertAdjacentHTML('afterbegin', createEventCard('today-event'));
         }
     }
 
     async deleteEventAsync() {
         const idInput = document.getElementById('modalItemId');
         if (!idInput || !idInput.value) return;
-
+        
         const eventId = idInput.value;
         const formData = new FormData();
         formData.append('id', eventId);
-
+        
         try {
             const response = await fetch('/deleteEvent', {
                 method: 'POST',
                 body: formData
             });
-
             const result = await response.json();
-
+            
             if (result.success) {
                 if (window.closeModal) window.closeModal('deleteModal');
                 
-                // Usunięcie z tablicy serverEvents (by kropka zniknęła po renderze)
                 this.serverEvents = this.serverEvents.filter(e => e.id != eventId);
                 this.renderCalendar();
-
-                // Usunięcie z DOM we wszystkich widokach
+                
                 document.getElementById(`event-${eventId}`)?.remove();
                 document.getElementById(`today-event-${eventId}`)?.remove();
                 
-                // Sprawdzenie czy listy nie są puste, by przywrócić komunikaty "No events"
                 this.checkEmptyLists();
-
             } else {
                 alert("Error deleting event");
             }
@@ -146,78 +137,88 @@ class CalendarManager {
     }
 
     checkEmptyLists() {
-        const listContainer = document.getElementById('list-view-container');
-        if (listContainer && listContainer.querySelectorAll('.event-card').length === 0) {
-            listContainer.innerHTML = '<p class="events">There are no upcoming events!</p>';
-        }
-        const todayContainer = document.getElementById('today-events-list');
-        if (todayContainer && todayContainer.querySelectorAll('.event-card').length === 0) {
-            todayContainer.innerHTML = '<div class="noevents">No events for today.</div>';
-        }
+        const containers = [
+            { id: 'list-view-container', msg: '<p class="events">There are no upcoming events!</p>' },
+            { id: 'today-events-list', msg: '<div class="noevents">No events for today.</div>' }
+        ];
+        
+        containers.forEach(({ id, msg }) => {
+            const container = document.getElementById(id);
+            if (container && container.querySelectorAll('.event-card').length === 0) {
+                container.innerHTML = msg;
+            }
+        });
     }
 
     initNavigation() {
-        document.getElementById("prev-month")?.addEventListener("click", () => {
-            this.currentDate.setMonth(this.currentDate.getMonth() - 1);
-            this.renderCalendar();
-        });
-
-        document.getElementById("next-month")?.addEventListener("click", () => {
-            this.currentDate.setMonth(this.currentDate.getMonth() + 1);
-            this.renderCalendar();
+        const navButtons = [
+            { id: "prev-month", direction: -1 },
+            { id: "next-month", direction: 1 }
+        ];
+        
+        navButtons.forEach(({ id, direction }) => {
+            document.getElementById(id)?.addEventListener("click", () => {
+                this.currentDate.setMonth(this.currentDate.getMonth() + direction);
+                this.renderCalendar();
+            });
         });
     }
 
     renderCalendar() {
         if (!this.daysGrid) return;
-
+        
         const year = this.currentDate.getFullYear();
         const month = this.currentDate.getMonth();
         const realToday = new Date();
         realToday.setHours(0, 0, 0, 0);
-
-        const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-        if (this.monthLabel) this.monthLabel.textContent = `${monthNames[month]} ${year}`;
-
+        
+        const monthNames = ["January", "February", "March", "April", "May", "June", 
+                           "July", "August", "September", "October", "November", "December"];
+        
+        if (this.monthLabel) {
+            this.monthLabel.textContent = `${monthNames[month]} ${year}`;
+        }
+        
         const firstDayOfMonth = new Date(year, month, 1).getDay();
-        const startDayIndex = firstDayOfMonth === 0 ? 6 : firstDayOfMonth - 1; 
+        const startDayIndex = firstDayOfMonth === 0 ? 6 : firstDayOfMonth - 1;
         const lastDateOfMonth = new Date(year, month + 1, 0).getDate();
         const lastDateOfPrevMonth = new Date(year, month, 0).getDate();
-
+        
         let daysHTML = "";
-
+        
         // Dni poprzedniego miesiąca
         for (let i = startDayIndex; i > 0; i--) {
             daysHTML += `<div class="day prev-date dimmed">${lastDateOfPrevMonth - i + 1}</div>`;
         }
-
+        
         // Dni bieżącego miesiąca
         for (let i = 1; i <= lastDateOfMonth; i++) {
-            const currentMonthStr = String(month + 1).padStart(2, '0');
-            const currentDayStr = String(i).padStart(2, '0');
-            const fullDate = `${year}-${currentMonthStr}-${currentDayStr}`;
-            
+            const fullDate = DateUtils.toISODate(new Date(year, month, i));
             const renderDate = new Date(year, month, i);
-            let classes = "day";
             
-            if (renderDate.getTime() === realToday.getTime()) classes += " active-day";
-            else if (renderDate < realToday) classes += " dimmed";
-
+            let classes = "day";
+            if (renderDate.getTime() === realToday.getTime()) {
+                classes += " active-day";
+            } else if (renderDate < realToday) {
+                classes += " dimmed";
+            }
+            
             const hasEvent = this.serverEvents.some(e => e.date === fullDate);
             const eventDot = hasEvent ? '<span class="dot"></span>' : '';
-
-            daysHTML += `<div class="${classes}" onclick="openModalWithDate('addModal', '${fullDate}')" style="cursor:pointer; position: relative;">
+            
+            daysHTML += `<div class="${classes}" onclick="openModalWithDate('addModal', '${fullDate}')" 
+                              style="cursor:pointer; position: relative;">
                             ${i} ${eventDot}
                          </div>`;
         }
-
-        // Dni następnego miesiąca (dopełnienie siatki)
+        
+        // Dni następnego miesiąca
         const totalRendered = startDayIndex + lastDateOfMonth;
-        const nextDays = 42 - totalRendered; 
+        const nextDays = 42 - totalRendered;
         for (let i = 1; i <= nextDays; i++) {
             daysHTML += `<div class="day next-date dimmed">${i}</div>`;
         }
-
+        
         this.daysGrid.innerHTML = daysHTML;
     }
 
@@ -226,22 +227,21 @@ class CalendarManager {
         const listTab = document.getElementById('list-tab');
         const calendarView = document.getElementById('calendar-view');
         const listView = document.getElementById('list-view-container');
-
-        // Jeśli brakuje elementów w HTML, przerywamy by nie sypać błędami w konsoli
+        
         if (!calendarTab || !listTab || !calendarView || !listView) return;
-
+        
         const switchView = (activeTab, inactiveTab, showView, hideView) => {
             activeTab.classList.add('active');
             inactiveTab.classList.remove('active');
             showView.style.display = 'block';
             hideView.style.display = 'none';
         };
-
+        
         calendarTab.addEventListener('click', (e) => {
             e.preventDefault();
             switchView(calendarTab, listTab, calendarView, listView);
         });
-
+        
         listTab.addEventListener('click', (e) => {
             e.preventDefault();
             switchView(listTab, calendarTab, listView, calendarView);
@@ -249,11 +249,9 @@ class CalendarManager {
     }
 }
 
-// Inicjalizacja globalna
 let calendarManager;
 document.addEventListener("DOMContentLoaded", () => {
     calendarManager = new CalendarManager();
 });
 
-// Eksporty dla onclick w HTML
 window.deleteEvent = () => calendarManager.deleteEventAsync();
