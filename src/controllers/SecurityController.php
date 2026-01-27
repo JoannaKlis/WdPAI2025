@@ -57,6 +57,12 @@ class SecurityController extends AppController {
             exit();
         }
 
+        // Sprawdzenie bana
+        if ($this->userRepository->isUserBanned($user['id'])) {
+            echo json_encode(['success' => false, 'message' => 'Your account has been banned!']);
+            exit();
+        }
+
         // Sukces logowania - reset prób i sesja
         unset($_SESSION['login_attempts']);
         unset($_SESSION['lockout_until']);

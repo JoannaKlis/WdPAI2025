@@ -20,15 +20,14 @@ class UserRepository extends Repository {
         return self::$instance;
     }
 
-    public function getUsers(): ?array 
-    {
-        $query = $this->database->connect()->prepare(
-            "
-            SELECT * FROM users ORDER BY id ASC;
-            "
-        );
+    public function getUsers(): ?array {
+        $query = $this->database->connect()->prepare("
+            SELECT u.*, (b.user_id IS NOT NULL) as is_banned 
+            FROM users u 
+            LEFT JOIN user_bans b ON u.id = b.user_id 
+            ORDER BY u.id ASC
+        ");
         $query->execute();
-
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -103,5 +102,33 @@ class UserRepository extends Repository {
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->execute();
         });
+    }
+
+    public function isUserBanned(int $userId): bool {
+        $stmt = $this->database->connect()->prepare('
+            SELECT 1 FROM user_bans WHERE user_id = :id
+        ');
+        $stmt->bindParam(':id', $userId, PDO::PARAM_INT);
+        $stmt->execute();
+        return (bool)$stmt->fetch();
+    }
+
+    public function banUser(int $userId, string $reason = 'No reason provided'): void {
+        $stmt = $this->database->connect()->prepare('
+            INSERT INTO user_bans (user_id, reason) 
+            VALUES (:id, :reason)
+            ON CONFLICT (user_id) DO NOTHING
+        ');
+        $stmt->bindParam(':id', $userId, PDO::PARAM_INT);
+        $stmt->bindParam(':reason', $reason, PDO::PARAM_STR);
+        $stmt->execute();
+    }
+
+    public function unbanUser(int $userId): void {
+        $stmt = $this->database->connect()->prepare('
+            DELETE FROM user_bans WHERE user_id = :id
+        ');
+        $stmt->bindParam(':id', $userId, PDO::PARAM_INT);
+        $stmt->execute();
     }
 }

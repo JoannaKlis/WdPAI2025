@@ -52,12 +52,19 @@
                                     data-lastname="<?= htmlspecialchars($u['lastname']) ?>"
                                     data-email="<?= htmlspecialchars($u['email']) ?>"
                                     data-role="<?= $u['role'] ?>"
-                                    onclick="openEditUserModal(this)">Edit</button>
-
+                                    onclick="openEditUserModal(this)">Edit
+                                </button>
                                 <button type="button" class="tag alert-tag pointer"
                                     data-id="<?= $u['id'] ?>"
                                     data-action="/deleteUser"
-                                    onclick="prepareDelete(this.dataset.id, this.dataset.action)">Delete</button>
+                                    onclick="prepareDelete(this.dataset.id, this.dataset.action)">Delete
+                                </button>
+                                <form action="/toggleBan" method="POST">
+                                    <input type="hidden" name="id" value="<?= $u['id'] ?>">
+                                    <button type="submit" class="tag <?= $u['is_banned'] ? 'blue-tag' : 'purple-tag' ?> pointer">
+                                        <?= $u['is_banned'] ? 'Unban' : 'Ban' ?>
+                                    </button>
+                                </form>
                             <?php else: ?>
                                 <span class="small-text">(You)</span>
                             <?php endif; ?>

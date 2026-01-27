@@ -98,6 +98,7 @@ class Routing {
             "admin" => ["controller" => "AdminController", "action" => "index"],
             "editUser" => ["controller" => "AdminController", "action" => "editUser"],
             "deleteUser" => ["controller" => "AdminController", "action" => "deleteUser"],
+            "toggleBan" => ["controller" => "AdminController", "action" => "toggleBan"],
 
             // PETS
             "pets" => ["controller" => "PetController", "action" => "pets"],

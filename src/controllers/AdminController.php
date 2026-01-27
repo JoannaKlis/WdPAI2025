@@ -53,4 +53,22 @@ class AdminController extends AppController {
         header("Location: /admin");
         exit;
     }
+
+    public function toggleBan() {
+        $this->checkAdmin();
+
+        if ($this->isPost()) {
+            $userId = (int)$_POST['id'];
+        
+            if ($userId != $_SESSION['user_id']) {
+                if ($this->userRepository->isUserBanned($userId)) {
+                    $this->userRepository->unbanUser($userId);
+                } else {
+                    $this->userRepository->banUser($userId, "Banned by administrator");
+                }
+            }
+        }
+
+        header("Location: /admin");
+    }
 }
