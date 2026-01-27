@@ -5,10 +5,7 @@ require_once __DIR__ . "/../Database.php";
 class Repository {
     protected $database;
 
-    public function __construct()
-    {
-        $this->database = Database::getInstance();
-    }
+    public function __construct() { $this->database = Database::getInstance(); }
 
     // Metoda do obsługi transakcji
     protected function executeTransaction(callable $callback) {
@@ -76,6 +73,21 @@ class Repository {
         $stmt = $this->database->connect()->prepare($sql);
         foreach ($data as $column => $value) {
             $stmt->bindValue(":$column", $value);
+        }
+        $stmt->execute();
+    }
+
+    // Uniwersalny update
+    protected function update(string $table, int $id, array $data): void {
+        $sets = [];
+        foreach (array_keys($data) as $column) {
+            $sets[] = "$column = :$column";
+        }
+        $sql = "UPDATE $table SET " . implode(', ', $sets) . " WHERE id = :id";
+        $stmt = $this->database->connect()->prepare($sql);
+        $data['id'] = $id;
+        foreach ($data as $key => $value) {
+            $stmt->bindValue(":$key", $value);
         }
         $stmt->execute();
     }

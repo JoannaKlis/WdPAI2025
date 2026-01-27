@@ -1,40 +1,26 @@
 <?php
-
 require_once 'Repository.php';
 
 class PetRepository extends Repository {
-
-    // SINGLETON
     private static $instance = null;
+    private function __construct() { parent::__construct(); }
 
-    private function __construct()
-    {
-        parent::__construct();
-    }
-
-    public static function getInstance(): PetRepository
-    {
-        if (self::$instance === null) {
-            self::$instance = new PetRepository();
-        }
-
-        return self::$instance;
+    public static function getInstance(): PetRepository {
+        return self::$instance ??= new self();
     }
 
     public function addPet(array $data, int $userId, ?string $pictureUrl = null): void {
-        $this->executeTransaction(function() use ($data, $userId, $pictureUrl) {
-            $this->insert('pets', [
-                'user_id' => $userId,
-                'pet_type' => $data['type'],
-                'name' => $data['name'],
-                'birth_date' => $data['birthDate'],
-                'sex' => $data['sex'],
-                'breed' => $data['breed'],
-                'color' => $data['color'],
-                'microchip_number' => $data['microchip'],
-                'picture_url' => $pictureUrl
-            ]);
-        });
+        $this->insert('pets', [
+            'user_id' => $userId,
+            'pet_type' => $data['type'],
+            'name' => $data['name'],
+            'birth_date' => $data['birthDate'],
+            'sex' => $data['sex'],
+            'breed' => $data['breed'],
+            'color' => $data['color'],
+            'microchip_number' => $data['microchip'],
+            'picture_url' => $pictureUrl
+        ]);
     }
 
     public function countUserPets(int $userId): int {
@@ -67,37 +53,21 @@ class PetRepository extends Repository {
     }
 
     public function updatePet(int $id, array $data, ?string $pictureUrl = null): void {
-        $this->executeTransaction(function() use ($id, $data, $pictureUrl) {
-            $sql = "UPDATE pets SET 
-                    name = :name, 
-                    pet_type = :type, 
-                    birth_date = :birthDate, 
-                    sex = :sex, 
-                    breed = :breed, 
-                    color = :color, 
-                    microchip_number = :microchip";
-            
-            $params = [
-                ':name' => $data['name'],
-                ':type' => $data['type'],
-                ':birthDate' => $data['birthDate'],
-                ':sex' => $data['sex'],
-                ':breed' => $data['breed'],
-                ':color' => $data['color'],
-                ':microchip' => $data['microchip'],
-                ':id' => $id
-            ];
+        $updateData = [
+            'name' => $data['name'],
+            'pet_type' => $data['type'],
+            'birth_date' => $data['birthDate'],
+            'sex' => $data['sex'],
+            'breed' => $data['breed'],
+            'color' => $data['color'],
+            'microchip_number' => $data['microchip']
+        ];
 
-            if ($pictureUrl) {
-                $sql .= ", picture_url = :pictureUrl";
-                $params[':pictureUrl'] = $pictureUrl;
-            }
+        if ($pictureUrl) {
+            $updateData['picture_url'] = $pictureUrl;
+        }
 
-            $sql .= " WHERE id = :id";
-
-            $stmt = $this->database->connect()->prepare($sql);
-            $stmt->execute($params);
-        });
+        $this->update('pets', $id, $updateData);
     }
 
     public function deletePet(int $id): void {
