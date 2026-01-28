@@ -294,7 +294,6 @@ public function login() {
 
     // Żądanie POST: przetwarzamy dane i logujemy użytkownika
     header('Content-Type: application/json');
-    // ... dalsza logika bezpieczeństwa
 }
 ```
 
@@ -731,4 +730,5 @@ Po poprawnym zalogowaniu, system kieruje użytkownika do centralnego punktu apli
 
 ---
 # 🔜 Plany na przyszłość
+
 
