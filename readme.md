@@ -1,5 +1,482 @@
 # 🐾 PetNotes
 ### PetNotes to kompleksowy system zarządzania zdrowiem i codzienną opieką twoich pupili.<br>Aplikacja pozwala właścicielom na monitorowanie wizyt u weterynarza, harmonogramów karmienia, zabiegów pielęgnacyjnych czy prowadzenie kalendarza wydarzeń.
+
+---
+# 📈 Architektura
+Architektura projektu opiera się na wzorcu MVC (Model-View-Controller), wspieranym przez wzorce Repository oraz Singleton.
+<p align="center">
+  <img width="450" height="450" alt="architektura" src="https://github.com/user-attachments/assets/060f65cd-cdbb-4454-82da-646c2281f83e" />
+</p>
+
+* ***Models (Modele & Repozytoria):*** Klasy takie jak UserRepository.php izolują logikę zapytań SQL od reszty aplikacji. Dzięki temu kontrolery nie muszą wiedzieć, jak skonstruowane są tabele w bazie.
+* ***Views (Widoki):*** Szablony HTML, znajdują się w katalogu public/views/.
+* ***Controllers (Kontrolery):*** Klasy takie jak SecurityController czy AppController odpowiadają za obsługę logiki i przepływ danych. AppController stanowi klasę bazową, dostarczając wspólne metody dla autoryzacji i renderowania widoków.
+
+---
+# 📊 Baza danych PostgreSQL
+<p align="center">
+  <img width="1200" height="1200" alt="baza" src="https://github.com/user-attachments/assets/cf4cc70e-2369-44f1-a792-b3a9dfb657b2" />
+</p>
+
+## 🖧 Relacje i Akcje na Referencjach
+* ***Relacja Jeden-do-Jednego (1:1):*** Tabela user_bans posiada kolumnę user_id, która jest zdefiniowana jako PRIMARY KEY oraz REFERENCES users(id), dany użytkownik może mieć tylko jeden wpis o banie.
+* ***Relacja Jeden-do-Wielu (1:N):*** Jeden użytkownik (users) może posiadać wiele zwierząt (pets). Jedno zwierzę posiada wiele szczepień, wag.
+* ***Relacja Wiele-do-Wielu (M:N):*** Tabela event_participants łączy global_events ze zwierzętami (pets), pozwalając wielu zwierzętom uczestniczyć w jednym wydarzeniu.
+* ***ON DELETE CASCADE:*** Zastosowano tę akcję we wszystkich kluczach obcych. Oznacza to, że usunięcie użytkownika automatycznie usuwa jego zwierzęta, a usunięcie zwierzaka usuwa całą jego historię medyczną i żywieniową.
+
+## 👁️ Widoki
+* ***v_pet_events_calendar:*** Łączy wydarzenia z danymi właściciela i zwierzęcia przy użyciu wielokrotnego JOIN. Pozwala to aplikacji pobrać "tytuł wydarzenia" i "zdjęcie pupila" jednym zapytaniem.
+* ***v_pet_medical_history:*** Wykorzystuje operator UNION ALL do stworzenia jednolitej osi czasu z czterech różnych tabel (szczepienia, zabiegi, odrobaczanie, wizyty).
+
+## ⚙️ Funkcje i wyzwalacze
+* ***calculate_pet_age:*** Funkcja dynamicznie oblicza wiek zwierzęcia na podstawie daty urodzenia, zwracając czytelny tekst (np. "2 years" lub "1 month").
+* ***log_sensitive_user_changes:*** Funkcja wyzwalacza śledząca zmiany roli administratora lub usuwanie użytkowników.
+* ***trigger_audit_user_changes:*** Automatycznie zapisuje wpis w audit_logs po każdej operacji UPDATE lub DELETE na tabeli użytkowników.
+
+## 📑 Transakcje
+* ***READ COMMITTED w Repository.php:*** addPetEvent w PetEventRepository.php wykonuje dwie operacje INSERT (do global_events i event_participants) wewnątrz jednego bloku transakcyjnego. Jeśli dodanie uczestnika zawiedzie, system wycofa (Rollback) utworzenie samego wydarzenia.
+
+## 𝖩𝗈𝗂𝗇 ➥
+```
+SELECT p.user_id 
+FROM event_participants ep
+JOIN pets p ON ep.pet_id = p.id
+WHERE ep.event_id = :eventId
+LIMIT 1;
+```
+
+---
+# 🔄 Fetch API
+* ***Rejestracja i Logowanie (AuthFormHandler):*** Wyświetla komunikaty o błędach bez konieczności odświeżania.
+```
+const response = await fetch(this.endpoint, {
+    method: 'POST',
+    body: new FormData(this.form) // Automatyczne pakowanie danych formularza
+});
+const result = await response.json(); // Dekodowanie odpowiedzi z PHP
+
+if (result.success) {
+    window.location.href = result.redirect; // Przekierowanie po sukcesie
+} else {
+    this.displayError(result.message); // Wyświetlenie błędu bez przeładowania
+}
+```
+* ***Dodawanie nowych wydarzeń (CalendarManager.js):*** W kalendarzu Fetch API jest wykorzystywane do przesyłania nowych wydarzeń do bazy danych. Po otrzymaniu sukcesu z serwera, JavaScript dynamicznie aktualizuje tablicę zdarzeń i interfejs (wstrzykuje kod HTML), co daje efekt natychmiastowego zapisu.
+```
+const response = await fetch('/addEvent', {
+    method: 'POST',
+    body: formData
+});
+const result = await response.json();
+
+if (result.success) {
+    const newEvent = { id: result.id, ... }; // Tworzenie obiektu z danych serwera
+    this.serverEvents.push(newEvent); // Aktualizacja lokalnej tablicy
+    this.renderCalendar(); // Ponowne renderowanie kalendarza z nową kropką
+    this.injectEventIntoLists(newEvent); // Dodanie karty do listy "Upcoming events"
+}
+```
+* ***Usuwanie wydarzeń (CalendarManager.js):*** Po potwierdzeniu usunięcia w bazie przez serwer, skrypt usuwa odpowiedni element z DOM (używając selektora ID), co sprawia, że karta zdarzenia znika na oczach użytkownika.
+```
+const response = await fetch('/deleteEvent', {
+    method: 'POST',
+    body: formData
+});
+const result = await response.json();
+
+if (result.success) {
+    // Usunięcie elementu z lokalnej tablicy i z widoku DOM
+    this.serverEvents = this.serverEvents.filter(e => e.id != eventId);
+    document.getElementById(`event-${eventId}`)?.remove(); 
+    this.checkEmptyLists(); // Sprawdzenie, czy lista jest pusta, by pokazać komunikat
+}
+```
+
+---
+# ➜] Logowanie
+* ***Blokada wielu prób logowania:***
+  * Mechanizm blokady: Jeśli licznik nieudanych logowań osiągnie wartość MAX_LOGIN_ATTEMPTS (5), system ustawia czas blokady na 5 minut.
+  * Weryfikacja: Przy każdym żądaniu sprawdzany jest czas pozostały do końca blokady.
+```
+if (isset($_SESSION['lockout_until']) && $_SESSION['lockout_until'] > time()) {
+    $minutes = ceil(($_SESSION['lockout_until'] - time()) / 60);
+    echo json_encode([
+        'success' => false, 
+        'message' => "Too many failed attempts. Try again in $minutes minute(s)."
+    ]);
+    exit();
+}
+```
+* ***Pobranie Użytkownika i Weryfikacja Hasła:***
+  * Pobranie danych: Metoda getUserByEmail wykonuje zapytanie SQL SELECT do tabeli users.
+  * Weryfikacja kryptograficzna: Hasło przysłane przez użytkownika jest porównywane z zahashowaną wersją (BCRYPT) zapisaną w bazie za pomocą password_verify.
+```
+$user = $this->userRepository->getUserByEmail($email);
+
+if (!$user || !password_verify($password, $user['password'])) {
+    $this->registerFailedAttempt(); // Zwiększa licznik prób
+    echo json_encode(['success' => false, 'message' => 'Incorrect email or password!']);
+    exit();
+}
+```
+* ***Sprawdzenie statusu blokady (Ban):***
+  * Relacja 1:1: System sprawdza istnienie rekordu w tabeli user_bans.
+  * Decyzja: Jeśli użytkownik jest zbanowany, proces logowania zostaje przerwany mimo poprawnego hasła.
+```
+if ($this->userRepository->isUserBanned($user['id'])) {
+    echo json_encode(['success' => false, 'message' => 'Your account has been banned!']);
+    exit();
+}
+```
+
+---
+# 🕒 Sesja uytkownika
+* ***Inicjalizacja sesji (Routing.php):*** Sesja jest uruchamiana globalnie w punkcie wejścia aplikacji. Dzięki umieszczeniu session_start() w konstruktorze klasy Routing, mamy pewność, że dane sesyjne są dostępne dla każdego kontrolera.
+```
+private function __construct() {
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    $this->registerRoutes();
+}
+```
+* ***Tworzenie sesji podczas logowania (SecurityController.php):*** W momencie poprawnego uwierzytelnienia, kluczowe dane użytkownika są zapisywane w superglobalnej tablicy $_SESSION.
+```
+session_regenerate_id(true); // Generuje nowy identyfikator sesji
+
+$_SESSION['user_id'] = $user['id'];
+$_SESSION['user_email'] = $user['email'];
+$_SESSION['user_role'] = $user['role'];
+$_SESSION['last_activity'] = time(); // Znacznik czasu dla timeoutu
+```
+* ***Weryfikacja i utrzymanie sesji (AppController.php):*** Każdy kontroler dziedziczy po AppController, który zawiera metodę checkAuthentication(). Jest ona wywoływana przed dostępem do chronionych zasobów (np. profilu czy kalendarza):
+  * Zabezpieczenie Cache: Nagłówki blokują zapisywanie wrażliwych stron w pamięci przeglądarki.
+  * Auto-Logout (Timeout): Jeśli użytkownik jest nieaktywny przez więcej niż 15 minut (900 sekund), sesja wygasa.
+```
+protected function checkAuthentication() {
+        // Blokada cache przeglądarki
+        header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+        header("Pragma: no-cache");
+
+        $timeout_duration = 900; // 15 minut
+
+        // Sprawdzenie timeoutu (tylko jeśli sesja istnieje)
+        if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) > $timeout_duration) {
+            $this->logoutAndRedirect('401');
+        }
+
+        // Sprawdzenie czy użytkownik jest zalogowany
+        if (!isset($_SESSION['user_id'])) {
+            // Jeśli nie ma sesji -> idź do logowania
+            header("Location: /login");
+            exit();
+        }
+
+        // Odświeżenie czasu ostatniej aktywności
+        $_SESSION['last_activity'] = time();
+    }
+```
+
+---
+# ⏻ Wylogowywanie
+* ***Manualne wylogowanie (SecurityController):*** Kiedy użytkownik kliknie przycisk "Logout", wywoływana jest metoda logout(), która czyści tablicję sesji, usuwa ciasteczko sesyjne, niszczy sesję i przekierowuje na stronę logowania.
+```
+public function logout() {
+    $_SESSION = array(); // Czyszczenie zmiennych
+
+    if (ini_get("session.use_cookies")) {
+        $params = session_get_cookie_params();
+        setcookie(session_name(), '', time() - 42000, // Kasowanie ciasteczka
+            $params["path"], $params["domain"],
+            $params["secure"], $params["httponly"]
+        );
+    }
+
+    session_destroy(); // Zniszczenie sesji na serwerze
+    $this->redirect('login'); // Powrót do logowania
+    exit();
+}
+```
+* ***Automatyczne wylogowanie po czasie (Timeout):*** Jeśli użytkownik nie podejmie żadnej akcji przez 15 minut, system wyloguje go automatycznie przy próbie odświeżenia strony.
+```
+$timeout_duration = 900; // 15 minut
+
+if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) > $timeout_duration) {
+    $this->logoutAndRedirect('401');
+}
+```
+
+---
+# 🎭 Role i uprawnienia użytkowników
+* ***Rola User:*** Ma dostęp do funkcji związanych z własnymi zwierzętami, profilem oraz kalendarzem.
+* ***Rola Admin:*** Posiada uprawnienia do panelu administracyjnego, zarządzania wszystkimi użytkownikami oraz ich blokowania.
+```
+// Blokada dla zwykłych użytkowników (tylko Admin ma wstęp)
+protected function checkAdmin() {
+    $this->checkAuthentication(); // Sprawdza czy w ogóle zalogowany
+    if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
+        $this->redirect('403'); // Błąd Forbidden
+    }
+}
+
+// Blokada dla Adminów (np. Admin nie zarządza własnymi zwierzętami w tym widoku)
+protected function checkUser() {
+    $this->checkAuthentication();
+    if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin') {
+        $this->redirect('403');
+    }
+}
+```
+
+---
+# 🛠️ Zarządzanie użytkownikami
+Administrator zarządza użytkownikami poprzez UserRepository, który dostarcza metody do modyfikacji danych oraz nakładania blokad.
+* ***Pobieranie listy użytkowników:*** System wykonuje złączenie LEFT JOIN z tabelą banów, aby wyświetlić status każdego konta.
+* ***Edycja przez Admina:*** Możliwość zmiany imienia, nazwiska, e-maila oraz roli innego użytkownika.
+* ***System Banowania:*** Relacja 1:1 między tabelą users a user_bans pozwala na trwałe lub czasowe wykluczenie użytkownika.
+```
+public function banUser(int $userId, string $reason = 'No reason provided'): void {
+    $stmt = $this->database->connect()->prepare('
+        INSERT INTO user_bans (user_id, reason) 
+        VALUES (:id, :reason)
+        ON CONFLICT (user_id) DO NOTHING
+    ');
+    $stmt->bindParam(':id', $userId, PDO::PARAM_INT);
+    $stmt->bindParam(':reason', $reason, PDO::PARAM_STR);
+    $stmt->execute();
+}
+```
+
+---
+# 🛡️ Bezpieczestwo
+1. Ochrona przed SQL Injection
+```
+$query = $this->database->connect()->prepare("SELECT * FROM users WHERE email = :email;");
+$query->bindParam(':email', $email);
+$query->execute();
+```
+2. Nie zdradzam czy email istnieje
+```
+if (!$user || !password_verify($password, $user['password'])) {
+    $this->registerFailedAttempt();
+    echo json_encode(['success' => false, 'message' => 'Incorrect email or password!']);
+    exit();
+}
+```
+3. Walidacja formatu email po stronie serwera
+```
+$genericEmailError = 'Email address is incorrect!';
+
+if (!filter_var($email, FILTER_VALIDATE_EMAIL) || $this->userRepository->getUserByEmail($email)) {
+    echo json_encode(['success' => false, 'message' => $genericEmailError]);
+    exit();
+}
+```
+4. UserRepository zarządzany jako singleton
+```
+class UserRepository extends Repository {
+    private static $instance = null;
+
+    private function __construct() { 
+        parent::__construct(); 
+    }
+
+    public static function getInstance(): UserRepository {
+        return self::$instance ??= new self();
+    }
+```
+5. Metoda login/register przyjmuje dane tylko na POST, GET tylko renderuje widok
+```
+public function login() {
+    if (!$this->isPost()) {
+        return $this->render("auth/login"); // Żądanie GET: tylko wyświetlamy formularz
+    }
+
+    // Żądanie POST: przetwarzamy dane i logujemy użytkownika
+    header('Content-Type: application/json');
+    // ... dalsza logika bezpieczeństwa
+}
+```
+
+6. Ograniczam długość wejścia (email, hasło, imię, ...)
+```
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    firstname VARCHAR(150) NOT NULL,
+    lastname VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(200) NOT NULL,
+    ...
+);
+```
+```
+if ($this->petRepository->countUserPets($userId) >= 50) {
+    header("Location: /pets?error=limit_reached");
+    exit;
+}
+```
+7. Hasła przechowywane jako hash
+```
+$this->userRepository->createUser(
+    $firstname, 
+    $lastname, 
+    $email, 
+    password_hash($password, PASSWORD_BCRYPT)
+);
+```
+8. Hasła nigdy nie są logowane w logach/errorach
+```
+if (!$user || !password_verify($password, $user['password'])) {
+    $this->registerFailedAttempt(); // Loguje tylko fakt próby, nie jej treść
+    echo json_encode(['success' => false, 'message' => 'Incorrect email or password!']);
+    exit();
+}
+```
+9. Po poprawnym logowaniu regeneruję ID sesji
+```
+unset($_SESSION['login_attempts'], $_SESSION['lockout_until']);
+
+session_regenerate_id(true); 
+
+$_SESSION['user_id'] = $user['id'];
+$_SESSION['user_email'] = $user['email'];
+$_SESSION['user_role'] = $user['role'];
+```
+10. Cookie sesyjne ma flagi HttpOnly i Secure
+```
+public function logout() {
+    $_SESSION = array();
+
+    if (ini_get("session.use_cookies")) {
+        $params = session_get_cookie_params(); // Pobranie parametrów, m.in. httponly
+        setcookie(session_name(), '', time() - 42000,
+            $params["path"], $params["domain"],
+            $params["secure"], $params["httponly"] // Użycie flagi HttpOnly i Secure
+        );
+    }
+
+    session_destroy();
+    $this->redirect('login');
+}
+```
+11. Limit prób logowania / blokada czasowa / CAPTCHA po wielu nieudanych próbach
+```
+private const MAX_LOGIN_ATTEMPTS = 5;
+private const LOCKOUT_TIME = 300; // 5 minut
+
+if (isset($_SESSION['lockout_until']) && $_SESSION['lockout_until'] > time()) {
+    $minutes = ceil(($_SESSION['lockout_until'] - time()) / 60);
+    echo json_encode([
+        'success' => false, 
+        'message' => "Too many failed attempts. Try again in $minutes minute(s)."
+    ]);
+    exit();
+}
+```
+12. Waliduję złośoność hasła
+```
+private function isValidPassword(string $password): bool {
+    return strlen($password) >= 13 && 
+           preg_match('/[A-Z]/', $password) && 
+           preg_match('/[0-9]/', $password) && 
+           preg_match('/[^A-Za-z0-9]/', $password);
+}
+```
+13. Przy rejestracji sprawdzam, czy email jest już w bazie
+```
+$genericEmailError = 'Email address is incorrect!';
+
+if (!filter_var($email, FILTER_VALIDATE_EMAIL) || $this->userRepository->getUserByEmail($email)) {
+    echo json_encode(['success' => false, 'message' => $genericEmailError]);
+    exit();
+}
+```
+14. Dane wyświetlane w widokach są escapowane
+```
+protected function render(?string $template = null, array $variables = []) {
+    if ($template === null) return;
+    $templatePath = 'public/views/' . $template . '.html';
+    if (!empty($variables)) extract($variables); // Kontrolowane przekazanie zmiennych do widoku
+    ob_start();
+    include file_exists($templatePath) ? $templatePath : 'public/views/errors/404.html';
+    echo ob_get_clean(); // Wyświetlenie bezpiecznie przetworzonego bufora
+}
+```
+```
+protected function validateAndSanitizeFloat(string $input): ?string {
+    $cleanInput = str_replace(',', '.', $input);
+    // Jeśli wejście nie jest numeryczne, zwraca null
+    return (!is_numeric($cleanInput) || (float)$cleanInput <= 0) ? null : $cleanInput;
+}
+```
+15. W produkcji nie pokazuję stack trace / surowych błędów użytkownika
+```
+protected function renderError(int $code, string $message = '') {
+    http_response_code($code); // Ustawienie poprawnego kodu HTTP
+    
+    // Przekazanie tylko zdefiniowanego komunikatu, bez stack trace
+    return $this->render("errors/{$code}", [
+        'errorMessage' => $message,
+        'backUrl' => $_SERVER['HTTP_REFERER'] ?? '/welcome'
+    ]);
+}
+```
+16. Zwracam sensowne kody HTTP
+```
+protected function getValidatedFloat(string $key, string $errorMessage = "Incorrect data format!"): string {
+    $value = $this->validateAndSanitizeFloat($_POST[$key] ?? '');
+    
+    if ($value === null) {
+        $this->renderError(422, $errorMessage); // Zwraca 422 przy błędzie walidacji
+        exit;
+    }
+    return $value;
+}
+```
+```
+if (!$event || $this->petEventRepository->getEventOwnerId($eventId) !== $_SESSION['user_id']) {
+    http_response_code(403); // Blokada dostępu do cudzych zdarzeń
+    header('Content-Type: application/json');
+    echo json_encode(['success' => false, 'message' => 'Unauthorized']);
+    exit;
+}
+```
+17. Hasło nie jest przekazywane do widoków ani echo/var_dump
+```
+if ($password !== $confirmedPassword) {
+    // Zwraca tylko informację o błędzie, nie echo haseł
+    echo json_encode(['success' => false, 'message' => 'Passwords should be the same!']);
+    exit();
+}
+```
+18. Z bazy pobieram tylko minimalny zestaw danych o użytkowniku
+```
+// Sukces logowania - do sesji trafiają tylko niezbędne identyfikatory
+session_regenerate_id(true);
+$_SESSION['user_id'] = $user['id'];
+$_SESSION['user_email'] = $user['email'];
+$_SESSION['user_role'] = $user['role'];
+// Dane takie jak data rejestracji czy hash hasła są odrzucane po weryfikacji
+```
+19. Mam poprawne wylogowanie - niszczy sesję użytkownika
+```
+public function logout() {
+    $_SESSION = array(); // Czyszczenie zmiennych
+
+    if (ini_get("session.use_cookies")) {
+        $params = session_get_cookie_params();
+        setcookie(session_name(), '', time() - 42000, // Kasowanie ciasteczka
+            $params["path"], $params["domain"],
+            $params["secure"], $params["httponly"]
+        );
+    }
+
+    session_destroy(); // Zniszczenie sesji na serwerze
+    $this->redirect('login'); // Powrót do logowania
+    exit();
+}
+```
+
 ---
 ## 🔐 Autoryzacja i Bezpieczeństwo
 Proces weryfikacji danych w formularzach logowania i rejestracji odbywa się asynchronicznie w czasie rzeczywistym. Dzięki wykorzystaniu Fetch API, system komunikuje się z serwerem w tle, pozwalając na natychmiastowe wyświetlanie komunikatów o błędach bez konieczności przeładowywania strony.
@@ -253,19 +730,4 @@ Po poprawnym zalogowaniu, system kieruje użytkownika do centralnego punktu apli
 </p>
 
 ---
-# 📈 Architektura
-Architektura projektu opiera się na wzorcu MVC (Model-View-Controller), wspieranym przez wzorce Repository oraz Singleton.
-<p align="center">
-  <img width="450" height="450" alt="architektura" src="https://github.com/user-attachments/assets/060f65cd-cdbb-4454-82da-646c2281f83e" />
-</p>
-* ***Models (Modele & Repozytoria):*** Klasy takie jak UserRepository.php izolują logikę zapytań SQL od reszty aplikacji. Dzięki temu kontrolery nie muszą wiedzieć, jak skonstruowane są tabele w bazie.
-* ***Views (Widoki):*** Szablony HTML, znajdują się w katalogu public/views/.
-* ***Controllers (Kontrolery):*** Klasy takie jak SecurityController czy AppController odpowiadają za obsługę logiki i przepływ danych. AppController stanowi klasę bazową, dostarczając wspólne metody dla autoryzacji i renderowania widoków.
-
----
-# 📊 Baza danych PostgreSQL
-<p align="center">
-  <img width="1200" height="1200" alt="baza" src="https://github.com/user-attachments/assets/cf4cc70e-2369-44f1-a792-b3a9dfb657b2" />
-</p>
-
-## Relacje i Akcje na Referencjach
+# 🔜 Plany na przyszłość
