@@ -730,5 +730,9 @@ Po poprawnym zalogowaniu, system kieruje użytkownika do centralnego punktu apli
 
 ---
 # 🔜 Plany na przyszłość
+1. System dwuetapowej weryfikacji
+2. Rozbudowa Panelu Admina o statystyki
+3. Moduł powiadomień e-mail
+4. Powiadomienia w czasie rzeczywistym
 
 
