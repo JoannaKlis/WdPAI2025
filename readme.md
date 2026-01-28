@@ -130,7 +130,7 @@ if ($this->userRepository->isUserBanned($user['id'])) {
 ```
 
 ---
-# 🕒 Sesja uytkownika
+# 🕒 Sesja użytkownika
 * ***Inicjalizacja sesji (Routing.php):*** Sesja jest uruchamiana globalnie w punkcie wejścia aplikacji. Dzięki umieszczeniu session_start() w konstruktorze klasy Routing, mamy pewność, że dane sesyjne są dostępne dla każdego kontrolera.
 ```
 private function __construct() {
@@ -731,3 +731,4 @@ Po poprawnym zalogowaniu, system kieruje użytkownika do centralnego punktu apli
 
 ---
 # 🔜 Plany na przyszłość
+
