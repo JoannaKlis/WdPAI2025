@@ -41,7 +41,7 @@ class Database {
             return $this->conn;
         }
         catch(PDOException $e) {
-            include 'public/views/500.html';
+            include 'public/views/errors/500.html';
             exit();
         }
     }
