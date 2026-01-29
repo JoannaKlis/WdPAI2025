@@ -1,3 +1,7 @@
+**© 2026 Joanna Kliś | All rights reserved.**
+
+This work is legally protected and requires written permission for use.
+
 # 🐾 PetNotes
 ### PetNotes to kompleksowy system zarządzania zdrowiem i codzienną opieką twoich pupili.<br>Aplikacja pozwala właścicielom na monitorowanie wizyt u weterynarza, harmonogramów karmienia, zabiegów pielęgnacyjnych czy prowadzenie kalendarza wydarzeń.
 
@@ -734,5 +738,6 @@ Po poprawnym zalogowaniu, system kieruje użytkownika do centralnego punktu apli
 2. Rozbudowa Panelu Admina o statystyki
 3. Moduł powiadomień e-mail
 4. Powiadomienia w czasie rzeczywistym
+
 
 
