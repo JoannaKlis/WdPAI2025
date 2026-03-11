@@ -30,17 +30,17 @@ WORKDIR /app
 # kopiowanie kodu
 COPY . /app
 
-# php config
+# konfiguracja PHP
 COPY docker/php/php.ini /usr/local/etc/php/php.ini
 
-# nginx config
-COPY docker/nginx/nginx.conf /etc/nginx/conf.d/default.conf
+# konfiguracja nginx
+COPY docker/nginx/nginx.conf /etc/nginx/http.d/default.conf
 
-# nginx potrzebuje katalogu runtime
+# nginx runtime
 RUN mkdir -p /run/nginx
 
 # port dla Render
 EXPOSE 80
 
-# start nginx + php
+# start php + nginx
 CMD php-fpm -D && nginx -g "daemon off;"
