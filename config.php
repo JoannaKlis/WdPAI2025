@@ -1,6 +1,7 @@
 <?php
 
-const USERNAME = getenv("DB_USER");
-const PASSWORD = getenv("DB_PASSWORD");
-const HOST = getenv("DB_HOST");
-const DATABASE = getenv("DB_NAME");
+$USERNAME = getenv("DB_USER");
+$PASSWORD = getenv("DB_PASSWORD");
+$HOST = getenv("DB_HOST");
+$DATABASE = getenv("DB_NAME");
+$PORT = getenv("DB_PORT");

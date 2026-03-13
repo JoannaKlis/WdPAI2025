@@ -14,10 +14,10 @@ class Database {
     
     private function __construct()
     {
-        $this->username = USERNAME;
-        $this->password = PASSWORD;
-        $this->host = HOST;
-        $this->database = DATABASE;
+        $this->username = getenv("DB_USER");
+        $this->password = getenv("DB_PASSWORD");
+        $this->host = getenv("DB_HOST");
+        $this->database = getenv("DB_NAME");
     }
     public static function getInstance(): Database
     {
