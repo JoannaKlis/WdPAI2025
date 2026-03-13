@@ -1,0 +1,32 @@
+services:
+  - type: web
+    name: wdpai2025
+    runtime: docker
+    plan: free
+    branch: main
+    autoDeploy: true
+    envVars:
+      - key: DB_HOST
+        fromDatabase:
+          name: wdpai-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: wdpai-db
+          property: port
+      - key: DB_USER
+        fromDatabase:
+          name: wdpai-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: wdpai-db
+          property: password
+      - key: DB_NAME
+        fromDatabase:
+          name: wdpai-db
+          property: database
+
+databases:
+  - name: wdpai-db
+    plan: free

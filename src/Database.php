@@ -30,11 +30,13 @@ class Database {
     public function connect()
     {
         try {
+            $port = getenv("DB_PORT");
+
             $this->conn = new PDO(
-                "pgsql:host=$this->host;port=5432;dbname=$this->database",
+                "pgsql:host=$this->host;port=$port;dbname=$this->database",
                 $this->username,
                 $this->password,
-                ["sslmode"  => "prefer"]
+                ["sslmode" => "require"]
             );
 
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
