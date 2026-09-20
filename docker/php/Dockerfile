@@ -1,12 +1,4 @@
-<<<<<<< Updated upstream
-FROM php:8.3-fpm-alpine
-=======
-<<<<<<< HEAD
 FROM php:8.3-fpm-alpine3.21
-=======
-FROM php:8.3-fpm-alpine
->>>>>>> 8823e1cccc4bce087ada49e71668d9377b7d8e97
->>>>>>> Stashed changes
 
 ENV RUN_DEPS \
     zlib \
