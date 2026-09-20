@@ -2,8 +2,8 @@
 
 This work is legally protected and requires written permission for use.
 
-# 🐾 PetNotes
-### PetNotes to kompleksowy system zarządzania zdrowiem i codzienną opieką twoich pupili.<br>Aplikacja pozwala właścicielom na monitorowanie wizyt u weterynarza, harmonogramów karmienia, zabiegów pielęgnacyjnych czy prowadzenie kalendarza wydarzeń.
+# 🐾 Pupilove
+### Pupilove to kompleksowy system zarządzania zdrowiem i codzienną opieką twoich pupili.<br>Aplikacja pozwala właścicielom na monitorowanie wizyt u weterynarza, harmonogramów karmienia, zabiegów pielęgnacyjnych czy prowadzenie kalendarza wydarzeń.
 
 ---
 # 📈 Architektura
