@@ -48,7 +48,7 @@
         <div class="input-group">
             <label class="input-label">Date of birth</label>
             <div class="container date-input-container">
-                <input type="date" name="birthDate" value="<?= $pet['birth_date'] ?>" required>
+                <input type="date" name="birthDate" value="<?= $pet['birth_date'] ?>" max="<?= date('Y-m-d') ?>" required>
             </div>
         </div>
 
