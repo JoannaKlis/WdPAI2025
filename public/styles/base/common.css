@@ -59,6 +59,13 @@ h1 {
     white-space: nowrap;
 }
 
+.container.invalid-field-container,
+.container:has(input:invalid) {
+    border: 1px solid #e08a8a;
+    background-color: #fff7f7;
+    box-shadow: 0 0 0 0.06rem rgba(224, 138, 138, 0.18);
+}
+
 /* przyciski logowania się i rejestracji */
 .button {
     width: clamp(6em, 6rem + 2vw, 12em);

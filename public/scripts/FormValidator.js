@@ -16,7 +16,7 @@ class FormValidator {
     init() {
         this.captureInitialValues();
         this.attachListeners();
-        
+
         this.form.addEventListener('form-data-updated', () => {
             this.captureInitialValues();
             this.validate();
@@ -56,14 +56,17 @@ class FormValidator {
         
         this.inputs.forEach(input => {
             if (!input.name) return;
-            
-            // Sprawdzenie wymaganych pól
-            if (input.hasAttribute('required')) {
-                if (input.type === 'checkbox' && !input.checked) {
-                    allRequiredFilled = false;
-                } else if (input.type !== 'file' && !input.value.trim()) {
-                    allRequiredFilled = false;
-                }
+
+            const requiredEmpty = this.isRequiredEmpty(input);
+            const shouldHighlight = this.hasAttemptedSubmit && requiredEmpty;
+
+            if (requiredEmpty) {
+                allRequiredFilled = false;
+            }
+
+            const container = input.closest('.container');
+            if (container) {
+                container.classList.toggle('invalid-field-container', shouldHighlight);
             }
             
             // Sprawdzenie zmian
