@@ -34,8 +34,7 @@ class ModalHandler {
         if (!modal) return;
         
         const idInput = modal.querySelector('input[name="id"]') || 
-                        document.getElementById('modalItemId') || 
-                        document.getElementById('modalWeightId');
+                        document.getElementById('modalItemId');
         const form = modal.querySelector('form');
         
         if (idInput && id) {
@@ -99,13 +98,7 @@ window.openModal = (id) => modalHandler.open(id);
 window.closeModal = (id) => modalHandler.close(id);
 window.openModalWithDate = (id, date) => modalHandler.openWithDate(id, date);
 window.prepareDelete = (id, action) => modalHandler.openDelete(id, action);
-window.openDeleteModal = (id = null) => {
-    if (id) {
-        modalHandler.openDelete(id, null, 'deleteModal');
-    } else {
-        modalHandler.open('deleteModal');
-    }
-};
+
 window.openEditScheduleModal = (id, name, time) => {
     modalHandler.fillAndOpen('scheduleModal', {
         schedule_id: id,
@@ -113,6 +106,7 @@ window.openEditScheduleModal = (id, name, time) => {
         time: time
     });
 };
+
 window.openEditUserModal = (btn) => {
     const data = btn.dataset;
     modalHandler.fillAndOpen('editUserModal', {
@@ -123,6 +117,7 @@ window.openEditUserModal = (btn) => {
         'editRole': data.role
     });
 };
+
 window.openAddScheduleModal = () => {
     modalHandler.fillAndOpen('scheduleModal', {
         schedule_id: '',

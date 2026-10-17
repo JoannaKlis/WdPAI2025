@@ -1,4 +1,3 @@
-/* przerobiony wygląd karty na alergie, harmonogram karmienia, itp.  */
 .card-container-welcome {
     align-items: center;
     gap: clamp(1vw, 2vw, 3vw); 
@@ -61,15 +60,30 @@
 .schedule-item {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     color: #64B5F6;
 }
 
+.schedule-title-group {
+    display: flex;
+    align-items: center;
+    gap: 0.4vw;
+}
+
+.schedule-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.8vw;
+}
+
 .pointer {
-    cursor:pointer;
-    border:none;
+    cursor: pointer;
+    border: none;
 }
 
 @media (max-width: 480px) {
     .card-container-welcome { gap: 4vw; }
     .nutrition-card { width: 85vw; padding: 4vw; border-radius: 3vw; }
+    .schedule-title-group { gap: 1.5vw; }
+    .schedule-actions { gap: 2vw; }
 }

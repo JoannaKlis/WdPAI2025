@@ -7,26 +7,29 @@
 <link rel="stylesheet" type="text/css" href="public/styles/pages/editPet.css">
 <link rel="stylesheet" type="text/css" href="public/styles/components/modal.css">
 
-    <title>Nutrition</title>
+<title>Nutrition</title>
 </head>
 
 <body>
     <div class="wrapper">
-        
+
         <div class="top-bar top-bar-clear">
-            <a href="/features?id=<?= $pet['id'] ?>" class="back-arrow">&lt;</a> 
+            <a href="/features?id=<?= $pet['id'] ?>" class="back-arrow">&lt;</a>
             <h1>Nutrition</h1>
         </div>
 
         <div class="pet-header-container">
             <div class="pet-photo-circle">
-                <img src="<?= $pet['picture_url'] ? $pet['picture_url'] : 'public/img/others/default_pet.png' ?>" alt="<?= $pet['name'] ?>">
+                <img src="<?= $pet['picture_url'] ? $pet['picture_url'] : 'public/img/others/default_pet.png' ?>"
+                    alt="<?= $pet['name'] ?>">
             </div>
-            <div class="pet-name-display"><?= $pet['name'] ?></div>
+            <div class="pet-name-display">
+                <?= $pet['name'] ?>
+            </div>
         </div>
 
         <div class="card-container-welcome">
-            
+
             <div class="card-welcome nutrition-card">
                 <div class="card-header">
                     <img src="public/img/nutrition/alert.png" class="status-icon">
@@ -34,15 +37,14 @@
                 </div>
                 <div class="tag-container">
                     <?php foreach ($sensitivities as $s): ?>
-                        <span class="tag alert-tag">
-                            <?= $s['food'] ?>
-                            <span data-id="<?= $s['id'] ?>" 
-                                  data-action="/deleteSensitivities"
-                                  onclick="prepareDelete(this.dataset.id, this.dataset.action)" class="pointer">x</span>
-                        </span>
+                    <span class="tag alert-tag">
+                        <?= $s['food'] ?>
+                        <span data-id="<?= $s['id'] ?>" data-action="/deleteSensitivities"
+                            onclick="prepareDelete(this.dataset.id, this.dataset.action)" class="pointer">x</span>
+                    </span>
                     <?php endforeach; ?>
                     <?php if (count($sensitivities) < 20): ?>
-                        <button class="tag alert-tag pointer" onclick="openModal('sensitivitiesModal')">+</button>
+                    <button class="tag alert-tag pointer" onclick="openModal('sensitivitiesModal')">+</button>
                     <?php endif; ?>
                 </div>
             </div>
@@ -54,15 +56,14 @@
                 </div>
                 <div class="tag-container">
                     <?php foreach ($favorites as $f): ?>
-                        <span class="tag success-tag">
-                            <?= $f['food'] ?>
-                            <span data-id="<?= $f['id'] ?>" 
-                                  data-action="/deleteFavorite"
-                                  onclick="prepareDelete(this.dataset.id, this.dataset.action)" class="pointer">x</span>
-                        </span>
+                    <span class="tag success-tag">
+                        <?= $f['food'] ?>
+                        <span data-id="<?= $f['id'] ?>" data-action="/deleteFavorite"
+                            onclick="prepareDelete(this.dataset.id, this.dataset.action)" class="pointer">x</span>
+                    </span>
                     <?php endforeach; ?>
                     <?php if (count($favorites) < 20): ?>
-                        <button class="tag success-tag pointer" onclick="openModal('favoriteModal')">+</button>
+                    <button class="tag success-tag pointer" onclick="openModal('favoriteModal')">+</button>
                     <?php endif; ?>
                 </div>
             </div>
@@ -74,15 +75,14 @@
                 </div>
                 <div class="tag-container">
                     <?php foreach ($supplements as $sup): ?>
-                        <span class="tag purple-tag">
-                            <?= $sup['supplement_name'] ?>
-                            <span data-id="<?= $sup['id'] ?>" 
-                                  data-action="/deleteSupplements"
-                                  onclick="prepareDelete(this.dataset.id, this.dataset.action)" class="pointer">x</span>
-                        </span>
+                    <span class="tag purple-tag">
+                        <?= $sup['supplement_name'] ?>
+                        <span data-id="<?= $sup['id'] ?>" data-action="/deleteSupplements"
+                            onclick="prepareDelete(this.dataset.id, this.dataset.action)" class="pointer">x</span>
+                    </span>
                     <?php endforeach; ?>
                     <?php if (count($supplements) < 20): ?>
-                        <button class="tag purple-tag pointer" onclick="openModal('supplementsModal')">+</button>
+                    <button class="tag purple-tag pointer" onclick="openModal('supplementsModal')">+</button>
                     <?php endif; ?>
                 </div>
             </div>
@@ -92,30 +92,31 @@
                     <img src="public/img/nutrition/clock.png" class="status-icon">
                     <span class="card-title blue-text">Feeding schedule</span>
                     <?php if (count($schedule) < 8): ?>
-                        <button onclick="openModal('scheduleModal')" class="tag blue-tag pointer">+</button>
+                    <button onclick="openModal('scheduleModal')" class="tag blue-tag pointer">+</button>
                     <?php endif; ?>
                 </div>
                 <div class="schedule-list">
                     <?php foreach ($schedule as $sch): ?>
-                        <div class="schedule-item">
-                            <span><?= $sch['name'] ?></span>
-                            <div class="schedule-actions">
-                                <span class="time"><?= date('H:i', strtotime($sch['feeding_time'])) ?></span>
-                                
-                                <img src="public/img/nutrition/edit_blue.png" 
-                                     class="edit-schedule-icon"
-                                     data-id="<?= $sch['id'] ?>"
-                                     data-name="<?= $sch['name'] ?>"
-                                     data-time="<?= date('H:i', strtotime($sch['feeding_time'])) ?>"
-                                     onclick="openEditScheduleModal(this.dataset.id, this.dataset.name, this.dataset.time)">
-                                
-                                <img src="public/img/nutrition/delete_nutrition.png" 
-                                     class="edit-schedule-icon"
-                                     data-id="<?= $sch['id'] ?>"
-                                     data-action="/deleteSchedule"
-                                     onclick="prepareDelete(this.dataset.id, this.dataset.action)">
-                            </div>
+                    <div class="schedule-item">
+                        <div class="schedule-title-group">
+                            <span>
+                                <?= $sch['name'] ?>
+                            </span>
+                            <span data-id="<?= $sch['id'] ?>" data-action="/deleteSchedule"
+                                onclick="prepareDelete(this.dataset.id, this.dataset.action)"
+                                class="pointer delete-tag">x</span>
                         </div>
+                        <div class="schedule-actions">
+                            <span class="time">
+                                <?= date('H:i', strtotime($sch['feeding_time'])) ?>
+                            </span>
+
+                            <img src="public/img/nutrition/edit_blue.png" class="edit-schedule-icon"
+                                data-id="<?= $sch['id'] ?>" data-name="<?= $sch['name'] ?>"
+                                data-time="<?= date('H:i', strtotime($sch['feeding_time'])) ?>"
+                                onclick="openEditScheduleModal(this.dataset.id, this.dataset.name, this.dataset.time)">
+                        </div>
+                    </div>
                     <?php endforeach; ?>
                 </div>
             </div>
@@ -208,7 +209,8 @@
                     <div class="input-group name-group">
                         <label class="input-label">Meal Name</label>
                         <div class="container">
-                            <input type="text" name="name" id="scheduleModalName" placeholder="Canned cat food" maxlength="30" required>
+                            <input type="text" name="name" id="scheduleModalName" placeholder="Canned cat food"
+                                maxlength="30" required>
                         </div>
                     </div>
                     <div class="input-group">
@@ -237,8 +239,9 @@
             </div>
         </div>
     </div>
-    
+
     <script src="public/scripts/ModalHandler.js" defer></script>
     <script src="public/scripts/utils.js" defer></script>
 </body>
+
 </html>
