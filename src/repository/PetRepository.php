@@ -13,12 +13,12 @@ class PetRepository extends Repository {
         $this->insert('pets', [
             'user_id' => $userId,
             'pet_type' => $data['type'],
-            'name' => $data['name'],
+            'name' => trim($data['name']),
             'birth_date' => $data['birthDate'],
             'sex' => $data['sex'],
-            'breed' => $data['breed'],
-            'color' => $data['color'],
-            'microchip_number' => $data['microchip'],
+            'breed' => trim($data['breed']),
+            'color' => trim($data['color']),
+            'microchip_number' => trim($data['microchip']),
             'picture_url' => $pictureUrl
         ]);
     }
@@ -54,13 +54,13 @@ class PetRepository extends Repository {
 
     public function updatePet(int $id, array $data, ?string $pictureUrl = null): void {
         $updateData = [
-            'name' => $data['name'],
+            'name' => trim($data['name']),
             'pet_type' => $data['type'],
             'birth_date' => $data['birthDate'],
             'sex' => $data['sex'],
-            'breed' => $data['breed'],
-            'color' => $data['color'],
-            'microchip_number' => $data['microchip']
+            'breed' => trim($data['breed']),
+            'color' => trim($data['color']),
+            'microchip_number' => trim($data['microchip'])
         ];
 
         if ($pictureUrl) {

@@ -34,13 +34,18 @@ class UserRepository extends Repository {
     }
 
     public function createUser(string $firstname, string $lastname, string $email, string $hashedPassword) {
-        $this->insert('users', ['firstname' => $firstname, 'lastname' => $lastname, 'email' => $email, 'password' => $hashedPassword]);
+        $this->insert('users', [
+            'firstname' => trim($firstname),
+            'lastname'  => trim($lastname),
+            'email'     => trim($email),
+            'password'  => $hashedPassword
+        ]);
     }
 
     public function updateUser(int $id, string $firstname, string $lastname, ?string $pictureUrl): void {
         $data = [
-            'firstname' => $firstname, 
-            'lastname' => $lastname
+            'firstname' => trim($firstname), 
+            'lastname'  => trim($lastname)
         ];
 
         if ($pictureUrl) {
@@ -54,10 +59,10 @@ class UserRepository extends Repository {
 
     public function updateUserByAdmin(int $id, string $firstname, string $lastname, string $email, string $role): void {
         $this->update('users', $id, [
-            'firstname' => $firstname,
-            'lastname' => $lastname,
-            'email' => $email,
-            'role' => $role
+            'firstname' => trim($firstname),
+            'lastname'  => trim($lastname),
+            'email'     => trim($email),
+            'role'      => trim($role)
         ]);
     }
 
