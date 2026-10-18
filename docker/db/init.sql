@@ -171,8 +171,13 @@ CREATE TABLE user_bans (
     banned_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-
-
+CREATE TABLE pet_vet_assignments (
+    id SERIAL PRIMARY KEY,
+    vet_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    pet_id INT NOT NULL REFERENCES pets(id) ON DELETE CASCADE,
+    assigned_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT unique_vet_pet UNIQUE (vet_id, pet_id)
+);
 
 -- WIDOK DLA KALENDARZA
 CREATE OR REPLACE VIEW v_pet_events_calendar AS
@@ -317,6 +322,16 @@ VALUES (
     '$2y$10$w0gGIGNcRnviQgjKC31xh.wy2FoCX9E3IyQ110lweE7tS.i9FIMfC', -- hasło "admin"
     TRUE,
     'admin'
+);
+
+INSERT INTO users (firstname, lastname, email, password, enabled, role)
+VALUES (
+    'Weterynarz',
+    'Vet',
+    'vet@example.com',
+    '$2y$10$ejsy0sJ6.EbvvDCVD1rjpu82Xjo1H2JDfjHuMF6jdCB5ymNguYLoq', -- hasło "test"
+    FALSE,
+    'vet'
 );
 
 -- Zwierzaki użytkownika Jana (id=1)

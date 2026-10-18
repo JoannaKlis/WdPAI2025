@@ -8,12 +8,15 @@ require_once 'src/controllers/PetEventController.php';
 require_once 'src/controllers/PetHealthController.php';
 require_once 'src/controllers/PetCareController.php';
 require_once 'src/controllers/PetNutritionController.php';
+require_once 'src/controllers/VetController.php';
 
-class Routing {
+class Routing
+{
     private static $instance = null;
     private $routes = [];
 
-    private function __construct() {
+    private function __construct()
+    {
         // Zarządzanie sesją
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
@@ -23,18 +26,21 @@ class Routing {
         $this->registerRoutes();
     }
 
-    public static function getInstance(): Routing {
+    public static function getInstance(): Routing
+    {
         if (self::$instance === null) {
             self::$instance = new Routing();
         }
         return self::$instance;
     }
 
-    public static function run(?string $path) {
+    public static function run(?string $path)
+    {
         self::getInstance()->dispatch($path ?? '');
     }
 
-    private function dispatch(string $path) {
+    private function dispatch(string $path)
+    {
         // jeśli ścieżka jest pusta to przenieś do login (ekran startowy)
         if ($path === '') {
             $path = 'login';
@@ -61,26 +67,29 @@ class Routing {
         $this->handleNotFound();
     }
 
-    private function invoke(array $config, array $args = []) {
+    private function invoke(array $config, array $args = [])
+    {
         $controllerName = $config['controller'];
         $actionName = $config['action'];
 
         // Tworzenie instancji kontrolera
         $object = new $controllerName();
-        
+
         // Wywołanie akcji z argumentami (jeśli są, np. ID z regexa)
         $action = $actionName;
         $object->$action(...$args);
     }
 
-    private function handleNotFound() {
+    private function handleNotFound()
+    {
         http_response_code(404);
         include 'public/views/errors/404.html';
         exit;
     }
 
     // Konfiguracja wszystkich tras
-    private function registerRoutes() {
+    private function registerRoutes()
+    {
         $this->routes = [
             // SECURITY
             "login" => ["controller" => "SecurityController", "action" => "login"],
@@ -152,6 +161,11 @@ class Routing {
             "calendar" => ["controller" => "PetEventController", "action" => "calendar"],
             "addEvent" => ["controller" => "PetEventController", "action" => "addEvent"],
             "deleteEvent" => ["controller" => "PetEventController", "action" => "deleteEvent"],
+
+            // VET
+            "vetPanel" => ["controller" => "VetController", "action" => "vetPanel"],
+            "patientDetails" => ["controller" => "VetController", "action" => "patientDetails"],
+            "sharePet" => ["controller" => "VetController", "action" => "sharePet"],
         ];
     }
 }
